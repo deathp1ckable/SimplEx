@@ -14,6 +14,7 @@ namespace SimplExServer.Presenter
             exam.ExecutionResults = new ExecutionResult[0];
             ApplicationController.Run<EditPopertiesPresenter, Exam>(exam).Integrate(View.SetEditPropertiesView);
             ApplicationController.Run<EditMarkSystemPropertiesPresenter, Exam>(exam).Integrate(View.SetEditMarkSystemPropertiesView);
+            ApplicationController.Run<EditTreePresenter, Exam>(exam).Integrate(View.SetEditTreeView);
             exam.LastChangeDate = DateTime.Now;
             if (exam.CreationDate == null)
             {

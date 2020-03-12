@@ -18,9 +18,11 @@ namespace SimplExServer
         private DateTime creationDate;
         public IEditMarkSystemPropertiesView MarkSystemPropertiesView { get; private set; }
         public IEditPropertiesView EditPropertiesView { get; private set; }
+        public IEditTreeView EditTreeView { get; private set; }
         public DateTime CreationDate
         {
-            get => creationDate; set
+            get => creationDate;
+            set
             {
                 creationDate = value;
                 creationDateLabel.Text = "Дата создания: " + value.ToString("yy:MM:dd");
@@ -28,7 +30,8 @@ namespace SimplExServer
         }
         public DateTime LastChangeDate
         {
-            get => lastChangeDate; set
+            get => lastChangeDate;
+            set
             {
                 lastChangeDate = value;
                 lastChangeDateLabel.Text = "Дата изменения: " + value.ToString("yy:MM:dd");
@@ -36,7 +39,8 @@ namespace SimplExServer
         }
         public int QuestionCount
         {
-            get => questionCount; set
+            get => questionCount;
+            set
             {
                 questionCount = value;
                 questionCountLabel.Text = "Количество вопросов: " + value;
@@ -44,7 +48,8 @@ namespace SimplExServer
         }
         public double MaxPoints
         {
-            get => maxPoints; set
+            get => maxPoints;
+            set
             {
                 maxPoints = value;
                 maxPointsLabel.Text = "Максимальный бал: " + value;
@@ -99,6 +104,15 @@ namespace SimplExServer
             UserControl control = (UserControl)MarkSystemPropertiesView;
             control.Parent = propertiesPanel;
             control.Size = propertiesPanel.Size;
+            control.Location = new Point(0, 0);
+            control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        }
+        public void SetEditTreeView(IEditTreeView view)
+        {
+            EditTreeView = view;
+            UserControl control = (UserControl)EditTreeView;
+            control.Parent = treePanel;
+            control.Size = treePanel.Size;
             control.Location = new Point(0, 0);
             control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         }

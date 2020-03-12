@@ -18,7 +18,7 @@ namespace SimplExNetworking.Networking
         private UniqueId serverID;
 
         private Thread accepter;
-        private Thread reciecer;
+        private Thread reciever;
         private Thread keepAlive;
 
         private int keepAliveDelay = 1000;
@@ -101,9 +101,9 @@ namespace SimplExNetworking.Networking
                     accepter.IsBackground = true;
                     accepter.Start();
 
-                    reciecer = new Thread(PackageReciever);
-                    reciecer.IsBackground = true;
-                    reciecer.Start();
+                    reciever = new Thread(PackageReciever);
+                    reciever.IsBackground = true;
+                    reciever.Start();
 
                     keepAlive = new Thread(KeepAlive);
                     keepAlive.IsBackground = true;
@@ -165,7 +165,7 @@ namespace SimplExNetworking.Networking
                 IsInitialized = false;
                 keepAlive.Abort();
                 accepter.Abort();
-                reciecer.Abort();
+                reciever.Abort();
                 OnServerStopped?.Invoke(this, new EventArgs());
             }
             else throw new InvalidOperationException("Attempting to stop uninitilized NetworkServer");

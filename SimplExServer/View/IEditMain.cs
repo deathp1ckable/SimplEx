@@ -10,7 +10,9 @@ namespace SimplExServer.View
         double MaxPoints { get; set; }
         IEditPropertiesView EditPropertiesView { get; }
         IEditMarkSystemPropertiesView MarkSystemPropertiesView { get; }
+        IEditTreeView EditTreeView { get; }
         void SetEditPropertiesView(IEditPropertiesView view);
         void SetEditMarkSystemPropertiesView(IEditMarkSystemPropertiesView view);
+        void SetEditTreeView(IEditTreeView view);
     }
 }

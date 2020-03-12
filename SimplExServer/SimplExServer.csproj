@@ -89,6 +89,12 @@
     <Compile Include="Controls\EditPropertiesControl.Designer.cs">
       <DependentUpon>EditPropertiesControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EditTreeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditTreeControl.Designer.cs">
+      <DependentUpon>EditTreeControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseHandling\DatabaseHandler.cs" />
     <Compile Include="DatabaseHandling\Maps\AnswerMap.cs" />
     <Compile Include="DatabaseHandling\Maps\ExecutionResultMap.cs" />
@@ -131,6 +137,7 @@
     <Compile Include="Presenter\EditFiveStepMarkSystemPresenter.cs" />
     <Compile Include="Presenter\EditPopertiesPresenter.cs" />
     <Compile Include="Presenter\EditMainPresenter.cs" />
+    <Compile Include="Presenter\EditTreePresenter.cs" />
     <Compile Include="Presenter\IEditMarkSystemPresenter.cs" />
     <Compile Include="Presenter\EditMarkSystemPropertiesPresenter.cs" />
     <Compile Include="Presenter\IntegrablePresenter.cs" />
@@ -161,6 +168,7 @@
       <DependentUpon>SessionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\IEditMarkSystemPropertiesView.cs" />
+    <Compile Include="View\IEditTreeView.cs" />
     <Compile Include="View\IView.cs" />
     <EmbeddedResource Include="Controls\EditFiveStepMarkSystemControl.resx">
       <DependentUpon>EditFiveStepMarkSystemControl.cs</DependentUpon>
@@ -170,6 +178,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\EditPropertiesControl.resx">
       <DependentUpon>EditPropertiesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditTreeControl.resx">
+      <DependentUpon>EditTreeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>

@@ -29,14 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Темы вопросов");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Билеты");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditorForm));
             this.subHeaderPanel = new System.Windows.Forms.Panel();
             this.headerPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.propertiesButton = new System.Windows.Forms.Button();
-            this.contentButton = new System.Windows.Forms.Button();
             this.markSystemButton = new System.Windows.Forms.Button();
+            this.contentButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.structureLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,10 +44,10 @@
             this.questionCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.maxPointsLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.examTree = new System.Windows.Forms.TreeView();
             this.propertiesPanel = new System.Windows.Forms.Panel();
             this.unsavedPropertiesTip = new System.Windows.Forms.ToolTip(this.components);
             this.unsavedMarkSystemToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.treePanel = new System.Windows.Forms.Panel();
             this.subHeaderPanel.SuspendLayout();
             this.headerPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -102,20 +100,6 @@
             this.propertiesButton.UseVisualStyleBackColor = false;
             this.propertiesButton.Click += new System.EventHandler(this.TabStopClick);
             // 
-            // contentButton
-            // 
-            this.contentButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.contentButton.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.contentButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.contentButton.Location = new System.Drawing.Point(415, 3);
-            this.contentButton.Name = "contentButton";
-            this.contentButton.Size = new System.Drawing.Size(200, 34);
-            this.contentButton.TabIndex = 1;
-            this.contentButton.Tag = "1";
-            this.contentButton.Text = "Содержание";
-            this.contentButton.UseVisualStyleBackColor = true;
-            this.contentButton.Click += new System.EventHandler(this.TabStopClick);
-            // 
             // markSystemButton
             // 
             this.markSystemButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -129,6 +113,20 @@
             this.markSystemButton.Text = "Система оценивания";
             this.markSystemButton.UseVisualStyleBackColor = true;
             this.markSystemButton.Click += new System.EventHandler(this.TabStopClick);
+            // 
+            // contentButton
+            // 
+            this.contentButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.contentButton.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.contentButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.contentButton.Location = new System.Drawing.Point(415, 3);
+            this.contentButton.Name = "contentButton";
+            this.contentButton.Size = new System.Drawing.Size(200, 34);
+            this.contentButton.TabIndex = 1;
+            this.contentButton.Tag = "1";
+            this.contentButton.Text = "Содержание";
+            this.contentButton.UseVisualStyleBackColor = true;
+            this.contentButton.Click += new System.EventHandler(this.TabStopClick);
             // 
             // saveButton
             // 
@@ -216,7 +214,7 @@
             // 
             // splitContainer.Panel1
             // 
-            this.splitContainer.Panel1.Controls.Add(this.examTree);
+            this.splitContainer.Panel1.Controls.Add(this.treePanel);
             this.splitContainer.Panel1.Controls.Add(this.structureLabel);
             this.splitContainer.Panel1MinSize = 200;
             // 
@@ -229,26 +227,6 @@
             this.splitContainer.SplitterDistance = 427;
             this.splitContainer.TabIndex = 6;
             this.splitContainer.TabStop = false;
-            // 
-            // examTree
-            // 
-            this.examTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.examTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.examTree.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.examTree.HideSelection = false;
-            this.examTree.Location = new System.Drawing.Point(3, 30);
-            this.examTree.Name = "examTree";
-            treeNode1.Name = "ThemesNode";
-            treeNode1.Text = "Темы вопросов";
-            treeNode2.Name = "Tickets";
-            treeNode2.Text = "Билеты";
-            this.examTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-            this.examTree.Size = new System.Drawing.Size(419, 541);
-            this.examTree.TabIndex = 5;
             // 
             // propertiesPanel
             // 
@@ -275,6 +253,16 @@
             this.unsavedMarkSystemToolTip.IsBalloon = true;
             this.unsavedMarkSystemToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.unsavedMarkSystemToolTip.ToolTipTitle = "Данные не сохранены";
+            // 
+            // treePanel
+            // 
+            this.treePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treePanel.Location = new System.Drawing.Point(3, 30);
+            this.treePanel.Name = "treePanel";
+            this.treePanel.Size = new System.Drawing.Size(419, 541);
+            this.treePanel.TabIndex = 6;
             // 
             // EditorForm
             // 
@@ -317,11 +305,11 @@
         private System.Windows.Forms.ToolStripStatusLabel creationDateLabel;
         private System.Windows.Forms.ToolStripStatusLabel lastChangeDateLabel;
         private System.Windows.Forms.SplitContainer splitContainer;
-        private System.Windows.Forms.TreeView examTree;
         private System.Windows.Forms.ToolStripStatusLabel questionCountLabel;
         private System.Windows.Forms.ToolStripStatusLabel maxPointsLabel;
         private System.Windows.Forms.Panel propertiesPanel;
         private System.Windows.Forms.ToolTip unsavedPropertiesTip;
         private System.Windows.Forms.ToolTip unsavedMarkSystemToolTip;
+        private System.Windows.Forms.Panel treePanel;
     }
 }

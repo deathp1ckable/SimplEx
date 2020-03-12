@@ -11,19 +11,19 @@ namespace SimplExDb.Database
         private readonly Dictionary<object, Row> loadedRows = new Dictionary<object, Row>();
         private readonly Queue<DataRow> updateRowQueue = new Queue<DataRow>();
         private MySqlCommand command;
-        private Rule[] rules;
-        private long id;
-        private bool opened;
-        private bool isDeleted;
-        private bool isAdded;
         private string updateString;
         private string loadString;
+        private Rule[] rules;
+        private bool isOpened;
+        private bool isDeleted;
+        private bool isAdded;
+        private long id;
         public MySqlConnection Connection { get; private set; }
         public SchemaMap Schema { get; private set; }
         public DatabaseController(SchemaMap schema) => Schema = schema;
         public void Open(string server, string user, uint port, string password)
         {
-            if (opened)
+            if (isOpened)
                 throw new Exception("Attepting to open already opened controller.");
             MySqlConnectionStringBuilder stringBuilder = new MySqlConnectionStringBuilder
             {
@@ -39,7 +39,7 @@ namespace SimplExDb.Database
             int i;
             for (i = 0; i < rules.Length; i++)
                 rules[i] = Schema.SchemaDataSet.Relations[i].ChildKeyConstraint.UpdateRule;
-            opened = true;
+            isOpened = true;
         }
         public void OpenSchema()
         {
@@ -74,7 +74,7 @@ namespace SimplExDb.Database
         }
         public T[] Select<T>(string whereExpression = "true") where T : class
         {
-            if (!opened)
+            if (!isOpened)
                 throw new Exception("Attepting to use unopened controller.");
             ClassMap<T> map = Schema.GetClassMapInstance<T>();
 
@@ -108,7 +108,7 @@ namespace SimplExDb.Database
         }
         public TChild[] SelectChild<TParent, TChild>(TParent instance, string whereExpression = "true") where TParent : class where TChild : class
         {
-            if (!opened)
+            if (!isOpened)
                 throw new Exception("Attepting to use unopened controller.");
             if (!loadedRows.ContainsKey(instance))
                 throw new ArgumentException("This instnace wasn't loaded. Use Insert() or Select() to load instance.");
@@ -152,7 +152,7 @@ namespace SimplExDb.Database
         }
         public TParent[] SelectParent<TParent, TChild>(TChild instance, string whereExpression = "true") where TParent : class where TChild : class
         {
-            if (!opened)
+            if (!isOpened)
                 throw new Exception("Attepting to use unopened controller.");
             if (!loadedRows.ContainsKey(instance))
                 throw new ArgumentException("This instnace wasn't loaded. Use Insert() or Select() to load instance.");
@@ -166,7 +166,7 @@ namespace SimplExDb.Database
         }
         public void Insert<T>(T instance, params object[] parents) where T : class
         {
-            if (!opened)
+            if (!isOpened)
                 throw new Exception("Attepting to use unopened controller.");
             if (loadedRows.ContainsKey(instance))
                 throw new ArgumentException("This instnace was already loaded. Use Update() or Regularize() to update data of an instance.");
@@ -185,7 +185,7 @@ namespace SimplExDb.Database
         }
         public void Regularize<T>(T instance, params object[] parents) where T : class
         {
-            if (!opened)
+            if (!isOpened)
                 throw new Exception("Attepting to use unopened controller.");
             if (!loadedRows.ContainsKey(instance))
                 throw new ArgumentException("This instnace wasn't loaded. Use Insert() or Select() to load instance.");
@@ -199,7 +199,7 @@ namespace SimplExDb.Database
         public DataRow GetRowOfInstance<T>(T instance) where T : class => loadedRows[instance].DataRow;
         public void Update<T>(T instance) where T : class
         {
-            if (!opened)
+            if (!isOpened)
                 throw new Exception("Attepting to use unopened controller.");
             if (!loadedRows.ContainsKey(instance))
                 throw new ArgumentException("This instnace wasn't loaded. Use Insert() or Select() to load instance.");
@@ -212,7 +212,7 @@ namespace SimplExDb.Database
         }
         public void Delete<T>(T instance) where T : class
         {
-            if (!opened)
+            if (!isOpened)
                 throw new Exception("Attepting to use unopened controller.");
             if (!loadedRows.ContainsKey(instance))
                 throw new ArgumentException("This instnace wasn't loaded. Use Insert() or Select() to load instance.");
@@ -224,7 +224,7 @@ namespace SimplExDb.Database
         }
         public void Commit()
         {
-            if (!opened)
+            if (!isOpened)
                 throw new Exception("Attepting to use unopened controller.");
             DataRow row;
             int i;
@@ -319,7 +319,7 @@ namespace SimplExDb.Database
         public void Close()
         {
             Connection.Close();
-            opened = false;
+            isOpened = false;
         }
         public void Dispose()
         {

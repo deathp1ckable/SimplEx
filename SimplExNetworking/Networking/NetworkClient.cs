@@ -15,9 +15,9 @@ namespace SimplExNetworking.Networking
     {
         private TcpClient client;
 
-        private bool isAlive;
         private System.Timers.Timer keepAliveTimer = new System.Timers.Timer();
         private List<uint> connectedClients = new List<uint>();
+        private bool isAlive;
 
         private Thread reciever;
         public uint ClientId { get; private set; }
