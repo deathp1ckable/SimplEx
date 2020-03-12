@@ -60,15 +60,17 @@ namespace SimplExNetworking.Networking
             if (ClientState == ClientState.Disconnected)
                 try
                 {
-                    isAlive = true;
+                    ClientState = ClientState.Confirmation;
 
+                    isAlive = true;
                     connectedClients.Clear();
+
                     client = new TcpClient();
                     client.Connect(IPAddress.Parse(IPAdress), Port);
+
                     reciever = new Thread(PackageReciever);
                     reciever.IsBackground = true;
                     reciever.Start();
-                    ClientState = ClientState.Confirmation;
 
                     connectPackage.content = Encoding.Unicode.GetBytes(Password);
                     SendPackage(connectPackage);
@@ -105,10 +107,7 @@ namespace SimplExNetworking.Networking
                     if (connectedClients[i] != ClientId || broadcastingType == BroadcastMode.All)
                         SendMessage(connectedClients[i], message);
         }
-        public void Disconnect()
-        {
-            Disconnect(true);
-        }
+        public void Disconnect() => Disconnect(true);
 
         private byte[] lengthBuffer = new byte[8];
         private byte[] buffer = null;
@@ -196,8 +195,11 @@ namespace SimplExNetworking.Networking
                     if (package.senderID == 0)
                     {
                         ID = BitConverter.ToUInt32(package.content, 0);
-                        connectedClients.Add(ID);
-                        OnClientConnected?.Invoke(this, new IdEventArgs(ID));
+                        if (ID != ClientId)
+                        {
+                            connectedClients.Add(ID);
+                            OnClientConnected?.Invoke(this, new IdEventArgs(ID));
+                        }
                     }
                     break;
                 case PackageType.RemoveClient:

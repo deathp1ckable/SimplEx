@@ -6,15 +6,16 @@ namespace SimplExNetworking.Internal
 {
     internal class Client : IDisposable
     {
-        public TcpClient client;
-        public UniqueId uniqueID;
         public bool isAlive;
         public bool isDisposed;
+
+        public TcpClient client;
+        public UniqueId uniqueID;
         public Timer keepAliveTimer;
         public Client(TcpClient client, UniqueId id, int keepAliveDelay)
         {
             this.client = client;
-            this.uniqueID = id;
+            uniqueID = id;
 
             isAlive = true;
             isDisposed = false;
@@ -23,7 +24,12 @@ namespace SimplExNetworking.Internal
             keepAliveTimer.Elapsed += ConfirmChecker;
             keepAliveTimer.Start();
         }
-        private void ConfirmChecker(object sender, ElapsedEventArgs e) => Dispose();
+        private void ConfirmChecker(object sender, ElapsedEventArgs e)
+        {
+            if (keepAliveTimer != null)
+                Dispose();
+        }
+
         public void Confirm()
         {
             keepAliveTimer?.Dispose();

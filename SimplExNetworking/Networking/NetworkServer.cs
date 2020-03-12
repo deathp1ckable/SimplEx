@@ -234,7 +234,6 @@ namespace SimplExNetworking.Networking
         {
             try
             {
-
                 while (IsInitialized)
                 {
                     Client[] tmp = connectedClients.Values.ToArray();
@@ -245,7 +244,8 @@ namespace SimplExNetworking.Networking
                                 connectedClients.Remove(tmp[i].uniqueID.Id);
                             if (!tmp[i].isAlive)
                                 DisconnectClient(tmp[i].uniqueID.Id, false, "Client is not responding");
-                            tmp[i].isAlive = false;
+                            if (tmp[i].keepAliveTimer == null)
+                                tmp[i].isAlive = false;
                             updatePackage.targetID = tmp[i].uniqueID.Id;
                             SendPackage(updatePackage);
                         }

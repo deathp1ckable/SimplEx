@@ -16,13 +16,7 @@ namespace SimplExTesting
               Application.EnableVisualStyles();
               Application.SetCompatibleTextRenderingDefault(false);
               Application.Run(new Form1());
-          }
-        static void Main()
-        {
-
-            Console.ReadKey();
-        }*/
-        // SimplexTestingFormDesigner.Program
+          }*/
 
         private static int attempt = 1;
 
