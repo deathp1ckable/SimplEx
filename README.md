@@ -1,2 +1,2 @@
 # SimplEx
-SimplEx is simple and lightweight program for examination students
+SimplEx is simple and lightweight program for examining students
