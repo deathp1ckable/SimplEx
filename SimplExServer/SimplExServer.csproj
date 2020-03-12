@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{16BA4E63-24E3-4825-8907-0CE23D25DEFC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>SimplExServer</RootNamespace>
+    <AssemblyName>SimplExServer</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Лого%404x.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\..\..\Downloads\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\SimplexTestingFormDesigner\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\ApplicationController.cs" />
+    <Compile Include="Common\AutofacAdapter.cs" />
+    <Compile Include="Controls\EditFiveStepMarkSystemControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditFiveStepMarkSystemControl.Designer.cs">
+      <DependentUpon>EditFiveStepMarkSystemControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditMarkSystemPropertiesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditMarkSystemPropertiesControl.Designer.cs">
+      <DependentUpon>EditMarkSystemPropertiesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditPropertiesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditPropertiesControl.Designer.cs">
+      <DependentUpon>EditPropertiesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseHandling\DatabaseHandler.cs" />
+    <Compile Include="DatabaseHandling\Maps\AnswerMap.cs" />
+    <Compile Include="DatabaseHandling\Maps\ExecutionResultMap.cs" />
+    <Compile Include="DatabaseHandling\Maps\ExecutorAnswerMap.cs" />
+    <Compile Include="DatabaseHandling\Maps\MarkSystemMap.cs" />
+    <Compile Include="DatabaseHandling\Maps\QuestionGroupMap.cs" />
+    <Compile Include="DatabaseHandling\Maps\QuestionMap.cs" />
+    <Compile Include="DatabaseHandling\Maps\SimplExDBMap.cs" />
+    <Compile Include="DatabaseHandling\Maps\ExamMap.cs" />
+    <Compile Include="DatabaseHandling\Maps\ThemeMap.cs" />
+    <Compile Include="DatabaseHandling\Maps\TicketMap.cs" />
+    <Compile Include="Forms\EditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EditorForm.Designer.cs">
+      <DependentUpon>EditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LoadingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoadingForm.Designer.cs">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\IIoCContainer.cs" />
+    <Compile Include="Model\Inherited\OneAnswerQuestion.cs" />
+    <Compile Include="Model\Inherited\FiveStepMarkSystem.cs" />
+    <Compile Include="Model\Answer.cs" />
+    <Compile Include="Model\ExecutionResult.cs" />
+    <Compile Include="Model\ExecutorAnswer.cs" />
+    <Compile Include="Model\MarkSystemData.cs" />
+    <Compile Include="Model\MarkSystem.cs" />
+    <Compile Include="Model\QuestionData.cs" />
+    <Compile Include="Model\QuestionGroup.cs" />
+    <Compile Include="Model\Question.cs" />
+    <Compile Include="Model\Exam.cs" />
+    <Compile Include="Model\Theme.cs" />
+    <Compile Include="Model\Ticket.cs" />
+    <Compile Include="Model\Encryptor.cs" />
+    <Compile Include="Common\IApplicationController.cs" />
+    <Compile Include="Presenter\EditFiveStepMarkSystemPresenter.cs" />
+    <Compile Include="Presenter\EditPopertiesPresenter.cs" />
+    <Compile Include="Presenter\EditMainPresenter.cs" />
+    <Compile Include="Presenter\IEditMarkSystemPresenter.cs" />
+    <Compile Include="Presenter\EditMarkSystemPropertiesPresenter.cs" />
+    <Compile Include="Presenter\IntegrablePresenter.cs" />
+    <Compile Include="View\IEditFiveStepMarkSystemView.cs" />
+    <Compile Include="View\IEditMarkSystemView.cs" />
+    <Compile Include="View\IEditMain.cs" />
+    <Compile Include="View\IEditPropertiesView.cs" />
+    <Compile Include="Presenter\IPresenter.cs" />
+    <Compile Include="Presenter\Presenter.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Forms\StartForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\StartForm.Designer.cs">
+      <DependentUpon>StartForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\StartSessionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\StartSessionForm.Designer.cs">
+      <DependentUpon>StartSessionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SessionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SessionForm.Designer.cs">
+      <DependentUpon>SessionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\IEditMarkSystemPropertiesView.cs" />
+    <Compile Include="View\IView.cs" />
+    <EmbeddedResource Include="Controls\EditFiveStepMarkSystemControl.resx">
+      <DependentUpon>EditFiveStepMarkSystemControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditMarkSystemPropertiesControl.resx">
+      <DependentUpon>EditMarkSystemPropertiesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditPropertiesControl.resx">
+      <DependentUpon>EditPropertiesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditorForm.resx">
+      <DependentUpon>EditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoadingForm.resx">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\StartSessionForm.resx">
+      <DependentUpon>StartSessionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Forms\StartForm.resx">
+      <DependentUpon>StartForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Config\packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Config\App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logoAnimation.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SimplExDb\SimplExDb.csproj">
+      <Project>{299BBA35-82C7-42EA-AAE6-E57F1968C77F}</Project>
+      <Name>SimplExDb</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Лого%404x.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Лого%404x.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

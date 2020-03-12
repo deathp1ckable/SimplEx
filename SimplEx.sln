@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplexTestingFormDesigner", "SimplexTestingFormDesigner\SimplexTestingFormDesigner.csproj", "{7A89058C-620A-4B6E-AA47-6ECD44F3F6DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplExServer", "SimplExServer\SimplExServer.csproj", "{16BA4E63-24E3-4825-8907-0CE23D25DEFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplExNetworking", "SimplExNetworking\SimplExNetworking.csproj", "{C2162ACA-B53D-429B-A30C-6F4777A21762}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplExModel", "SimplExModel\SimplExModel.csproj", "{B4A30EAB-AEF8-4C00-8183-681F2FF43787}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplExDb", "SimplExDb\SimplExDb.csproj", "{299BBA35-82C7-42EA-AAE6-E57F1968C77F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplExClient", "SimplExClient\SimplExClient.csproj", "{AC3B0670-4EDC-49E8-9385-12D100AD4CA1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7A89058C-620A-4B6E-AA47-6ECD44F3F6DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A89058C-620A-4B6E-AA47-6ECD44F3F6DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A89058C-620A-4B6E-AA47-6ECD44F3F6DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A89058C-620A-4B6E-AA47-6ECD44F3F6DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16BA4E63-24E3-4825-8907-0CE23D25DEFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16BA4E63-24E3-4825-8907-0CE23D25DEFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16BA4E63-24E3-4825-8907-0CE23D25DEFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16BA4E63-24E3-4825-8907-0CE23D25DEFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2162ACA-B53D-429B-A30C-6F4777A21762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2162ACA-B53D-429B-A30C-6F4777A21762}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2162ACA-B53D-429B-A30C-6F4777A21762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2162ACA-B53D-429B-A30C-6F4777A21762}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4A30EAB-AEF8-4C00-8183-681F2FF43787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A30EAB-AEF8-4C00-8183-681F2FF43787}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4A30EAB-AEF8-4C00-8183-681F2FF43787}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4A30EAB-AEF8-4C00-8183-681F2FF43787}.Release|Any CPU.Build.0 = Release|Any CPU
+		{299BBA35-82C7-42EA-AAE6-E57F1968C77F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{299BBA35-82C7-42EA-AAE6-E57F1968C77F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{299BBA35-82C7-42EA-AAE6-E57F1968C77F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{299BBA35-82C7-42EA-AAE6-E57F1968C77F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC3B0670-4EDC-49E8-9385-12D100AD4CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC3B0670-4EDC-49E8-9385-12D100AD4CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC3B0670-4EDC-49E8-9385-12D100AD4CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC3B0670-4EDC-49E8-9385-12D100AD4CA1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {73AFCB95-5989-4D2F-80F2-7295D2A29DE4}
+	EndGlobalSection
+EndGlobal
