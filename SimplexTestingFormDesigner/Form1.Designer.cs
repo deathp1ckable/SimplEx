@@ -1,4 +1,5 @@
-﻿namespace SimplexTestingFormDesigner
+﻿
+namespace SimplExTesting
 {
     partial class Form1
     {
@@ -35,7 +36,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.button2 = new System.Windows.Forms.Button();
-            this.flatPanel1 = new SimplexTestingFormDesigner.FlatPanel();
+            this.flatPanel1 = new SimplExTesting.FlatPanel();
             this.button1 = new System.Windows.Forms.Button();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();

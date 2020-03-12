@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplexTestingFormDesigner", "SimplexTestingFormDesigner\SimplexTestingFormDesigner.csproj", "{7A89058C-620A-4B6E-AA47-6ECD44F3F6DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplExTesting", "SimplexTestingFormDesigner\SimplExTesting.csproj", "{7A89058C-620A-4B6E-AA47-6ECD44F3F6DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplExServer", "SimplExServer\SimplExServer.csproj", "{16BA4E63-24E3-4825-8907-0CE23D25DEFC}"
 EndProject

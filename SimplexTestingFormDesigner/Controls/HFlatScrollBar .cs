@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Timers;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
-namespace SimplexTestingFormDesigner
+namespace SimplExTesting
 {
     public partial class HFlatScrollBar : UserControl
     {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SimplexTestingFormDesigner.Properties {
+namespace SimplExTesting.Properties {
     using System;
     
     

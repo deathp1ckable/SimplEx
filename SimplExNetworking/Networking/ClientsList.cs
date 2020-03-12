@@ -19,4 +19,6 @@ namespace SimplExNetworking.Networking
         public IEnumerator<uint> GetEnumerator() => dictionary.Keys.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => dictionary.Keys.GetEnumerator();
     }
+    public enum ClientState : byte { Disconnected, Confirmation, Connected }
+    public enum BroadcastMode : byte { All, Others }
 }

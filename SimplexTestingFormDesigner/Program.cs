@@ -1,11 +1,9 @@
 ﻿using System;
-using SimplExNetworking.Networking;
-using SimplExNetworking.Internal;
-using SimplExNetworking.EventArguments;
 using System.Text;
-using Newtonsoft.Json;
+using SimplExNetworking.Networking;
+using SimplExNetworking.EventArguments;
 
-namespace SimplexTestingFormDesigner
+namespace SimplExTesting
 {
     static class Program
     {
@@ -30,39 +28,39 @@ namespace SimplexTestingFormDesigner
 
         private static void Main()
         {
-            /*  Console.WriteLine("Нажмите Y чтобы стать сервером.");
-              if (Console.ReadKey().Key == ConsoleKey.Y)
-              {
-                  NetworkServer val = (NetworkServer)(object)new NetworkServer();
-                  val.OnClientDisconnected += Server_OnClientDisconnected;
-                  val.OnClientConnected += Server_OnClientConnected;
-                  val.OnServerInitialized += Server_OnServerInitialized;
-                  Console.WriteLine("Введите порт:");
-                  val.Port = int.Parse(Console.ReadLine());
-                  val.InitializeServer();
-                  do
-                  {
-                      Console.WriteLine("Введите сообщение для рассылке всем клиентам: ");
-                      val.BroadcastMessage(BroadcastMode.All, Encoding.Unicode.GetBytes(Console.ReadLine()));
-                      Console.WriteLine("Нажммите Y чтобы прекратить рассылку:");
-                  }
-                  while (Console.ReadKey().Key != ConsoleKey.Y);
-                  Console.ReadKey();
-              }
-              else
-              {
-                  NetworkClient val2 = (NetworkClient)(object)new NetworkClient();
-                  val2.OnConnectedToServer += Client_OnConnectedToServer;
-                  val2.OnFailedToConnect += Client_OnFailedToConnect1;
-                  val2.OnDisconnectedFromServer += Client_OnDisconnectedFromServer;
-                  val2.OnMessageRecieved += Client_OnMessageRecieved;
-                  Console.WriteLine("Введите ip адресс:");
-                  string ip = Console.ReadLine();
-                  Console.WriteLine("Введите порт:");
-                  int port = int.Parse(Console.ReadLine());
-                  val2.Connect(ip, port);
-                  Console.ReadKey();
-              }*/
+            Console.WriteLine("Нажмите Y чтобы стать сервером.");
+            if (Console.ReadKey().Key == ConsoleKey.Y)
+            {
+                NetworkServer val = (NetworkServer)(object)new NetworkServer();
+                val.OnClientDisconnected += Server_OnClientDisconnected;
+                val.OnClientConnected += Server_OnClientConnected;
+                val.OnServerInitialized += Server_OnServerInitialized;
+                Console.WriteLine("Введите порт:");
+                val.Port = int.Parse(Console.ReadLine());
+                val.InitializeServer();
+                do
+                {
+                    Console.WriteLine("Введите сообщение для рассылке всем клиентам: ");
+                    val.BroadcastMessage(BroadcastMode.All, Encoding.Unicode.GetBytes(Console.ReadLine()));
+                    Console.WriteLine("Нажммите Y чтобы прекратить рассылку:");
+                }
+                while (Console.ReadKey().Key != ConsoleKey.Y);
+                Console.ReadKey();
+            }
+            else
+            {
+                NetworkClient val2 = (NetworkClient)(object)new NetworkClient();
+                val2.OnConnectedToServer += Client_OnConnectedToServer;
+                val2.OnFailedToConnect += Client_OnFailedToConnect1;
+                val2.OnDisconnectedFromServer += Client_OnDisconnectedFromServer;
+                val2.OnMessageRecieved += Client_OnMessageRecieved;
+                Console.WriteLine("Введите ip адресс:");
+                string ip = Console.ReadLine();
+                Console.WriteLine("Введите порт:");
+                int port = int.Parse(Console.ReadLine());
+                val2.Connect(ip, port);
+                Console.ReadKey();
+            }
             Console.ReadKey();
         }
 

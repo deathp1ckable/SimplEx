@@ -33,6 +33,4 @@ namespace SimplExNetworking.Internal
         UpdateEcho,
         Message
     }
-    public enum ClientState : byte { Disconnected, Confirmation, Connected }
-    public enum BroadcastMode : byte { All, Others }
 }

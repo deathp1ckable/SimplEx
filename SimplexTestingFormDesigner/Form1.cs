@@ -8,7 +8,7 @@ using System.Drawing.Text;
 using System.Text;
 using System.Windows.Forms;
 
-namespace SimplexTestingFormDesigner
+namespace SimplExTesting
 {
     public partial class Form1 : Form
     {

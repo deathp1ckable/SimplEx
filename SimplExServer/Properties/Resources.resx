@@ -121,7 +121,4 @@
   <data name="logoAnimation" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logoAnimation.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Лого_4x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Лого@4x.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>

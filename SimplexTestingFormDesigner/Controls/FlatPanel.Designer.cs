@@ -1,4 +1,4 @@
-﻿namespace SimplexTestingFormDesigner
+﻿namespace SimplExTesting
 {
     partial class FlatPanel
     {
@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.cornerPanel = new System.Windows.Forms.Panel();
-            this.vFlatScrollBar = new SimplexTestingFormDesigner.VFlatScrollBar();
-            this.hFlatScrollBar = new SimplexTestingFormDesigner.HFlatScrollBar();
+            this.vFlatScrollBar = new SimplExTesting.VFlatScrollBar();
+            this.hFlatScrollBar = new SimplExTesting.HFlatScrollBar();
             this.leftBorder = new System.Windows.Forms.Panel();
             this.rightBorder = new System.Windows.Forms.Panel();
             this.topBorder = new System.Windows.Forms.Panel();
@@ -47,7 +47,7 @@
             // 
             // vFlatScrollBar
             // 
-            this.vFlatScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.vFlatScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.vFlatScrollBar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.vFlatScrollBar.LargeChange = 10;
@@ -63,7 +63,7 @@
             // 
             // hFlatScrollBar
             // 
-            this.hFlatScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.hFlatScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.hFlatScrollBar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hFlatScrollBar.LargeChange = 10;
@@ -79,7 +79,7 @@
             // 
             // leftBorder
             // 
-            this.leftBorder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.leftBorder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.leftBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.leftBorder.Location = new System.Drawing.Point(0, 0);
@@ -89,7 +89,7 @@
             // 
             // rightBorder
             // 
-            this.rightBorder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.rightBorder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rightBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.rightBorder.Location = new System.Drawing.Point(217, 0);
@@ -99,7 +99,7 @@
             // 
             // topBorder
             // 
-            this.topBorder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.topBorder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.topBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.topBorder.Location = new System.Drawing.Point(0, 0);
@@ -109,7 +109,7 @@
             // 
             // bottomBorder
             // 
-            this.bottomBorder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.bottomBorder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.bottomBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.bottomBorder.Location = new System.Drawing.Point(0, 217);
