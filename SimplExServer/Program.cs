@@ -5,6 +5,7 @@ using SimplExServer.Model.Inherited;
 using SimplExServer.Presenter;
 using SimplExServer.View;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace SimplExServer
@@ -30,8 +31,7 @@ namespace SimplExServer
             QuestionGroup group = new QuestionGroup()
             {
                 QuestionGroupName = "This group",
-                ChildQuestionGroups = new QuestionGroup[0],
-                Questions = new[]
+                Questions = new List<Question>
                 {
                     new OneAnswerQuestion(),
                     new OneAnswerQuestion(),
@@ -41,9 +41,18 @@ namespace SimplExServer
             QuestionGroup secondGroup = new QuestionGroup()
             {
                 QuestionGroupName = "This two group",
-                ChildQuestionGroups = new QuestionGroup[0],
-                Questions = new[]
-    {
+                Questions = new List<Question>
+                {
+                    new OneAnswerQuestion(),
+                    new OneAnswerQuestion(),
+                    new OneAnswerQuestion(),
+                }
+            };
+            QuestionGroup threeGroup = new QuestionGroup()
+            {
+                QuestionGroupName = "This 3 two group",
+                Questions = new List<Question>
+                {
                     new OneAnswerQuestion(),
                     new OneAnswerQuestion(),
                     new OneAnswerQuestion(),
@@ -52,8 +61,7 @@ namespace SimplExServer
             QuestionGroup anotherGroup = new QuestionGroup()
             {
                 QuestionGroupName = "This another",
-                ChildQuestionGroups = new QuestionGroup[0],
-                Questions = new[]
+                Questions = new List<Question>
                 {
                     new OneAnswerQuestion(),
                     new OneAnswerQuestion(),
@@ -61,20 +69,20 @@ namespace SimplExServer
                     new OneAnswerQuestion()
                 }
             };
-            group.ChildQuestionGroups = new[] { anotherGroup };
+            group.ChildQuestionGroups = new List<QuestionGroup> { anotherGroup, threeGroup };
             anotherGroup.ParentQuestionGroup = group;
             controller.Run<EditMainPresenter, Exam>(new Exam()
             {
                 MarkSystem = new FiveStepMarkSystem(),
-                Themes = new[]
+                Themes = new List<Theme>
                 {
                     new Theme() { ThemeName = "Theme one" }, new Theme() { ThemeName = "Theme two" } },
-                Tickets = new[] { new Ticket() {TicketNumber =1, QuestionGroups = new[]
+                Tickets = new List<Ticket>() { new Ticket() {TicketNumber =1, QuestionGroups = new List<QuestionGroup>()
                     {
                         group,secondGroup
                     }
                 }
-               }
+                 }
             });
             Application.Run(context);
         }

@@ -13,10 +13,10 @@ namespace SimplExServer.Presenter
         readonly Dictionary<Type, IEditMarkSystemPresenter> presenters = new Dictionary<Type, IEditMarkSystemPresenter>();
         public EditMarkSystemPropertiesPresenter(IEditMarkSystemPropertiesView view, IApplicationController applicationController) : base(view, applicationController)
             => view.MarkSystemTypeChanged += MarkSystemTypeChanged;
-        private void MarkSystemTypeChanged()
+        private void MarkSystemTypeChanged(IEditMarkSystemPropertiesView sender)
         {
-            presenters[View.MarkSystemType].Integrate(View.SetEditMarkSystemView);
-            exam.MarkSystem = presenters[View.MarkSystemType].MarkSystem;
+            presenters[sender.MarkSystemType].Integrate(sender.SetEditMarkSystemView);
+            exam.MarkSystem = presenters[sender.MarkSystemType].MarkSystem;
         }
         public override void Run(Exam argumnet)
         {
@@ -25,7 +25,7 @@ namespace SimplExServer.Presenter
             View.Description = exam.MarkSystem.Description;
             View.MarkSystemType = exam.MarkSystem.GetType();
             View.MarkSystemTypes = new[] { exam.MarkSystem.GetType() };
-            MarkSystemTypeChanged();
+            MarkSystemTypeChanged(View);
         }
     }
 }

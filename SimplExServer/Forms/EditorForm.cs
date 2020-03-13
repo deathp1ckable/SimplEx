@@ -81,7 +81,7 @@ namespace SimplExServer
                 EditPropertiesView.SaveChanges -= ModifyProperties;
             }
             EditPropertiesView = view;
-            ModifyProperties();
+            ModifyProperties(view);
             UserControl control = (UserControl)EditPropertiesView;
             control.Parent = propertiesPanel;
             control.Size = propertiesPanel.Size;
@@ -100,7 +100,7 @@ namespace SimplExServer
                 MarkSystemPropertiesView.Changed -= ModifyMarkSystem;
             }
             MarkSystemPropertiesView = view;
-            ModifyMarkSystem();
+            ModifyMarkSystem(view);
             UserControl control = (UserControl)MarkSystemPropertiesView;
             control.Parent = propertiesPanel;
             control.Size = propertiesPanel.Size;
@@ -116,15 +116,15 @@ namespace SimplExServer
             control.Location = new Point(0, 0);
             control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         }
-        private void ModifyProperties()
+        private void ModifyProperties(IEditPropertiesView sender)
         {
-            propertiesButton.Text = "Параметры" + (EditPropertiesView.Saved ? "" : "*");
-            unsavedPropertiesTip.Active = !EditPropertiesView.Saved;
+            propertiesButton.Text = "Параметры" + (sender.Saved ? "" : "*");
+            unsavedPropertiesTip.Active = !sender.Saved;
         }
-        private void ModifyMarkSystem()
+        private void ModifyMarkSystem(IEditMarkSystemPropertiesView sender)
         {
-            markSystemButton.Text = "Система оценивания" + (MarkSystemPropertiesView.Saved ? "" : "*");
-            unsavedMarkSystemToolTip.Active = !MarkSystemPropertiesView.Saved;
+            markSystemButton.Text = "Система оценивания" + (sender.Saved ? "" : "*");
+            unsavedMarkSystemToolTip.Active = !sender.Saved;
         }
         private void TabStopClick(object sender, EventArgs e)
         {

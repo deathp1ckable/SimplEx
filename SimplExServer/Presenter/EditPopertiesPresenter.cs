@@ -27,113 +27,113 @@ namespace SimplExServer.Presenter
             View.FirstNumber = exam.FirstNumber;
             View.Description = exam.Description;
         }
-        private void PropertiesChanged()
+        private void PropertiesChanged(IEditPropertiesView sender)
         {
-            View.Saved = false;
+            sender.Saved = false;
         }
-        private void SaveProperties()
+        private void SaveProperties(IEditPropertiesView sender)
         {
-            if (View.ExamName.Length <= 0)
+            if (sender.ExamName.Length <= 0)
             {
-                View.MessageWrongExamName("Введите название теста.");
+                sender.MessageWrongExamName("Введите название теста.");
                 return;
             }
-            if (View.Discipline.Length <= 0)
+            if (sender.Discipline.Length <= 0)
             {
-                View.MessageWrongDiscipline("Введите дисциплину.");
+                sender.MessageWrongDiscipline("Введите дисциплину.");
                 return;
             }
-            if (View.CreatorName.Length <= 0)
+            if (sender.CreatorName.Length <= 0)
             {
-                View.MessageWrongCreatorName("Введите имя автора.");
+                sender.MessageWrongCreatorName("Введите имя автора.");
                 return;
             }
-            if (View.CreatorSurname.Length <= 0)
+            if (sender.CreatorSurname.Length <= 0)
             {
-                View.MessageWrongCreatorSurname("Введите фамилию автора.");
+                sender.MessageWrongCreatorSurname("Введите фамилию автора.");
                 return;
             }
-            if (View.CreatorPatronimyc.Length <= 0)
+            if (sender.CreatorPatronimyc.Length <= 0)
             {
-                View.MessageWrongCreatorPatronimyc("Введите отчество автора.");
+                sender.MessageWrongCreatorPatronimyc("Введите отчество автора.");
                 return;
             }
-            if (View.Password != null)
+            if (sender.Password != null)
             {
-                if (!passwordRegex.IsMatch(View.Password))
+                if (!passwordRegex.IsMatch(sender.Password))
                 {
-                    View.MessageWrongPassword("Пароль должен быть длиннее 3 символов и состоять из латиницы и цифр.");
+                    sender.MessageWrongPassword("Пароль должен быть длиннее 3 символов и состоять из латиницы и цифр.");
                     return;
                 }
-                if (View.Password != View.RepeatPassword)
+                if (View.Password != sender.RepeatPassword)
                 {
-                    View.MessageWrongRepeat("Пароли не совпадают.");
+                    sender.MessageWrongRepeat("Пароли не совпадают.");
                     return;
                 }
             }
-            exam.ExamName = View.ExamName;
-            exam.Discipline = View.Discipline;
-            exam.Password = View.Password;
-            exam.CreatorName = View.CreatorName;
-            exam.CreatorSurname = View.CreatorSurname;
-            exam.CreatorPatronimyc = View.CreatorPatronimyc;
-            exam.ExaminationTime = View.ExaminationTime;
-            exam.FirstNumber = View.FirstNumber;
-            exam.Description = View.Description;
+            exam.ExamName = sender.ExamName;
+            exam.Discipline = sender.Discipline;
+            exam.Password = sender.Password;
+            exam.CreatorName = sender.CreatorName;
+            exam.CreatorSurname = sender.CreatorSurname;
+            exam.CreatorPatronimyc = sender.CreatorPatronimyc;
+            exam.ExaminationTime = sender.ExaminationTime;
+            exam.FirstNumber = sender.FirstNumber;
+            exam.Description = sender.Description;
 
             View.Saved = true;
         }
-        private void CancelProperties()
+        private void CancelProperties(IEditPropertiesView sender)
         {
 
-            View.ExamName = exam.ExamName;
-            View.Description = exam.Discipline;
-            View.Password = exam.Password;
-            View.CreatorName = exam.CreatorName;
-            View.CreatorSurname = exam.CreatorSurname;
-            View.CreatorPatronimyc = exam.CreatorPatronimyc;
-            View.ExaminationTime = exam.ExaminationTime;
-            View.FirstNumber = exam.FirstNumber;
-            View.Description = exam.Description;
-            if (View.ExamName.Length <= 0)
+            sender.ExamName = exam.ExamName;
+            sender.Description = exam.Discipline;
+            sender.Password = exam.Password;
+            sender.CreatorName = exam.CreatorName;
+            sender.CreatorSurname = exam.CreatorSurname;
+            sender.CreatorPatronimyc = exam.CreatorPatronimyc;
+            sender.ExaminationTime = exam.ExaminationTime;
+            sender.FirstNumber = exam.FirstNumber;
+            sender.Description = exam.Description;
+            if (sender.ExamName.Length <= 0)
             {
-                View.MessageWrongExamName("Введите название теста.");
+                sender.MessageWrongExamName("Введите название теста.");
                 return;
             }
-            if (View.Discipline.Length <= 0)
+            if (sender.Discipline.Length <= 0)
             {
-                View.MessageWrongDiscipline("Введите дисциплину.");
+                sender.MessageWrongDiscipline("Введите дисциплину.");
                 return;
             }
-            if (View.CreatorName.Length <= 0)
+            if (sender.CreatorName.Length <= 0)
             {
-                View.MessageWrongCreatorName("Введите имя автора.");
+                sender.MessageWrongCreatorName("Введите имя автора.");
                 return;
             }
-            if (View.CreatorSurname.Length <= 0)
+            if (sender.CreatorSurname.Length <= 0)
             {
-                View.MessageWrongCreatorSurname("Введите фамилию автора.");
+                sender.MessageWrongCreatorSurname("Введите фамилию автора.");
                 return;
             }
-            if (View.CreatorPatronimyc.Length <= 0)
+            if (sender.CreatorPatronimyc.Length <= 0)
             {
-                View.MessageWrongCreatorPatronimyc("Введите отчество автора.");
+                sender.MessageWrongCreatorPatronimyc("Введите отчество автора.");
                 return;
             }
-            if (View.Password != null)
+            if (sender.Password != null)
             {
-                if (!passwordRegex.IsMatch(View.Password))
+                if (!passwordRegex.IsMatch(sender.Password))
                 {
-                    View.MessageWrongPassword("Пароль должен быть длиннее 3 символов и состоять из латиницы и цифр.");
+                    sender.MessageWrongPassword("Пароль должен быть длиннее 3 символов и состоять из латиницы и цифр.");
                     return;
                 }
-                if (View.Password != View.RepeatPassword)
+                if (sender.Password != sender.RepeatPassword)
                 {
-                    View.MessageWrongRepeat("Пароли не совпадают.");
+                    sender.MessageWrongRepeat("Пароли не совпадают.");
                     return;
                 }
             }
-            View.Saved = true;
+            sender.Saved = true;
         }
     }
 }

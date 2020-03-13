@@ -5,4 +5,5 @@
         void Show();
         void Close();
     }
+    public delegate void ViewActionHandler<T>(T sender) where T : IView;
 }

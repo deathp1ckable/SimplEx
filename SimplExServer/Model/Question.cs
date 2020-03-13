@@ -1,4 +1,5 @@
-﻿namespace SimplExServer.Model
+﻿using System.Collections.Generic;
+namespace SimplExServer.Model
 {
     public abstract class Question
     {
@@ -32,5 +33,6 @@
                 QuestionTypeName = GetType().ToString()
             };
         }
+        public override string ToString() => $"{QuestionNumber} {TicketNumber} {Points} {Content} {RightAnswer?.Content ?? ""} {QuestionTheme?.ThemeName ?? ""}";
     }
 }

@@ -10,6 +10,12 @@ namespace SimplExServer.Controls
     {
         private Type tempType;
         private Type[] markSystemTypes;
+
+        public event ViewActionHandler<IEditMarkSystemPropertiesView> SaveChanges;
+        public event ViewActionHandler<IEditMarkSystemPropertiesView> CancelChanges;
+        public event ViewActionHandler<IEditMarkSystemPropertiesView> Changed;
+        public event ViewActionHandler<IEditMarkSystemPropertiesView> MarkSystemTypeChanged;
+
         private int CurrentType { get => markSystemTypeList.SelectedIndex; set => markSystemTypeList.SelectedIndex = value; }
         public IEditMarkSystemView EditMarkSystemView { get; private set; }
         public Type MarkSystemType
@@ -23,7 +29,7 @@ namespace SimplExServer.Controls
                         if (markSystemTypes[i] == value)
                         {
                             CurrentType = i;
-                            MarkSystemTypeChanged?.Invoke();
+                            MarkSystemTypeChanged?.Invoke(this);
                             return;
                         }
                     throw new Exception("Type not assigned");
@@ -49,11 +55,6 @@ namespace SimplExServer.Controls
         public string Description { get => descriptionBox.Text; set => descriptionBox.Text = value; }
         public bool Saved { get => EditMarkSystemView?.Saved ?? false; set => EditMarkSystemView.Saved = value; }
 
-        public event Action SaveChanges;
-        public event Action CancelChanges;
-        public event Action Changed;
-        public event Action MarkSystemTypeChanged;
-
         public EditMarkSystemPropertiesControl()
         {
             InitializeComponent();
@@ -74,24 +75,24 @@ namespace SimplExServer.Controls
         private void SaveButtonClick(object sender, EventArgs e)
         {
             EditMarkSystemView.CallSaveChanges();
-            SaveChanges?.Invoke();
+            SaveChanges?.Invoke(this);
         }
         private void CancelButtonClick(object sender, EventArgs e)
         {
             EditMarkSystemView.CallCancelChanges();
-            CancelChanges?.Invoke();
+            CancelChanges?.Invoke(this);
         }
         private void MarkSystemTypeListSelectedIndexChanged(object sender, EventArgs e)
         {
             MarkSystemType = MarkSystemTypes[markSystemTypeList.SelectedIndex];
-            Changed?.Invoke();
+            Changed?.Invoke(this);
         }
-        private void InvokeChanged()
+        private void InvokeChanged(IEditMarkSystemView sender)
         {
             Saved = false;
-            Changed?.Invoke();
+            Changed?.Invoke(this);
         }
-        private void ChangedHandle(object sender, EventArgs e) => InvokeChanged();
+        private void ChangedHandle(object sender, EventArgs e) => InvokeChanged(EditMarkSystemView);
         private void MarkSystemTypeListResize(object sender, EventArgs e) => ((Control)sender).Invalidate();
 
     }

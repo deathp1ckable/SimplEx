@@ -2,6 +2,7 @@
 using SimplExServer.Model;
 using SimplExServer.View;
 using System;
+using System.Collections.Generic;
 namespace SimplExServer.Presenter
 {
     class EditMainPresenter : Presenter<Exam, IEditMainView>
@@ -11,7 +12,7 @@ namespace SimplExServer.Presenter
         public override void Run(Exam argumnet)
         {
             exam = argumnet;
-            exam.ExecutionResults = new ExecutionResult[0];
+            exam.ExecutionResults = new List<ExecutionResult>();
             ApplicationController.Run<EditPopertiesPresenter, Exam>(exam).Integrate(View.SetEditPropertiesView);
             ApplicationController.Run<EditMarkSystemPropertiesPresenter, Exam>(exam).Integrate(View.SetEditMarkSystemPropertiesView);
             ApplicationController.Run<EditTreePresenter, Exam>(exam).Integrate(View.SetEditTreeView);

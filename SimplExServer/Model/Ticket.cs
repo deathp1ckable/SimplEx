@@ -1,16 +1,24 @@
-﻿namespace SimplExServer.Model
+﻿using System.Collections.Generic;
+namespace SimplExServer.Model
 {
     public class Ticket
     {
-        public int TicketNumber { get; set; }
-        public QuestionGroup[] QuestionGroups { get; set; }
-        public Question GetQuestionByNumber(int number)
+        public int TicketNumber { get; set; } = 0;
+        public List<QuestionGroup> QuestionGroups { get; set; } = new List<QuestionGroup>();
+        public Question[] GetQuestions()
         {
-            for (int i = 0, j; i < QuestionGroups.Length; i++)
-                for (j = 0; j < QuestionGroups[i].Questions.Length; j++)
-                    if (QuestionGroups[i].Questions[j].QuestionNumber == number)
-                        return QuestionGroups[i].Questions[j];
-            return null;
+            List<Question> result = new List<Question>();
+            for (int i = 0; i < QuestionGroups.Count; i++)
+                result.AddRange(QuestionGroups[i].GetQuestions(QuestionGroups[i]));
+            return result.ToArray();
         }
+        public QuestionGroup[] GetQuestionGroups()
+        {
+            List<QuestionGroup> result = new List<QuestionGroup>(QuestionGroups);
+            for (int i = 0; i < QuestionGroups.Count; i++)
+                result.AddRange(QuestionGroups[i].GetQuestionGroups(QuestionGroups[i]));
+            return result.ToArray();
+        }
+        public override string ToString() => $"{TicketNumber}";
     }
 }

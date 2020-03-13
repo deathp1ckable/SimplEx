@@ -10,9 +10,9 @@ namespace SimplExServer.View
         IEditMarkSystemView EditMarkSystemView { get; }
         void SetEditMarkSystemView(IEditMarkSystemView view);
         void Hide();
-        event Action SaveChanges;
-        event Action CancelChanges;
-        event Action Changed;
-        event Action MarkSystemTypeChanged;
+        event ViewActionHandler<IEditMarkSystemPropertiesView> SaveChanges;
+        event ViewActionHandler<IEditMarkSystemPropertiesView> CancelChanges;
+        event ViewActionHandler<IEditMarkSystemPropertiesView> Changed;
+        event ViewActionHandler<IEditMarkSystemPropertiesView> MarkSystemTypeChanged;
     }
 }

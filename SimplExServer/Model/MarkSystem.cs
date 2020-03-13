@@ -2,7 +2,7 @@
 {
     public abstract class MarkSystem
     {
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public abstract string Content { get; set; }
         public abstract double MinMark();
         public abstract double MaxMark();
@@ -22,5 +22,6 @@
                 MarkSystemTypeName = GetType().ToString()
             };
         }
+        public override string ToString() => $"{Description} {Content}";
     }
 }

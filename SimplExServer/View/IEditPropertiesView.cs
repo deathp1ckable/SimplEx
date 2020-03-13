@@ -24,8 +24,8 @@ namespace SimplExServer.View
         void MessageWrongPassword(string reason);
         void MessageWrongRepeat(string reason);
         void Hide();
-        event Action SaveChanges;
-        event Action CancelChanges;
-        event Action Changed;
+        event ViewActionHandler<IEditPropertiesView> SaveChanges;
+        event ViewActionHandler<IEditPropertiesView> CancelChanges;
+        event ViewActionHandler<IEditPropertiesView> Changed;
     }
 }

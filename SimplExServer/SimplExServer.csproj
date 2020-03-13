@@ -132,7 +132,7 @@
     <Compile Include="Model\Exam.cs" />
     <Compile Include="Model\Theme.cs" />
     <Compile Include="Model\Ticket.cs" />
-    <Compile Include="Model\Encryptor.cs" />
+    <Compile Include="Model\Ors\Encryptor.cs" />
     <Compile Include="Common\IApplicationController.cs" />
     <Compile Include="Presenter\EditFiveStepMarkSystemPresenter.cs" />
     <Compile Include="Presenter\EditPopertiesPresenter.cs" />

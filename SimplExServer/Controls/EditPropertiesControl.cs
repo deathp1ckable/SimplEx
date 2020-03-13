@@ -62,16 +62,17 @@ namespace SimplExServer.Controls
         }
         public string RepeatPassword { get => repeatBox.Text; set => repeatBox.Text = value; }
         public bool Saved { get; set; }
-
-        public event Action SaveChanges;
-        public event Action CancelChanges;
-        public event Action Changed;
         public EditPropertiesControl()
         {
             InitializeComponent();
             timeRestrictCheck.CheckedChanged += TimeRestrictCheckCheckedChanged;
             passwordCheck.CheckedChanged += PasswordCheckCheckedChanged;
         }
+
+        public event ViewActionHandler<IEditPropertiesView> SaveChanges;
+        public event ViewActionHandler<IEditPropertiesView> CancelChanges;
+        public event ViewActionHandler<IEditPropertiesView> Changed;
+
         public void MessageWrongExamName(string reason) => nameToolTip.Show(reason, nameBox, 2000);
         public void MessageWrongDiscipline(string reason) => disciplineToolTip.Show(reason, disciplineBox, 2000);
         public void MessageWrongCreatorName(string reason) => aNameToolTip.Show(reason, aNameBox, 2000);
@@ -105,7 +106,7 @@ namespace SimplExServer.Controls
                 timeRestrictCheck.Checked = false;
                 TimeRestrictCheckCheckedChanged(timeRestrictCheck, null);
             }
-            CancelChanges?.Invoke();
+            CancelChanges?.Invoke(this);
         }
         private void SaveButtonClick(object sender, EventArgs e)
         {
@@ -114,9 +115,9 @@ namespace SimplExServer.Controls
                 timeRestrictCheck.Checked = false;
                 TimeRestrictCheckCheckedChanged(timeRestrictCheck, null);
             }
-            SaveChanges?.Invoke();
+            SaveChanges?.Invoke(this);
         }
-        private void PropsChanged(object sender, EventArgs e) => Changed?.Invoke();
+        private void PropsChanged(object sender, EventArgs e) => Changed?.Invoke(this);
         public void Close()
         {
             Dispose();

@@ -3,8 +3,9 @@ namespace SimplExServer.Model
 {
     public class MarkSystemData
     {
-        public string MarkSystemTypeName { get; set; }
-        public string Description { get; set; }
-        public string Content { get; set; }
+        public string MarkSystemTypeName { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public override string ToString() => $"{Description} {Content}";
     }
 }

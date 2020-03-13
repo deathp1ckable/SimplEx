@@ -16,25 +16,27 @@ namespace SimplExServer.Presenter
             View.Changed += Changed;
             View.CancelChanges += CancelChanges;
         }
-        private void SaveChanges()
-        {
-            fiveStepMarkSystem.fivePercent = View.FivePercent;
-            fiveStepMarkSystem.fourPercent = View.FourPercent;
-            fiveStepMarkSystem.threePercent = View.ThreePercent;
-            fiveStepMarkSystem.twoPercent = View.TwoPercent;
-            fiveStepMarkSystem.onePercent = View.OnePercent;
-            View.Saved = true;
+        private void SaveChanges(IEditMarkSystemView sender)
+        { 
+            IEditFiveStepMarkSystemView editor =  (IEditFiveStepMarkSystemView)sender;
+            fiveStepMarkSystem.fivePercent = editor.FivePercent;
+            fiveStepMarkSystem.fourPercent = editor.FourPercent;
+            fiveStepMarkSystem.threePercent = editor.ThreePercent;
+            fiveStepMarkSystem.twoPercent = editor.TwoPercent;
+            fiveStepMarkSystem.onePercent = editor.OnePercent;
+            editor.Saved = true;
         }
-        private void CancelChanges()
+        private void CancelChanges(IEditMarkSystemView sender)
         {
-            View.FivePercent = fiveStepMarkSystem.fivePercent;
-            View.FourPercent = fiveStepMarkSystem.fourPercent;
-            View.ThreePercent = fiveStepMarkSystem.threePercent;
-            View.TwoPercent = fiveStepMarkSystem.twoPercent;
-            View.OnePercent = fiveStepMarkSystem.onePercent;
-            View.Saved = true;
+            IEditFiveStepMarkSystemView editor = (IEditFiveStepMarkSystemView)sender;
+            editor.FivePercent = fiveStepMarkSystem.fivePercent;
+            editor.FourPercent = fiveStepMarkSystem.fourPercent;
+            editor.ThreePercent = fiveStepMarkSystem.threePercent;
+            editor.TwoPercent = fiveStepMarkSystem.twoPercent;
+            editor.OnePercent = fiveStepMarkSystem.onePercent;
+            editor.Saved = true;
         }
-        private void Changed() => View.Saved = false;
+        private void Changed(IEditMarkSystemView sender) => sender.Saved = false;
         public override void Run(MarkSystem argumnet)
         {
             MarkSystem = argumnet;
