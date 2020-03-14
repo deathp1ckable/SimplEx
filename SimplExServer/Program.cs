@@ -70,6 +70,7 @@ namespace SimplExServer
                 }
             };
             group.ChildQuestionGroups = new List<QuestionGroup> { anotherGroup, threeGroup };
+            threeGroup.ParentQuestionGroup = group;
             anotherGroup.ParentQuestionGroup = group;
             controller.Run<EditMainPresenter, Exam>(new Exam()
             {
@@ -81,7 +82,8 @@ namespace SimplExServer
                     {
                         group,secondGroup
                     }
-                }
+
+                },                     new Ticket()
                  }
             });
             Application.Run(context);

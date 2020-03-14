@@ -1,4 +1,5 @@
 ﻿using SimplExServer.Model;
+using System;
 using System.Collections.Generic;
 namespace SimplExServer.View
 {
@@ -10,8 +11,25 @@ namespace SimplExServer.View
         bool IsSearched { get; }
         NodeType CurrentNodeType { get; }
         event ViewActionHandler<IEditTreeView> NodeChanged;
-        event ViewActionHandler<IEditTreeView> StructureChanged;
         event ViewActionHandler<IEditTreeView> GoToProperties;
+        event ViewActionHandler<IEditTreeView, StructChangedArgs> StructureChanged;
+    }
+
+    public class StructChangedArgs : EventArgs
+    {
+        public QuestionGroup Group { get; private set; }
+        public QuestionGroup NewParentGroup { get; private set; }
+        public Ticket Ticket { get; private set; }
+        public StructChangedArgs(QuestionGroup group, QuestionGroup newParentGroup)
+        {
+            Group = group;
+            NewParentGroup = newParentGroup;
+        }
+        public StructChangedArgs(QuestionGroup group, Ticket ticket)
+        {
+            Group = group;
+            Ticket = ticket;
+        }
     }
     public enum NodeType { Themes, Theme, Tickets, Ticket, QuestionGroup, Question };
 }

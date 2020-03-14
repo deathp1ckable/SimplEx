@@ -20,5 +20,15 @@ namespace SimplExServer.Model.Inherited
                 return Points;
             else return 0;
         }
+
+        public override object Clone() => new OneAnswerQuestion()
+        {
+            Content = Content,
+            QuestionNumber = QuestionNumber,
+            Points = Points,
+            RightAnswer = (Answer)RightAnswer.Clone(),
+            QuestionTheme = QuestionTheme,
+            TicketNumber = TicketNumber
+        };
     }
 }

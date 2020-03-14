@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-
+using System;
 namespace SimplExServer.Model
 {
-    public class QuestionGroup
+    public class QuestionGroup : ICloneable
     {
         public QuestionGroup ParentQuestionGroup { get; set; }
         public string QuestionGroupName { get; set; } = string.Empty;
@@ -25,6 +25,20 @@ namespace SimplExServer.Model
                 result.AddRange(GetQuestionGroups(group.ChildQuestionGroups[i]));
             result.AddRange(group.ChildQuestionGroups);
             return result.ToArray();
+        }
+        public object Clone()
+        {
+            int i;
+            QuestionGroup result = new QuestionGroup()
+            {
+                QuestionGroupName = QuestionGroupName,
+                ParentQuestionGroup = ParentQuestionGroup
+            };
+            for (i = 0; i < Questions.Count; i++)
+                result.Questions.Add((Question)Questions[i].Clone());
+            for (i = 0; i < ChildQuestionGroups.Count; i++)
+                result.ChildQuestionGroups.Add((QuestionGroup)ChildQuestionGroups[i].Clone());
+            return result;
         }
     }
 }

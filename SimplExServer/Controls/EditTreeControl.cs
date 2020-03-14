@@ -13,9 +13,11 @@ namespace SimplExServer.Controls
         private List<Theme> themes;
         private List<Ticket> tickets;
         private TreeNode[] bufferedCollection;
+        private ContextMenu contextMenu;
         public event ViewActionHandler<IEditTreeView> NodeChanged;
-        public event ViewActionHandler<IEditTreeView> StructureChanged;
         public event ViewActionHandler<IEditTreeView> GoToProperties;
+        public event ViewActionHandler<IEditTreeView, StructChangedArgs> StructureChanged;
+
         public List<Theme> Themes
         {
             get => themes;
@@ -25,7 +27,7 @@ namespace SimplExServer.Controls
                 tree.Nodes["Themes"].Nodes.Clear();
                 for (int i = 0; i < themes.Count; i++)
                 {
-                    TreeNode node = tree.Nodes["Themes"].Nodes.Add("Theme" + themes[i].ThemeName, themes[i].ThemeName);
+                    TreeNode node = tree.Nodes["Themes"].Nodes.Add($"Тема '{themes[i].ThemeName}'");
                     node.Tag = new NodeInfo(node, NodeType.Theme, themes[i]);
                 }
             }
@@ -39,8 +41,9 @@ namespace SimplExServer.Controls
                 tree.Nodes["Tickets"].Nodes.Clear();
                 for (int i = 0, j; i < tickets.Count; i++)
                 {
-                    TreeNode node = tree.Nodes["Tickets"].Nodes.Add("Ticket" + tickets[i].TicketNumber, "Билет №" + tickets[i].TicketNumber);
+                    TreeNode node = tree.Nodes["Tickets"].Nodes.Add("Билет №" + tickets[i].TicketNumber);
                     node.Tag = new NodeInfo(node, NodeType.Ticket, tickets[i]);
+                    node.ContextMenu = contextMenu;
                     for (j = 0; j < tickets[i].QuestionGroups.Count; j++)
                         LoadQuestionGroup(node, tickets[i].QuestionGroups[j]);
                 }
@@ -54,20 +57,28 @@ namespace SimplExServer.Controls
         public EditTreeControl()
         {
             InitializeComponent();
+            contextMenu = new ContextMenu();
+            contextMenu.Popup += OnContextMenuOpened;
+            contextMenu.MenuItems.Add("Копировать");
+            contextMenu.MenuItems.Add("Вырезать");
+            contextMenu.MenuItems.Add("-");
+            contextMenu.MenuItems.Add("Вставить");
             tree.Nodes["Themes"].Tag = new NodeInfo(tree.Nodes["Themes"], NodeType.Themes, null);
             tree.Nodes["Tickets"].Tag = new NodeInfo(tree.Nodes["Tickets"], NodeType.Tickets, null);
         }
         public void Close() => Dispose();
         private void LoadQuestionGroup(TreeNode parentNode, QuestionGroup group)
         {
-            TreeNode node = parentNode.Nodes.Add("QustionGroup" + group.QuestionGroupName, $"Группа '{group.QuestionGroupName}'");
+            TreeNode node = parentNode.Nodes.Add($"Группа '{group.QuestionGroupName}'");
             node.Tag = new NodeInfo(node, NodeType.QuestionGroup, group);
+            node.ContextMenu = contextMenu;
             for (int i = 0; i < group.ChildQuestionGroups.Count; i++)
                 LoadQuestionGroup(node, group.ChildQuestionGroups[i]);
             for (int i = 0; i < group.Questions.Count; i++)
             {
-                TreeNode treeNode = node.Nodes.Add("Question" + group.Questions[i].QuestionNumber, $"Вопрос №{group.Questions[i].QuestionNumber}");
+                TreeNode treeNode = node.Nodes.Add($"Вопрос №{group.Questions[i].QuestionNumber}");
                 treeNode.Tag = new NodeInfo(treeNode, NodeType.Question, group.Questions[i]);
+                treeNode.ContextMenu = contextMenu;
             }
         }
         private void TreeAfterSelect(object sender, TreeViewEventArgs e)
@@ -83,49 +94,52 @@ namespace SimplExServer.Controls
             if (e.Button == MouseButtons.Left && nodeInfo.nodeType == NodeType.QuestionGroup)
                 DoDragDrop(e.Item, DragDropEffects.Move);
         }
-        private void TreeDragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = e.AllowedEffect;
-        }
+        private void TreeDragEnter(object sender, DragEventArgs e) => e.Effect = e.AllowedEffect;
         private void TreeDragOver(object sender, DragEventArgs e)
         {
             Point targetPoint = tree.PointToClient(new Point(e.X, e.Y));
             tree.SelectedNode = tree.GetNodeAt(targetPoint);
-            if (((NodeInfo)tree.SelectedNode.Tag).nodeType != NodeType.QuestionGroup)
-                e.Effect = DragDropEffects.None;
-            else e.Effect = e.AllowedEffect;
+            if (tree.SelectedNode != null)
+            {
+                NodeInfo node = (NodeInfo)tree.SelectedNode.Tag;
+                TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
+                if (node.nodeType == NodeType.QuestionGroup || (node.nodeType == NodeType.Ticket && ContainsNode(tree.SelectedNode, draggedNode)))
+                    e.Effect = e.AllowedEffect;
+                else
+                    e.Effect = DragDropEffects.None;
+            }
         }
         private void TreeDragDrop(object sender, DragEventArgs e)
         {
-            Point targetPoint = tree.PointToClient(new Point(e.X, e.Y));
-            TreeNode targetNode = tree.GetNodeAt(targetPoint);
-            TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-            if (!draggedNode.Equals(targetNode) && !ContainsNode(draggedNode, targetNode) && ((NodeInfo)targetNode.Tag).nodeType == NodeType.QuestionGroup)
+            if (tree.SelectedNode != null)
             {
-                if (e.Effect == DragDropEffects.Move)
+                Point targetPoint = tree.PointToClient(new Point(e.X, e.Y));
+                TreeNode targetNode = tree.GetNodeAt(targetPoint);
+                TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
+                NodeInfo node = (NodeInfo)targetNode.Tag;
+                QuestionGroup group = (QuestionGroup)((NodeInfo)draggedNode.Tag).nodeObj;
+                if (!draggedNode.Equals(targetNode) && !ContainsNode(draggedNode, targetNode) || (node.nodeType == NodeType.Ticket && ContainsNode(targetNode, draggedNode)))
                 {
-                    draggedNode.Remove();
-                    targetNode.Nodes.Add(draggedNode);
-                    ChangeParenteGroup((QuestionGroup)((NodeInfo)draggedNode.Tag).nodeObj, (QuestionGroup)((NodeInfo)targetNode.Tag).nodeObj);
+                    if (e.Effect == DragDropEffects.Move)
+                    {
+                        draggedNode.Remove();
+                        targetNode.Nodes.Add(draggedNode);
+                        if (node.nodeType == NodeType.QuestionGroup)
+                            StructureChanged?.Invoke(this, new StructChangedArgs(group, (QuestionGroup)((NodeInfo)targetNode.Tag).nodeObj));
+                        else
+                            StructureChanged?.Invoke(this, new StructChangedArgs(group, (Ticket)((NodeInfo)targetNode.Tag).nodeObj));
+                    }
+                    targetNode.Expand();
                 }
-                targetNode.Expand();
-                StructureChanged?.Invoke(this);
             }
         }
         private bool ContainsNode(TreeNode nodeA, TreeNode nodeB)
         {
-            if (nodeB.Parent == null) return false;
-            if (nodeB.Parent.Equals(nodeA)) return true;
+            if (nodeB.Parent == null)
+                return false;
+            if (nodeB.Parent.Equals(nodeA))
+                return true;
             return ContainsNode(nodeA, nodeB.Parent);
-        }
-        private void ChangeParenteGroup(QuestionGroup group, QuestionGroup newParent)
-        {
-            if (group.ParentQuestionGroup != null)
-                group.ParentQuestionGroup.ChildQuestionGroups.Remove(group);
-            else
-                tickets.Where(a => a.QuestionGroups.Contains(group)).FirstOrDefault().QuestionGroups.Remove(group);
-            group.ParentQuestionGroup = newParent;
-            newParent.ChildQuestionGroups.Add(group);
         }
         private void SearchButtonClick(object sender, EventArgs e)
         {
@@ -134,47 +148,95 @@ namespace SimplExServer.Controls
             else searchBox.SelectedIndex = searchBox.Items.IndexOf(searchBox.Text);
             bufferedCollection = new TreeNode[tree.Nodes.Count];
             tree.Nodes.CopyTo(bufferedCollection, 0);
+
+            TreeNode[] result = tree.GetAllNodes().ToArray();
+            TreeNode tmp;
             tree.Nodes.Clear();
 
             tree.Nodes.Add("Themes", "Темы");
-            Theme[] findedThemes = themes.Where(a => a.ToString().Contains(searchBox.Text)).ToArray();
-            for (int i = 0; i < findedThemes.Length; i++)
-                tree.Nodes["Themes"].Nodes.Add("Theme" + i, themes[i].ThemeName);
-
             tree.Nodes.Add("Tickets", "Билеты");
-            Ticket[] findedTickets = tickets.Where(a => a.ToString().Contains(searchBox.Text)).ToArray();
-            for (int i = 0; i < findedThemes.Length; i++)
-                tree.Nodes["Tickets"].Nodes.Add("Ticket" + i, "Билет №" + findedTickets[i].TicketNumber);
-
             tree.Nodes.Add("Groups", "Группы");
-            List<QuestionGroup> questionGroups = new List<QuestionGroup>();
-            for (int i = 0; i < tickets.Count; i++)
-                questionGroups.AddRange(tickets[i].GetQuestionGroups());
-            QuestionGroup[] findedQuestionGroups = questionGroups.Where(a => a.ToString().Contains(searchBox.Text)).ToArray();
-            for (int i = 0; i < findedQuestionGroups.Length; i++)
-                tree.Nodes["Groups"].Nodes.Add("Group" + i, $"Группа '{findedQuestionGroups[i].QuestionGroupName}'");
-
             tree.Nodes.Add("Questions", "Вопросы");
-            List<Question> questions = new List<Question>();
-            for (int i = 0; i < tickets.Count; i++)
-                questions.AddRange(tickets[i].GetQuestions());
-            Question[] findedQuestions = questions.Where(a => a.ToString().Contains(searchBox.Text)).ToArray();
-            for (int i = 0; i < findedQuestions.Length; i++)
-                tree.Nodes["Questions"].Nodes.Add("Questions" + i, $"Вопрос №{findedQuestions[i].QuestionNumber}");
+            for (int i = 0; i < result.Length; i++)
+                if (result[i].Tag != null)
+                {
+                    NodeInfo node = ((NodeInfo)result[i].Tag);
+                    if (node.nodeObj != null && node.nodeObj.ToString().Contains(searchBox.Text))
+                    {
+                        tmp = (TreeNode)result[i].Clone();
+                        tmp.Remove();
+                        switch (node.nodeType)
+                        {
+                            case NodeType.Question:
+                                tree.Nodes["Questions"].Nodes.Add(tmp);
+                                break;
+                            case NodeType.QuestionGroup:
+                                tree.Nodes["Groups"].Nodes.Add(tmp);
+                                break;
+                            case NodeType.Ticket:
+                                tree.Nodes["Tickets"].Nodes.Add(tmp);
+                                break;
+                            case NodeType.Theme:
+                                tree.Nodes["Themes"].Nodes.Add(tmp);
+                                break;
+                            default: continue;
+                        }
+                    }
+                }
             cancelButton.Enabled = true;
+            tree.AllowDrop = false;
         }
         private void CancelButtonClick(object sender, EventArgs e)
         {
             tree.Nodes.Clear();
             tree.Nodes.AddRange(bufferedCollection);
             cancelButton.Enabled = false;
+            tree.AllowDrop = true;
         }
-        private void TreeMouseDoubleClick(object sender, MouseEventArgs e) => GoToProperties?.Invoke(this);
+        private void TreeMouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (tree.SelectedNode != null)
+            {
+                if (IsSearched)
+                {
+                    NodeInfo info = (NodeInfo)tree.SelectedNode.Tag;
+                    tree.Nodes.Clear();
+                    tree.Nodes.AddRange(bufferedCollection);
+                    cancelButton.Enabled = false;
+                    TreeNode[] result = tree.GetAllNodes().ToArray();
+                    tree.SelectedNode = result.Where(a => a.Tag.Equals(info)).FirstOrDefault();
+                }
+                GoToProperties?.Invoke(this);
+            }
+        }
         private void SearchBoxSelectedTextChanged(object sender, EventArgs e)
         {
             if (searchBox.Text.Length > 0)
                 searchButton.Enabled = true;
-            else searchButton.Enabled = false;
+            else
+                searchButton.Enabled = false;
+        }
+        private void TreeMouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Point targetPoint = new Point(e.X, e.Y);
+                TreeNode targetNode = tree.GetNodeAt(targetPoint);
+                contextMenu.Tag = targetNode.Tag;
+            }
+        }
+        private void OnContextMenuOpened(object sender, EventArgs e)
+        {
+            if ((contextMenu.Tag as NodeInfo).nodeType == NodeType.Ticket)
+            {
+                contextMenu.MenuItems[0].Enabled = false;
+                contextMenu.MenuItems[1].Enabled = false;
+            }
+            else
+            {
+                contextMenu.MenuItems[0].Enabled = true;
+                contextMenu.MenuItems[1].Enabled = true;
+            }
         }
         class NodeInfo
         {
@@ -187,6 +249,24 @@ namespace SimplExServer.Controls
                 this.nodeType = nodeType;
                 this.nodeObj = nodeObj;
             }
+        }
+    }
+    static class TreeExtensions
+    {
+        internal static List<TreeNode> GetAllNodes(this TreeView self)
+        {
+            List<TreeNode> result = new List<TreeNode>();
+            foreach (TreeNode child in self.Nodes)
+                result.AddRange(child.GetAllNodes());
+            return result;
+        }
+        internal static List<TreeNode> GetAllNodes(this TreeNode self)
+        {
+            List<TreeNode> result = new List<TreeNode>();
+            result.Add(self);
+            foreach (TreeNode child in self.Nodes)
+                result.AddRange(child.GetAllNodes());
+            return result;
         }
     }
 }

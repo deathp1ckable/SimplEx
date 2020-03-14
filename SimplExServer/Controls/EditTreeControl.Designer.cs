@@ -61,6 +61,7 @@
             this.tree.DragDrop += new System.Windows.Forms.DragEventHandler(this.TreeDragDrop);
             this.tree.DragEnter += new System.Windows.Forms.DragEventHandler(this.TreeDragEnter);
             this.tree.DragOver += new System.Windows.Forms.DragEventHandler(this.TreeDragOver);
+            this.tree.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TreeMouseClick);
             this.tree.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TreeMouseDoubleClick);
             // 
             // searchBox

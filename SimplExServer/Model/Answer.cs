@@ -1,6 +1,8 @@
-﻿namespace SimplExServer.Model
+﻿using System;
+
+namespace SimplExServer.Model
 {
-    public class Answer
+    public class Answer : ICloneable
     {
         public int QuestionNumber { get; set; }
         public int TicketNumber { get; set; }
@@ -13,5 +15,6 @@
         }
         public Answer() { }
         public override string ToString() => $"{QuestionNumber} {TicketNumber} {Content}";
+        public object Clone() => new Answer() { QuestionNumber = QuestionNumber, TicketNumber = TicketNumber, Content = Content };
     }
 }

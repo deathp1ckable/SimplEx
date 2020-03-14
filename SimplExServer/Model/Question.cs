@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using System;
 namespace SimplExServer.Model
 {
-    public abstract class Question
+    public abstract class Question : ICloneable
     {
         public int QuestionNumber { get; set; }
         public int TicketNumber { get; set; }
@@ -34,5 +35,6 @@ namespace SimplExServer.Model
             };
         }
         public override string ToString() => $"{QuestionNumber} {TicketNumber} {Points} {Content} {RightAnswer?.Content ?? ""} {QuestionTheme?.ThemeName ?? ""}";
+        public abstract object Clone();
     }
 }

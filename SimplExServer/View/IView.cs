@@ -1,9 +1,12 @@
-﻿namespace SimplExServer.View
+﻿using System;
+
+namespace SimplExServer.View
 {
     public interface IView
     {
         void Show();
         void Close();
     }
-    public delegate void ViewActionHandler<T>(T sender) where T : IView;
+    public delegate void ViewActionHandler<TViewSender>(TViewSender sender) where TViewSender : IView;
+    public delegate void ViewActionHandler<TViewSender, TEventArgs>(TViewSender sender, TEventArgs eventArgs) where TViewSender : IView where TEventArgs : EventArgs;
 }
