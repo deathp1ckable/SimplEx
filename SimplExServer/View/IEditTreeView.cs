@@ -8,13 +8,17 @@ namespace SimplExServer.View
         List<Theme> Themes { get; set; }
         List<Ticket> Tickets { get; set; }
         object CurrentObject { get; }
+        string SearchText { get; set; }
         bool IsSearched { get; }
-        NodeType CurrentNodeType { get; }
+        bool IsCopied { get; }
+        object[] SearchResult { set; }
         event ViewActionHandler<IEditTreeView> NodeChanged;
         event ViewActionHandler<IEditTreeView> GoToProperties;
+        event ViewActionHandler<IEditTreeView> Searched;
+        event ViewActionHandler<IEditTreeView> Pasted;
+        event ViewActionHandler<IEditTreeView> Copied;
         event ViewActionHandler<IEditTreeView, StructChangedArgs> StructureChanged;
     }
-
     public class StructChangedArgs : EventArgs
     {
         public QuestionGroup Group { get; private set; }
@@ -31,5 +35,4 @@ namespace SimplExServer.View
             Ticket = ticket;
         }
     }
-    public enum NodeType { Themes, Theme, Tickets, Ticket, QuestionGroup, Question };
 }

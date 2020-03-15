@@ -8,5 +8,5 @@ namespace SimplExServer.View
         void Close();
     }
     public delegate void ViewActionHandler<TViewSender>(TViewSender sender) where TViewSender : IView;
-    public delegate void ViewActionHandler<TViewSender, TEventArgs>(TViewSender sender, TEventArgs eventArgs) where TViewSender : IView where TEventArgs : EventArgs;
+    public delegate void ViewActionHandler<TViewSender, TEventArgs>(TViewSender sender, TEventArgs e) where TViewSender : IView where TEventArgs : EventArgs;
 }
