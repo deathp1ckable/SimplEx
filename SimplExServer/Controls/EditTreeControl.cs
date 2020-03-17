@@ -18,7 +18,6 @@ namespace SimplExServer.Controls
         public event ViewActionHandler<IEditTreeView> GoToProperties;
         public event ViewActionHandler<IEditTreeView> Searched;
         public event ViewActionHandler<IEditTreeView, StructChangedArgs> StructureChanged;
-
         public List<Theme> Themes
         {
             get => themes;
@@ -49,7 +48,7 @@ namespace SimplExServer.Controls
         }
         public object CurrentObject { get; private set; }
         public string SearchText { get => searchBox.Text; set => searchBox.Text = value; }
-        public bool IsSearched { get => cancelButton.Enabled; set => cancelButton.Enabled = value; }
+        private bool IsSearched { get => cancelButton.Enabled; set => cancelButton.Enabled = value; }
         public object[] SearchResult
         {
             set
@@ -69,7 +68,6 @@ namespace SimplExServer.Controls
                 else throw new InvalidOperationException("Cannot set search results when the search was not done.");
             }
         }
-
         public EditTreeControl()
         {
             InitializeComponent();
@@ -77,21 +75,9 @@ namespace SimplExServer.Controls
             tree.Nodes["Themes"].Tag = null;
             tree.Nodes["Tickets"].Tag = null;
         }
+
         public void Close() => Dispose();
-        private void LoadQuestionGroup(TreeNode parentNode, QuestionGroup group)
-        {
-            TreeNode node = parentNode.Nodes.Add($"Группа '{group.QuestionGroupName}'");
-            node.Tag = group;
-            node.ContextMenu = contextMenu;
-            for (int i = 0; i < group.ChildQuestionGroups.Count; i++)
-                LoadQuestionGroup(node, group.ChildQuestionGroups[i]);
-            for (int i = 0; i < group.Questions.Count; i++)
-            {
-                TreeNode treeNode = node.Nodes.Add($"Вопрос №{group.Questions[i].QuestionNumber}");
-                treeNode.Tag = group.Questions[i];
-                treeNode.ContextMenu = contextMenu;
-            }
-        }
+
         private void TreeAfterSelect(object sender, TreeViewEventArgs e)
         {
             CurrentObject = tree.SelectedNode.Tag;
@@ -139,13 +125,37 @@ namespace SimplExServer.Controls
                 }
             }
         }
-        private bool ContainsNode(TreeNode nodeA, TreeNode nodeB)
+
+        private void TreeMouseClick(object sender, MouseEventArgs e)
         {
-            if (nodeB.Parent == null)
-                return false;
-            if (nodeB.Parent.Equals(nodeA))
-                return true;
-            return ContainsNode(nodeA, nodeB.Parent);
+            if (e.Button == MouseButtons.Right)
+            {
+                tree.SelectedNode = tree.GetNodeAt(new Point(e.X, e.Y));
+                TreeAfterSelect(sender, null);
+            }
+        }
+        private void TreeMouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (tree.SelectedNode != null && tree.SelectedNode.Tag != null)
+            {
+                if (IsSearched)
+                {
+                    object obj = tree.SelectedNode.Tag;
+                    tree.Nodes.Clear();
+                    tree.Nodes.AddRange(bufferedCollection);
+                    cancelButton.Enabled = false;
+                    tree.SelectedNode = tree.GetAllNodes().Where(a => a.Tag?.Equals(obj) ?? false).FirstOrDefault();
+                }
+                GoToProperties?.Invoke(this);
+            }
+        }
+
+        private void SearchBoxSelectedTextChanged(object sender, EventArgs e)
+        {
+            if (searchBox.Text.Length > 0)
+                searchButton.Enabled = true;
+            else
+                searchButton.Enabled = false;
         }
         private void SearchButtonClick(object sender, EventArgs e)
         {
@@ -170,34 +180,27 @@ namespace SimplExServer.Controls
             cancelButton.Enabled = false;
             tree.AllowDrop = true;
         }
-        private void TreeMouseDoubleClick(object sender, MouseEventArgs e)
+
+        private bool ContainsNode(TreeNode nodeA, TreeNode nodeB)
         {
-            if (tree.SelectedNode != null && tree.SelectedNode.Tag != null)
-            {
-                if (IsSearched)
-                {
-                    object obj = tree.SelectedNode.Tag;
-                    tree.Nodes.Clear();
-                    tree.Nodes.AddRange(bufferedCollection);
-                    cancelButton.Enabled = false;
-                    tree.SelectedNode = tree.GetAllNodes().Where(a => a.Tag?.Equals(obj) ?? false).FirstOrDefault();
-                }
-                GoToProperties?.Invoke(this);
-            }
+            if (nodeB.Parent == null)
+                return false;
+            if (nodeB.Parent.Equals(nodeA))
+                return true;
+            return ContainsNode(nodeA, nodeB.Parent);
         }
-        private void SearchBoxSelectedTextChanged(object sender, EventArgs e)
+        private void LoadQuestionGroup(TreeNode parentNode, QuestionGroup group)
         {
-            if (searchBox.Text.Length > 0)
-                searchButton.Enabled = true;
-            else
-                searchButton.Enabled = false;
-        }
-        private void TreeMouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
+            TreeNode node = parentNode.Nodes.Add($"Группа '{group.QuestionGroupName}'");
+            node.Tag = group;
+            node.ContextMenu = contextMenu;
+            for (int i = 0; i < group.ChildQuestionGroups.Count; i++)
+                LoadQuestionGroup(node, group.ChildQuestionGroups[i]);
+            for (int i = 0; i < group.Questions.Count; i++)
             {
-                tree.SelectedNode = tree.GetNodeAt(new Point(e.X, e.Y));
-                TreeAfterSelect(sender, null);
+                TreeNode treeNode = node.Nodes.Add($"Вопрос №{group.Questions[i].QuestionNumber}");
+                treeNode.Tag = group.Questions[i];
+                treeNode.ContextMenu = contextMenu;
             }
         }
     }
