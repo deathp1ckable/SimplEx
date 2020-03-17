@@ -1,12 +1,12 @@
 ﻿using SimplExServer.Common;
 using SimplExServer.Model;
+using SimplExServer.Model.Builders;
 using SimplExServer.View;
 using System.Text.RegularExpressions;
 namespace SimplExServer.Presenter
 {
     class EditPopertiesPresenter : IntegrablePresenter<Exam, IEditPropertiesView>
     {
-        Exam exam;
         private static readonly Regex passwordRegex = new Regex("([a-zA-Z0-9]{4,})$");
         public EditPopertiesPresenter(IEditPropertiesView view, IApplicationController applicationController) : base(view, applicationController)
         {
@@ -16,16 +16,16 @@ namespace SimplExServer.Presenter
         }
         public override void Run(Exam argumnet)
         {
-            exam = argumnet;
-            View.ExamName = exam.ExamName;
-            View.Discipline = exam.Discipline;
-            View.Password = exam.Password;
-            View.CreatorName = exam.CreatorName;
-            View.CreatorSurname = exam.CreatorSurname;
-            View.CreatorPatronimyc = exam.CreatorPatronimyc;
-            View.ExaminationTime = exam.ExaminationTime;
-            View.FirstNumber = exam.FirstNumber;
-            View.Description = exam.Description;
+            Argumnet = argumnet;
+            View.ExamName = Argumnet.ExamName;
+            View.Discipline = Argumnet.Discipline;
+            View.Password = Argumnet.Password;
+            View.CreatorName = Argumnet.CreatorName;
+            View.CreatorSurname = Argumnet.CreatorSurname;
+            View.CreatorPatronimyc = Argumnet.CreatorPatronimyc;
+            View.ExaminationTime = Argumnet.ExaminationTime;
+            View.FirstNumber = Argumnet.FirstNumber;
+            View.Description = Argumnet.Description;
         }
         private void PropertiesChanged(IEditPropertiesView sender)
         {
@@ -71,30 +71,30 @@ namespace SimplExServer.Presenter
                     return;
                 }
             }
-            exam.ExamName = sender.ExamName;
-            exam.Discipline = sender.Discipline;
-            exam.Password = sender.Password;
-            exam.CreatorName = sender.CreatorName;
-            exam.CreatorSurname = sender.CreatorSurname;
-            exam.CreatorPatronimyc = sender.CreatorPatronimyc;
-            exam.ExaminationTime = sender.ExaminationTime;
-            exam.FirstNumber = sender.FirstNumber;
-            exam.Description = sender.Description;
+            Argumnet.ExamName = sender.ExamName;
+            Argumnet.Discipline = sender.Discipline;
+            Argumnet.Password = sender.Password;
+            Argumnet.CreatorName = sender.CreatorName;
+            Argumnet.CreatorSurname = sender.CreatorSurname;
+            Argumnet.CreatorPatronimyc = sender.CreatorPatronimyc;
+            Argumnet.ExaminationTime = sender.ExaminationTime;
+            Argumnet.FirstNumber = sender.FirstNumber;
+            Argumnet.Description = sender.Description;
 
             View.Saved = true;
         }
         private void CancelProperties(IEditPropertiesView sender)
         {
 
-            sender.ExamName = exam.ExamName;
-            sender.Description = exam.Discipline;
-            sender.Password = exam.Password;
-            sender.CreatorName = exam.CreatorName;
-            sender.CreatorSurname = exam.CreatorSurname;
-            sender.CreatorPatronimyc = exam.CreatorPatronimyc;
-            sender.ExaminationTime = exam.ExaminationTime;
-            sender.FirstNumber = exam.FirstNumber;
-            sender.Description = exam.Description;
+            sender.ExamName = Argumnet.ExamName;
+            sender.Description = Argumnet.Discipline;
+            sender.Password = Argumnet.Password;
+            sender.CreatorName = Argumnet.CreatorName;
+            sender.CreatorSurname = Argumnet.CreatorSurname;
+            sender.CreatorPatronimyc = Argumnet.CreatorPatronimyc;
+            sender.ExaminationTime = Argumnet.ExaminationTime;
+            sender.FirstNumber = Argumnet.FirstNumber;
+            sender.Description = Argumnet.Description;
             if (sender.ExamName.Length <= 0)
             {
                 sender.MessageWrongExamName("Введите название теста.");

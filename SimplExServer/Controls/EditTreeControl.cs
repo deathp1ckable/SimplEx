@@ -14,11 +14,9 @@ namespace SimplExServer.Controls
         private List<Ticket> tickets;
         private TreeNode[] bufferedCollection;
         private ContextMenu contextMenu;
-        public event ViewActionHandler<IEditTreeView> Pasted;
         public event ViewActionHandler<IEditTreeView> NodeChanged;
         public event ViewActionHandler<IEditTreeView> GoToProperties;
         public event ViewActionHandler<IEditTreeView> Searched;
-        public event ViewActionHandler<IEditTreeView> Copied;
         public event ViewActionHandler<IEditTreeView, StructChangedArgs> StructureChanged;
 
         public List<Theme> Themes
@@ -51,8 +49,7 @@ namespace SimplExServer.Controls
         }
         public object CurrentObject { get; private set; }
         public string SearchText { get => searchBox.Text; set => searchBox.Text = value; }
-        public bool IsSearched => cancelButton.Enabled;
-        public bool IsCopied { get; private set; }
+        public bool IsSearched { get => cancelButton.Enabled; set => cancelButton.Enabled = value; }
         public object[] SearchResult
         {
             set
@@ -77,11 +74,6 @@ namespace SimplExServer.Controls
         {
             InitializeComponent();
             contextMenu = new ContextMenu();
-            contextMenu.Popup += OnContextMenuOpened;
-            contextMenu.MenuItems.Add("Копировать", (a, e) => Copied?.Invoke(this));
-            contextMenu.MenuItems.Add("Вырезать", (a, e) => Copied?.Invoke(this));
-            contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add("Вставить", (a, e) => Pasted?.Invoke(this));
             tree.Nodes["Themes"].Tag = null;
             tree.Nodes["Tickets"].Tag = null;
         }
@@ -207,20 +199,6 @@ namespace SimplExServer.Controls
                 tree.SelectedNode = tree.GetNodeAt(new Point(e.X, e.Y));
                 TreeAfterSelect(sender, null);
             }
-        }
-        private void OnContextMenuOpened(object sender, EventArgs e)
-        {
-            if (tree.SelectedNode.Tag is Ticket)
-            {
-                contextMenu.MenuItems[0].Enabled = false;
-                contextMenu.MenuItems[1].Enabled = false;
-            }
-            else
-            {
-                contextMenu.MenuItems[0].Enabled = true;
-                contextMenu.MenuItems[1].Enabled = true;
-            }
-            contextMenu.MenuItems[3].Enabled = IsCopied;
         }
     }
     static class TreeExtensions

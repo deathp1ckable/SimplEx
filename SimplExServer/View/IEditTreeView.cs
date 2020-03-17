@@ -9,14 +9,10 @@ namespace SimplExServer.View
         List<Ticket> Tickets { get; set; }
         object CurrentObject { get; }
         string SearchText { get; set; }
-        bool IsSearched { get; }
-        bool IsCopied { get; }
         object[] SearchResult { set; }
         event ViewActionHandler<IEditTreeView> NodeChanged;
         event ViewActionHandler<IEditTreeView> GoToProperties;
         event ViewActionHandler<IEditTreeView> Searched;
-        event ViewActionHandler<IEditTreeView> Pasted;
-        event ViewActionHandler<IEditTreeView> Copied;
         event ViewActionHandler<IEditTreeView, StructChangedArgs> StructureChanged;
     }
     public class StructChangedArgs : EventArgs

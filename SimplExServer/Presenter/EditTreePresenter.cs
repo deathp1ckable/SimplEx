@@ -8,21 +8,10 @@ namespace SimplExServer.Presenter
 {
     class EditTreePresenter : IntegrablePresenter<Exam, IEditTreeView>
     {
-        private object copiedObject;
         public EditTreePresenter(IEditTreeView view, IApplicationController applicationController) : base(view, applicationController)
         {
             view.StructureChanged += StructureChanged;
             view.Searched += Searched;
-            view.Copied += Copied;
-            view.Pasted += Pasted;
-        }
-        private void Copied(IEditTreeView sender)
-        {
-
-        }
-        private void Pasted(IEditTreeView sender)
-        {
-
         }
         private void Searched(IEditTreeView sender)
         {
@@ -39,11 +28,20 @@ namespace SimplExServer.Presenter
 
         private void StructureChanged(IEditTreeView sender, StructChangedArgs e)
         {
-            e.Group.Remove();
+            e.Group.ParentQuestionGroup?.ChildQuestionGroups.Remove(e.Group);
+            e.Group.ParentTicket?.QuestionGroups.Remove(e.Group);
+            e.Group.ParentTicket = null;
+            e.Group.ParentQuestionGroup = null;
             if (e.NewParentGroup != null)
+            {
                 e.Group.ParentQuestionGroup = e.NewParentGroup;
+                e.NewParentGroup.ChildQuestionGroups.Add(e.Group);
+            }
             else
+            {
                 e.Group.ParentTicket = e.Ticket;
+                e.Ticket.QuestionGroups.Add(e.Group);
+            }
             Argumnet.Themes = sender.Themes;
             Argumnet.Tickets = sender.Tickets;
         }

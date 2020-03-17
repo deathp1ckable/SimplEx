@@ -119,6 +119,8 @@
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\IIoCContainer.cs" />
+    <Compile Include="Model\Builders\ExamBuilder.cs" />
+    <Compile Include="Model\Builders\IBuilder.cs" />
     <Compile Include="Model\Inherited\OneAnswerQuestion.cs" />
     <Compile Include="Model\Inherited\FiveStepMarkSystem.cs" />
     <Compile Include="Model\Answer.cs" />

@@ -4,28 +4,8 @@ namespace SimplExServer.Model
 {
     public class QuestionGroup : ICloneable
     {
-        private Ticket parentTicket;
-        private QuestionGroup parentQuestionGroup;
-        public QuestionGroup ParentQuestionGroup
-        {
-            get => parentQuestionGroup;
-            set
-            {
-                if (!value.ChildQuestionGroups.Contains(this))
-                    value.ChildQuestionGroups.Add(this);
-                parentQuestionGroup = value;
-            }
-        }
-        public Ticket ParentTicket
-        {
-            get => parentTicket;
-            set
-            {
-                if (!value.QuestionGroups.Contains(this))
-                    value.QuestionGroups.Add(this);
-                parentTicket = value;
-            }
-        }
+        public QuestionGroup ParentQuestionGroup { get; set; }
+        public Ticket ParentTicket { get; set; }
         public string QuestionGroupName { get; set; } = string.Empty;
         public List<QuestionGroup> ChildQuestionGroups { get; set; } = new List<QuestionGroup>();
         public List<Question> Questions { get; set; } = new List<Question>();
@@ -46,13 +26,6 @@ namespace SimplExServer.Model
                 result.AddRange(GetQuestionGroups(group.ChildQuestionGroups[i]));
             result.AddRange(group.ChildQuestionGroups);
             return result.ToArray();
-        }
-        public void Remove()
-        {
-            if (ParentTicket != null)
-                ParentTicket.QuestionGroups.Remove(this);
-            else
-                ParentQuestionGroup.ChildQuestionGroups.Remove(this);
         }
         public object Clone()
         {

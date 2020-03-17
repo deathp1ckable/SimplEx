@@ -72,19 +72,26 @@ namespace SimplExServer
             group.ChildQuestionGroups = new List<QuestionGroup> { anotherGroup, threeGroup };
             threeGroup.ParentQuestionGroup = group;
             anotherGroup.ParentQuestionGroup = group;
+            Ticket ticket = new Ticket()
+            {
+                TicketNumber = 1,
+                QuestionGroups = new List<QuestionGroup>()
+                {
+                    group, secondGroup
+                }
+            };
+            group.ParentTicket = ticket;
+            secondGroup.ParentTicket = ticket;
             controller.Run<EditMainPresenter, Exam>(new Exam()
             {
                 MarkSystem = new FiveStepMarkSystem(),
                 Themes = new List<Theme>
                 {
                     new Theme() { ThemeName = "Theme one" }, new Theme() { ThemeName = "Theme two" } },
-                Tickets = new List<Ticket>() { new Ticket() {TicketNumber =1, QuestionGroups = new List<QuestionGroup>()
-                    {
-                        group,secondGroup
-                    }
-
-                },                     new Ticket()
-                 }
+                Tickets = new List<Ticket>() {
+                    ticket
+                },                     
+                 
             });
             Application.Run(context);
         }
