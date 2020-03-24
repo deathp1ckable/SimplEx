@@ -1,6 +1,7 @@
-﻿namespace SimplExServer.Model
+﻿using System;
+namespace SimplExServer.Model
 {
-    public abstract class MarkSystem
+    public abstract class MarkSystem : ICloneable
     {
         public string Description { get; set; } = string.Empty;
         public abstract string Content { get; set; }
@@ -22,6 +23,6 @@
                 MarkSystemTypeName = GetType().ToString()
             };
         }
-        public override string ToString() => $"{Description} {Content}";
+        public abstract object Clone();
     }
 }

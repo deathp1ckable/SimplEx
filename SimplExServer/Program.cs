@@ -1,5 +1,7 @@
-﻿using SimplExServer.Common;
+﻿using SimplExServer.Builders;
+using SimplExServer.Common;
 using SimplExServer.Controls;
+using SimplExServer.Forms;
 using SimplExServer.Model;
 using SimplExServer.Model.Inherited;
 using SimplExServer.Presenter;
@@ -25,74 +27,18 @@ namespace SimplExServer
                 .RegisterView<IEditPropertiesView, EditPropertiesControl>()
                 .RegisterView<IEditMainView, EditorForm>()
                 .RegisterView<IEditTreeView, EditTreeControl>()
-                .RegisterView<IEditMarkSystemPropertiesView, EditMarkSystemPropertiesControl>()
+                .RegisterView<IEditMarkSystemPropertiesView, EditMarkSystemControl>()
                 .RegisterView<IEditFiveStepMarkSystemView, EditFiveStepMarkSystemControl>()
                 .RegisterIntstance(context);
-            QuestionGroup group = new QuestionGroup()
-            {
-                QuestionGroupName = "This group",
-                Questions = new List<Question>
-                {
-                    new OneAnswerQuestion(),
-                    new OneAnswerQuestion(),
-                    new OneAnswerQuestion(),
-                }
-            };
-            QuestionGroup secondGroup = new QuestionGroup()
-            {
-                QuestionGroupName = "This two group",
-                Questions = new List<Question>
-                {
-                    new OneAnswerQuestion(),
-                    new OneAnswerQuestion(),
-                    new OneAnswerQuestion(),
-                }
-            };
-            QuestionGroup threeGroup = new QuestionGroup()
-            {
-                QuestionGroupName = "This 3 two group",
-                Questions = new List<Question>
-                {
-                    new OneAnswerQuestion(),
-                    new OneAnswerQuestion(),
-                    new OneAnswerQuestion(),
-                }
-            };
-            QuestionGroup anotherGroup = new QuestionGroup()
-            {
-                QuestionGroupName = "This another",
-                Questions = new List<Question>
-                {
-                    new OneAnswerQuestion(),
-                    new OneAnswerQuestion(),
-                    new OneAnswerQuestion(),
-                    new OneAnswerQuestion()
-                }
-            };
-            group.ChildQuestionGroups = new List<QuestionGroup> { anotherGroup, threeGroup };
-            threeGroup.ParentQuestionGroup = group;
-            anotherGroup.ParentQuestionGroup = group;
-            Ticket ticket = new Ticket()
-            {
-                TicketNumber = 1,
-                QuestionGroups = new List<QuestionGroup>()
-                {
-                    group, secondGroup
-                }
-            };
-            group.ParentTicket = ticket;
-            secondGroup.ParentTicket = ticket;
-            controller.Run<EditMainPresenter, Exam>(new Exam()
-            {
-                MarkSystem = new FiveStepMarkSystem(),
-                Themes = new List<Theme>
-                {
-                    new Theme() { ThemeName = "Theme one" }, new Theme() { ThemeName = "Theme two" } },
-                Tickets = new List<Ticket>() {
-                    ticket
-                },                     
-                 
-            });
+            ExamBuilder examBuilder = new ExamBuilder();
+            examBuilder.AddTheme("123");
+            examBuilder.AddTheme("12345");
+            QuestionGroupBuilder questionGroupBuilder = examBuilder.AddTicket("123").AddQuestionGroup("124345");
+            QuestionGroupBuilder questionGroupBuilder1 = questionGroupBuilder.AddQuestionGroup("12");
+            questionGroupBuilder.AddQuestion(new OneAnswerQuestion()); 
+            questionGroupBuilder.AddQuestion(new OneAnswerQuestion());
+            questionGroupBuilder1.AddQuestion(new OneAnswerQuestion());
+            controller.Run<EditMainPresenter, ExamBuilder>(examBuilder);
             Application.Run(context);
         }
     }

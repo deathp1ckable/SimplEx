@@ -1,8 +1,5 @@
-﻿using SimplExServer.Controls;
-using SimplExServer.Model;
-using SimplExServer.View;
+﻿using SimplExServer.View;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -109,12 +106,28 @@ namespace SimplExServer
         }
         public void SetEditTreeView(IEditTreeView view)
         {
+            if (EditTreeView != null)
+            {
+                EditTreeView.GoToProperties += EditTreeViewGoToProperties;
+            }
             EditTreeView = view;
+            EditTreeView.GoToProperties += EditTreeViewGoToProperties;
             UserControl control = (UserControl)EditTreeView;
             control.Parent = treePanel;
             control.Size = treePanel.Size;
             control.Location = new Point(0, 0);
             control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        }
+
+        private void EditTreeViewGoToProperties(IEditTreeView sender)
+        {
+            disabledButton.BackColor = Color.FromArgb(171, 31, 47);
+            disabledButton.Enabled = true;
+            disabledButton = contentButton;
+            disabledButton.BackColor = SystemColors.ControlLight;
+            disabledButton.Enabled = false;
+            EditPropertiesView?.Hide();
+            MarkSystemPropertiesView?.Hide();
         }
         private void ModifyProperties(IEditPropertiesView sender)
         {
@@ -142,11 +155,11 @@ namespace SimplExServer
                     break;
                 case 1:
                     EditPropertiesView?.Hide();
-                    MarkSystemPropertiesView?.Hide();
+                    MarkSystemPropertiesView?.Show();
                     break;
                 case 2:
                     EditPropertiesView?.Hide();
-                    MarkSystemPropertiesView?.Show();
+                    MarkSystemPropertiesView?.Hide();
                     break;
                 case 3:
                     EditPropertiesView?.Hide();

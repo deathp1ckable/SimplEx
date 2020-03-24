@@ -1,8 +1,11 @@
-﻿namespace SimplExServer.Model
+﻿using System;
+using System.Collections.Generic;
+
+namespace SimplExServer.Model
 {
-    public class Theme
+    public class Theme : ICloneable
     {
         public string ThemeName { get; set; } = string.Empty;
-        public override string ToString() => $"{ThemeName}";
+        public object Clone() => MemberwiseClone();
     }
 }

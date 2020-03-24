@@ -1,7 +1,7 @@
-﻿using System;
-using System.Text;
+﻿using SimplExNetworking.EventArguments;
 using SimplExNetworking.Networking;
-using SimplExNetworking.EventArguments;
+using System;
+using System.Text;
 
 namespace SimplExTesting
 {
@@ -55,7 +55,6 @@ namespace SimplExTesting
                 val2.Connect(ip, port);
                 Console.ReadKey();
             }
-            Console.ReadKey();
         }
 
         private static void Server_OnServerInitialized(object sender, EventArgs e)

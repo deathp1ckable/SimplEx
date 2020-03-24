@@ -1,40 +1,50 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
 namespace SimplExServer.Model
 {
     public abstract class Question : ICloneable
     {
+        private Answer rightAnswer;
+
         public int QuestionNumber { get; set; }
-        public int TicketNumber { get; set; }
         public double Points { get; set; }
         public abstract string Content { get; set; }
-        public Answer RightAnswer { get; set; }
-        public Theme QuestionTheme { get; set; }
-        public abstract double CheckAnswer(Answer answer);
-        public Question() { }
-        public Question(QuestionData questionData)
+        public Answer RightAnswer
         {
-            Content = questionData.Content;
-            QuestionNumber = questionData.QuestionNumber;
-            Points = questionData.Points;
-            RightAnswer = questionData.RightAnswer;
-            QuestionTheme = questionData.QuestionTheme;
-            TicketNumber = questionData.TicketNumber;
+            get
+            {
+                if (rightAnswer != null)
+                    rightAnswer.Question = this;
+                return rightAnswer;
+            }
+            set => rightAnswer = value;
         }
-        public virtual QuestionData GetData()
+        public Theme Theme { get; set; }
+
+        public QuestionGroup ParentQuestionGroup { get; set; }
+
+        public Question(QuestionData data)
+        {
+            Theme = data.Theme;
+            Points = data.Points;
+            Content = data.Content;
+            RightAnswer = data.RightAnswer;
+            QuestionNumber = data.QuestionNumber;
+            ParentQuestionGroup = data.ParentQuestionGroup;
+        }
+        public Question() { }
+        public QuestionData GetQuestionData()
         {
             return new QuestionData()
             {
-                Content = Content,
-                QuestionNumber = QuestionNumber,
+                Theme = Theme,
                 Points = Points,
+                Content = Content,
                 RightAnswer = RightAnswer,
-                QuestionTheme = QuestionTheme,
-                TicketNumber = TicketNumber,
-                QuestionTypeName = GetType().ToString()
+                QuestionNumber = QuestionNumber,
+                ParentQuestionGroup = ParentQuestionGroup
             };
         }
-        public override string ToString() => $"{QuestionNumber} {TicketNumber} {Points} {Content} {RightAnswer?.Content ?? ""} {QuestionTheme?.ThemeName ?? ""}";
         public abstract object Clone();
+        public abstract double CheckAnswer(Answer answer);
     }
 }

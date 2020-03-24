@@ -1,6 +1,6 @@
 ﻿namespace SimplExServer.Controls
 {
-    partial class EditMarkSystemPropertiesControl
+    partial class EditMarkSystemControl
     {
         /// <summary> 
         /// Обязательная переменная конструктора.

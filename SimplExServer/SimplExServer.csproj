@@ -69,6 +69,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\IBuilder.cs" />
+    <Compile Include="Builders\OneAnswerQuestionBuilder.cs" />
+    <Compile Include="Builders\QuestionBuilder.cs" />
+    <Compile Include="Builders\QuestionGroupBuilder.cs" />
+    <Compile Include="Builders\ThemeBuilder.cs" />
     <Compile Include="Common\ApplicationController.cs" />
     <Compile Include="Common\AutofacAdapter.cs" />
     <Compile Include="Controls\EditFiveStepMarkSystemControl.cs">
@@ -77,17 +82,47 @@
     <Compile Include="Controls\EditFiveStepMarkSystemControl.Designer.cs">
       <DependentUpon>EditFiveStepMarkSystemControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\EditMarkSystemPropertiesControl.cs">
+    <Compile Include="Controls\EditMarkSystemControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\EditMarkSystemPropertiesControl.Designer.cs">
-      <DependentUpon>EditMarkSystemPropertiesControl.cs</DependentUpon>
+    <Compile Include="Controls\EditMarkSystemControl.Designer.cs">
+      <DependentUpon>EditMarkSystemControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\EditPropertiesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\EditPropertiesControl.Designer.cs">
       <DependentUpon>EditPropertiesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditQuestionGroupControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditQuestionGroupControl.Designer.cs">
+      <DependentUpon>EditQuestionGroupControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditThemeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditThemeControl.Designer.cs">
+      <DependentUpon>EditThemeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditThemesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditThemesControl.Designer.cs">
+      <DependentUpon>EditThemesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditTicketControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditTicketControl.Designer.cs">
+      <DependentUpon>EditTicketControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditTicketsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditTicketsControl.Designer.cs">
+      <DependentUpon>EditTicketsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\EditTreeControl.cs">
       <SubType>UserControl</SubType>
@@ -97,13 +132,13 @@
     </Compile>
     <Compile Include="DatabaseHandling\DatabaseHandler.cs" />
     <Compile Include="DatabaseHandling\Maps\AnswerMap.cs" />
+    <Compile Include="DatabaseHandling\Maps\ExamMap.cs" />
     <Compile Include="DatabaseHandling\Maps\ExecutionResultMap.cs" />
     <Compile Include="DatabaseHandling\Maps\ExecutorAnswerMap.cs" />
     <Compile Include="DatabaseHandling\Maps\MarkSystemMap.cs" />
     <Compile Include="DatabaseHandling\Maps\QuestionGroupMap.cs" />
     <Compile Include="DatabaseHandling\Maps\QuestionMap.cs" />
     <Compile Include="DatabaseHandling\Maps\SimplExDBMap.cs" />
-    <Compile Include="DatabaseHandling\Maps\ExamMap.cs" />
     <Compile Include="DatabaseHandling\Maps\ThemeMap.cs" />
     <Compile Include="DatabaseHandling\Maps\TicketMap.cs" />
     <Compile Include="Forms\EditorForm.cs">
@@ -112,6 +147,12 @@
     <Compile Include="Forms\EditorForm.Designer.cs">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ImportQuestionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ImportQuestionForm.Designer.cs">
+      <DependentUpon>ImportQuestionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\LoadingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,8 +160,11 @@
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\IIoCContainer.cs" />
-    <Compile Include="Model\Builders\ExamBuilder.cs" />
-    <Compile Include="Model\Builders\IBuilder.cs" />
+    <Compile Include="Builders\ExamBuilder.cs" />
+    <Compile Include="Builders\FiveStepMarkSystemBuilder.cs" />
+    <Compile Include="Builders\Builder.cs" />
+    <Compile Include="Builders\MarkSystemBuilder.cs" />
+    <Compile Include="Builders\TicketBuilder.cs" />
     <Compile Include="Model\Inherited\OneAnswerQuestion.cs" />
     <Compile Include="Model\Inherited\FiveStepMarkSystem.cs" />
     <Compile Include="Model\Answer.cs" />
@@ -134,14 +178,15 @@
     <Compile Include="Model\Exam.cs" />
     <Compile Include="Model\Theme.cs" />
     <Compile Include="Model\Ticket.cs" />
-    <Compile Include="Model\Ors\Encryptor.cs" />
+    <Compile Include="Services\DeepCloner.cs" />
+    <Compile Include="Services\Encryptor.cs" />
     <Compile Include="Common\IApplicationController.cs" />
     <Compile Include="Presenter\EditFiveStepMarkSystemPresenter.cs" />
-    <Compile Include="Presenter\EditPopertiesPresenter.cs" />
+    <Compile Include="Presenter\EditExamPresenter.cs" />
     <Compile Include="Presenter\EditMainPresenter.cs" />
     <Compile Include="Presenter\EditTreePresenter.cs" />
     <Compile Include="Presenter\IEditMarkSystemPresenter.cs" />
-    <Compile Include="Presenter\EditMarkSystemPropertiesPresenter.cs" />
+    <Compile Include="Presenter\EditMarkSystemPresenter.cs" />
     <Compile Include="Presenter\IntegrablePresenter.cs" />
     <Compile Include="View\IEditFiveStepMarkSystemView.cs" />
     <Compile Include="View\IEditMarkSystemView.cs" />
@@ -175,17 +220,35 @@
     <EmbeddedResource Include="Controls\EditFiveStepMarkSystemControl.resx">
       <DependentUpon>EditFiveStepMarkSystemControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\EditMarkSystemPropertiesControl.resx">
-      <DependentUpon>EditMarkSystemPropertiesControl.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\EditMarkSystemControl.resx">
+      <DependentUpon>EditMarkSystemControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\EditPropertiesControl.resx">
       <DependentUpon>EditPropertiesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditQuestionGroupControl.resx">
+      <DependentUpon>EditQuestionGroupControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditThemeControl.resx">
+      <DependentUpon>EditThemeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditThemesControl.resx">
+      <DependentUpon>EditThemesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditTicketControl.resx">
+      <DependentUpon>EditTicketControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditTicketsControl.resx">
+      <DependentUpon>EditTicketsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\EditTreeControl.resx">
       <DependentUpon>EditTreeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ImportQuestionForm.resx">
+      <DependentUpon>ImportQuestionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoadingForm.resx">
       <DependentUpon>LoadingForm.cs</DependentUpon>

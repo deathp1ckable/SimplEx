@@ -1,17 +1,16 @@
-﻿namespace SimplExServer.Model
+﻿using System;
+
+namespace SimplExServer.Model
 {
-    public class ExecutorAnswer
+    public class ExecutorAnswer 
     {
-        public int QuestionNumber { get; set; }
-        public int TicketNumber { get; set; }
+        public Question Question { get; set; }
         public string Content { get; set; } = string.Empty;
-        public ExecutorAnswer(Ticket ticket, QuestionData question, string content)
+        public ExecutorAnswer(Question question, string content)
         {
-            TicketNumber = ticket.TicketNumber;
-            QuestionNumber = question.QuestionNumber;
+            Question = question;
             Content = content;
         }
         public ExecutorAnswer() { }
-        public override string ToString() => $"{QuestionNumber} {TicketNumber} {Content}";
     }
 }

@@ -1,55 +1,90 @@
-﻿using SimplExServer.Common;
-using SimplExServer.Model;
+﻿using SimplExServer.Builders;
+using SimplExServer.Common;
 using SimplExServer.View;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SimplExServer.Presenter
 {
-    class EditTreePresenter : IntegrablePresenter<Exam, IEditTreeView>
+    class EditTreePresenter : IntegrablePresenter<ExamBuilder, IEditTreeView>
     {
+        private QuestionBuilder CopiedQuestionBuilder;
+        private QuestionGroupBuilder CopiedQuestionGroupBuilder;
         public EditTreePresenter(IEditTreeView view, IApplicationController applicationController) : base(view, applicationController)
         {
             view.StructureChanged += StructureChanged;
             view.Searched += Searched;
+            view.QuestionCopied += ViewQuestionCopied;
+            view.QuestionPasted += ViewQuestionPasted;
+            view.QuestionGroupCopied += ViewQuestionGroupCopied;
+            view.QuestionGroupPasted += ViewQuestionGroupPasted;
         }
+
+        private void ViewQuestionGroupPasted(IEditTreeView sender, QuestionGroupPastedArgs e)
+        {
+            QuestionGroupBuilder builder;
+            if (e.TicketBuilder != null)
+                builder = e.TicketBuilder.AddQuestionGroup(CopiedQuestionGroupBuilder.GetDuplicate());
+            else
+                builder = e.QuestionGroupBuilder.AddQuestionGroup(CopiedQuestionGroupBuilder.GetDuplicate());
+            sender.RefreshTickets();
+            sender.SelectObject(builder);
+        }
+
+        private void ViewQuestionGroupCopied(IEditTreeView sender, QuestionGroupCopiedArgs e)
+        {
+            object builder = e.QuestionBuilder.ParentTicketBuilder as object ?? e.QuestionBuilder.ParentQuestionGroupBuilder as object;
+            CopiedQuestionGroupBuilder = e.QuestionBuilder;
+            if (e.IsCut)
+            {
+                CopiedQuestionGroupBuilder.ParentQuestionGroupBuilder?.RemoveQuestionGroup(e.QuestionBuilder);
+                CopiedQuestionGroupBuilder.ParentTicketBuilder?.RemoveQuestionGroup(e.QuestionBuilder);
+            }
+            sender.RefreshTickets();
+            sender.SelectObject(builder);
+        }
+
+        private void ViewQuestionPasted(IEditTreeView sender, QuestionPastedArgs e)
+        {
+            QuestionBuilder builder = e.QuestionGroupBuilder.AddQuestion(CopiedQuestionBuilder.GetDuplicate());
+            sender.RefreshTickets();
+            sender.SelectObject(builder);
+        }
+        private void ViewQuestionCopied(IEditTreeView sender, QuestionCopiedArgs e)
+        {
+            QuestionGroupBuilder builder = e.QuestionBuilder.ParentQuestionGroupBuilder;
+            CopiedQuestionBuilder = e.QuestionBuilder;
+            if (e.IsCut)
+                CopiedQuestionBuilder.ParentQuestionGroupBuilder.RemoveQuestion(e.QuestionBuilder);
+            sender.RefreshTickets();
+            sender.SelectObject(builder);
+        }
+
         private void Searched(IEditTreeView sender)
         {
             List<object> result = new List<object>();
-            result.AddRange(sender.Themes.Where(a => a.ToString().Contains(sender.SearchText)));
-            result.AddRange(sender.Tickets.Where(a => a.ToString().Contains(sender.SearchText)));
-            for (int i = 0; i < sender.Tickets.Count; i++)
+            result.AddRange(sender.ThemeBuilders.Where(a => a.ToString().Contains(sender.SearchText)));
+            result.AddRange(sender.TicketBuilders.Where(a => a.ToString().Contains(sender.SearchText)));
+            for (int i = 0; i < sender.TicketBuilders.Count; i++)
             {
-                result.AddRange(sender.Tickets[i].GetQuestionGroups().Where(a => a.ToString().Contains(sender.SearchText)));
-                result.AddRange(sender.Tickets[i].GetQuestions().Where(a => a.ToString().Contains(sender.SearchText)));
+                result.AddRange(sender.TicketBuilders[i].GetQuestionGroupBuilders().Where(a => a.ToString().Contains(sender.SearchText)));
+                result.AddRange(sender.TicketBuilders[i].GetQuestionBuilders().Where(a => a.ToString().Contains(sender.SearchText)));
             }
             sender.SearchResult = result.ToArray();
         }
 
         private void StructureChanged(IEditTreeView sender, StructChangedArgs e)
         {
-            e.Group.ParentQuestionGroup?.ChildQuestionGroups.Remove(e.Group);
-            e.Group.ParentTicket?.QuestionGroups.Remove(e.Group);
-            e.Group.ParentTicket = null;
-            e.Group.ParentQuestionGroup = null;
             if (e.NewParentGroup != null)
-            {
-                e.Group.ParentQuestionGroup = e.NewParentGroup;
-                e.NewParentGroup.ChildQuestionGroups.Add(e.Group);
-            }
+                e.Group.SetParent(e.NewParentGroup);
             else
-            {
-                e.Group.ParentTicket = e.Ticket;
-                e.Ticket.QuestionGroups.Add(e.Group);
-            }
-            Argumnet.Themes = sender.Themes;
-            Argumnet.Tickets = sender.Tickets;
+                e.Group.SetParent(e.Ticket);
         }
-        public override void Run(Exam argument)
+        public override void Run(ExamBuilder argument)
         {
             Argumnet = argument;
-            View.Themes = Argumnet.Themes;
-            View.Tickets = Argumnet.Tickets;
+            View.ThemeBuilders = Argumnet.ThemeBuilders;
+            View.TicketBuilders = Argumnet.TicketBuilders;
         }
     }
 }

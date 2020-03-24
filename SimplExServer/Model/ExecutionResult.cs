@@ -13,6 +13,5 @@ namespace SimplExServer.Model
         public double ExecutionTime { get; set; }
         public double Mark { get; set; }
         public List<ExecutorAnswer> Answers { get; set; } = new List<ExecutorAnswer>();
-        public override string ToString() => $"{ExecutorName} {ExecutorPatronimyc} {ExecutorGroup} {ExecutionDate} {ExecutionTime} {Mark}";
     }
 }

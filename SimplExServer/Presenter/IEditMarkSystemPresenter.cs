@@ -1,12 +1,11 @@
-﻿using SimplExServer.Model;
+﻿using SimplExServer.Builders;
 using SimplExServer.View;
 using System;
-
 namespace SimplExServer.Presenter
 {
-    interface IEditMarkSystemPresenter
+    interface IEditMarkSystemPresenter 
     {
-        MarkSystem MarkSystem { get; set; }
+        MarkSystemBuilder MarkSystem { get; set; }
         void Integrate(Action<IEditMarkSystemView> integrator);
     }
 }

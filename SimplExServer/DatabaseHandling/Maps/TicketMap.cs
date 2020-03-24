@@ -7,7 +7,8 @@ namespace SimplExServer.DatabaseHandling.Maps
         protected override void MapClass()
         {
             MapId("TicketID");
-            Map("TicketNumber", () => Instance.TicketNumber, (a) => Instance.TicketNumber = (int)a);
+            Map("TicketNumber", () => Instance.TicketNumber, (a) => Instance.TicketNumber = a);
+            Map("TicketName", () => Instance.TicketName, (a) => Instance.TicketName = a);
             Foreign<ExamMap>("ExamID");
             Table("tickets");
         }

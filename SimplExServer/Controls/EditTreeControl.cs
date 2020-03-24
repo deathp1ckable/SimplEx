@@ -1,54 +1,56 @@
-﻿using SimplExServer.Model;
-using SimplExServer.View;
+﻿using SimplExServer.View;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using SimplExServer.Builders;
 
 namespace SimplExServer.Controls
 {
     public partial class EditTreeControl : UserControl, IEditTreeView
     {
-        private List<Theme> themes;
-        private List<Ticket> tickets;
+        private IList<ThemeBuilder> themesBuilders;
+        private IList<TicketBuilder> ticketBuilders;
         private TreeNode[] bufferedCollection;
         private ContextMenu contextMenu;
+        private bool questionGroupCopied;
+        private bool questionCopied;
+
+        private bool IsSearched { get => cancelButton.Enabled; set => cancelButton.Enabled = value; }
         public event ViewActionHandler<IEditTreeView> NodeChanged;
         public event ViewActionHandler<IEditTreeView> GoToProperties;
         public event ViewActionHandler<IEditTreeView> Searched;
         public event ViewActionHandler<IEditTreeView, StructChangedArgs> StructureChanged;
-        public List<Theme> Themes
+        public event ViewActionHandler<IEditTreeView, QuestionCopiedArgs> QuestionCopied;
+        public event ViewActionHandler<IEditTreeView, QuestionPastedArgs> QuestionPasted;
+        public event ViewActionHandler<IEditTreeView, QuestionGroupCopiedArgs> QuestionGroupCopied;
+        public event ViewActionHandler<IEditTreeView, QuestionGroupPastedArgs> QuestionGroupPasted;
+
+        public IList<ThemeBuilder> ThemeBuilders
         {
-            get => themes;
+            get => themesBuilders;
             set
             {
-                themes = value;
+                themesBuilders = value;
                 tree.Nodes["Themes"].Nodes.Clear();
-                for (int i = 0; i < themes.Count; i++)
-                    tree.Nodes["Themes"].Nodes.Add($"Тема '{themes[i].ThemeName}'").Tag = themes[i];
+                for (int i = 0; i < themesBuilders.Count; i++)
+                    tree.Nodes["Themes"].Nodes.Add(LoadTheme(themesBuilders[i]));
             }
         }
-        public List<Ticket> Tickets
+        public IList<TicketBuilder> TicketBuilders
         {
-            get => tickets;
+            get => ticketBuilders;
             set
             {
-                tickets = value;
+                ticketBuilders = value;
                 tree.Nodes["Tickets"].Nodes.Clear();
-                for (int i = 0, j; i < tickets.Count; i++)
-                {
-                    TreeNode node = tree.Nodes["Tickets"].Nodes.Add("Билет №" + tickets[i].TicketNumber);
-                    node.Tag = tickets[i];
-                    node.ContextMenu = contextMenu;
-                    for (j = 0; j < tickets[i].QuestionGroups.Count; j++)
-                        LoadQuestionGroup(node, tickets[i].QuestionGroups[j]);
-                }
+                for (int i = 0; i < ticketBuilders.Count; i++)
+                    tree.Nodes["Tickets"].Nodes.Add(LoadTicket(ticketBuilders[i]));
             }
         }
         public object CurrentObject { get; private set; }
         public string SearchText { get => searchBox.Text; set => searchBox.Text = value; }
-        private bool IsSearched { get => cancelButton.Enabled; set => cancelButton.Enabled = value; }
         public object[] SearchResult
         {
             set
@@ -56,24 +58,99 @@ namespace SimplExServer.Controls
                 if (IsSearched)
                     for (int i = 0; i < value.Length; i++)
                     {
-                        if (value[i] is Theme theme)
-                            tree.Nodes["Themes"].Nodes.Add($"Тема '{theme.ThemeName}'").Tag = theme;
-                        else if (value[i] is Ticket ticket)
-                            tree.Nodes["Tickets"].Nodes.Add("Билет №" + ticket.TicketNumber).Tag = ticket;
-                        else if (value[i] is QuestionGroup questionGroup)
-                            tree.Nodes["Groups"].Nodes.Add($"Группа '{questionGroup.QuestionGroupName}'").Tag = questionGroup;
-                        else if (value[i] is Question question)
-                            tree.Nodes["Questions"].Nodes.Add($"Вопрос №{question.QuestionNumber}").Tag = question;
+                        if (value[i] is ThemeBuilder themeBuilder)
+                            tree.Nodes["Themes"].Nodes.Add($"Тема '{themeBuilder.ThemeName}'").Tag = themeBuilder;
+                        else if (value[i] is TicketBuilder ticketBuilder)
+                            tree.Nodes["Tickets"].Nodes.Add($"Билет '{ticketBuilder.TicketName}'").Tag = ticketBuilder;
+                        else if (value[i] is QuestionGroupBuilder questionGroupBuilder)
+                            tree.Nodes["Groups"].Nodes.Add($"Группа '{questionGroupBuilder.QuestionGroupName}'").Tag = questionGroupBuilder;
+                        else if (value[i] is QuestionBuilder questionBuilder)
+                            tree.Nodes["Questions"].Nodes.Add($"Вопрос №{questionBuilder.QuestionNumber}").Tag = questionBuilder;
                     }
                 else throw new InvalidOperationException("Cannot set search results when the search was not done.");
             }
         }
+
+        public Section CurrentSection
+        {
+            get
+            {
+                if (CurrentObject == null)
+                    return Section.Themes;
+                if (ReferenceEquals(tree.Nodes["Tickets"], tree.SelectedNode))
+                    return Section.Tickets;
+                else if (ReferenceEquals(tree.Nodes["Themes"], tree.SelectedNode))
+                    return Section.Themes;
+                if (ContainsNode(tree.Nodes["Tickets"], tree.SelectedNode))
+                    return Section.Tickets;
+                else return Section.Themes;
+            }
+        }
+
         public EditTreeControl()
         {
             InitializeComponent();
             contextMenu = new ContextMenu();
+            contextMenu.Popup += ContextMenuPopup;
+            contextMenu.MenuItems.Add("Вставить", ContextMenuPaste);
+            contextMenu.MenuItems.Add("-");
+            contextMenu.MenuItems.Add("Копировать", ContextMenuCopy);
+            contextMenu.MenuItems.Add("Вырезать", ContextMenuCut);
+            contextMenu.MenuItems.Add("-");
+            contextMenu.MenuItems.Add("Перейти к свойствам", (a, b) => GoToProperties?.Invoke(this));
+            contextMenu.MenuItems[0].Enabled = false;
             tree.Nodes["Themes"].Tag = null;
             tree.Nodes["Tickets"].Tag = null;
+            tree.Nodes["Themes"].ContextMenu = contextMenu;
+            tree.Nodes["Tickets"].ContextMenu = contextMenu;
+        }
+
+        private void ContextMenuPaste(object sender, EventArgs e)
+        {
+            if (questionCopied)
+                QuestionPasted?.Invoke(this, new QuestionPastedArgs(CurrentObject as QuestionGroupBuilder));
+            if (questionGroupCopied)
+                if (CurrentObject is QuestionGroupBuilder questionGroupBuilder)
+                    QuestionGroupPasted?.Invoke(this, new QuestionGroupPastedArgs(questionGroupBuilder));
+                else if (CurrentObject is TicketBuilder ticketBuilder)
+                    QuestionGroupPasted?.Invoke(this, new QuestionGroupPastedArgs(ticketBuilder));
+        }
+        private void ContextMenuCopy(object sender, EventArgs e)
+        {
+            if (CurrentObject is QuestionBuilder questionBuilder)
+            {
+                questionGroupCopied = !(questionCopied = true);
+                QuestionCopied?.Invoke(this, new QuestionCopiedArgs(false, questionBuilder));
+            }
+            else if (CurrentObject is QuestionGroupBuilder questionGroupBuilder)
+            {
+                questionCopied = !(questionGroupCopied = true);
+                QuestionGroupCopied?.Invoke(this, new QuestionGroupCopiedArgs(false, questionGroupBuilder));
+            }
+        }
+        private void ContextMenuCut(object sender, EventArgs e)
+        {
+            if (CurrentObject is QuestionBuilder questionBuilder)
+            {
+                questionGroupCopied = !(questionCopied = true);
+                QuestionCopied?.Invoke(this, new QuestionCopiedArgs(true, questionBuilder));
+            }
+            else if (CurrentObject is QuestionGroupBuilder questionGroupBuilder)
+            {
+                questionCopied = !(questionGroupCopied = true);
+                QuestionGroupCopied?.Invoke(this, new QuestionGroupCopiedArgs(true, questionGroupBuilder));
+            }
+        }
+        private void ContextMenuPopup(object sender, EventArgs e)
+        {
+            if (questionCopied)
+                contextMenu.MenuItems[0].Enabled = CurrentObject is QuestionGroupBuilder;
+            else if (questionGroupCopied)
+                contextMenu.MenuItems[0].Enabled = CurrentObject is QuestionGroupBuilder || CurrentObject is TicketBuilder;
+            if (!(CurrentObject is QuestionBuilder) && !(CurrentObject is QuestionGroupBuilder))
+                contextMenu.MenuItems[2].Enabled = contextMenu.MenuItems[3].Enabled = false;
+            else
+                contextMenu.MenuItems[2].Enabled = contextMenu.MenuItems[3].Enabled = true;
         }
 
         public void Close() => Dispose();
@@ -82,10 +159,27 @@ namespace SimplExServer.Controls
         {
             CurrentObject = tree.SelectedNode.Tag;
             NodeChanged?.Invoke(this);
+            if (CurrentObject != null)
+            {
+                if (tree.SelectedNode.PrevNode != null)
+                    upButton.Enabled = true;
+                else
+                    upButton.Enabled = false;
+                if (tree.SelectedNode.NextNode != null)
+                    downButton.Enabled = true;
+                else
+                    downButton.Enabled = false;
+            }
+            else
+            {
+                upButton.Enabled = false;
+                downButton.Enabled = false;
+            }
         }
+
         private void TreeItemDrag(object sender, ItemDragEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && ((TreeNode)e.Item).Tag is QuestionGroup)
+            if (e.Button == MouseButtons.Left && ((TreeNode)e.Item).Tag is QuestionGroupBuilder)
                 DoDragDrop(e.Item, DragDropEffects.Move);
         }
         private void TreeDragEnter(object sender, DragEventArgs e) => e.Effect = e.AllowedEffect;
@@ -96,7 +190,7 @@ namespace SimplExServer.Controls
             if (tree.SelectedNode != null)
             {
                 TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-                if (tree.SelectedNode.Tag is QuestionGroup || (tree.SelectedNode.Tag is Ticket && ContainsNode(tree.SelectedNode, draggedNode)))
+                if (tree.SelectedNode.Tag is QuestionGroupBuilder || (tree.SelectedNode.Tag is TicketBuilder && ContainsNode(tree.SelectedNode, draggedNode)))
                     e.Effect = e.AllowedEffect;
                 else
                     e.Effect = DragDropEffects.None;
@@ -109,17 +203,17 @@ namespace SimplExServer.Controls
                 Point targetPoint = tree.PointToClient(new Point(e.X, e.Y));
                 TreeNode targetNode = tree.GetNodeAt(targetPoint);
                 TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-                QuestionGroup group = (QuestionGroup)draggedNode.Tag;
-                if (!draggedNode.Equals(targetNode) && !ContainsNode(draggedNode, targetNode) || (targetNode.Tag is Ticket && ContainsNode(targetNode, draggedNode)))
+                QuestionGroupBuilder group = (QuestionGroupBuilder)draggedNode.Tag;
+                if (!draggedNode.Equals(targetNode) && !ContainsNode(draggedNode, targetNode) || (targetNode.Tag is TicketBuilder && ContainsNode(targetNode, draggedNode)))
                 {
                     if (e.Effect == DragDropEffects.Move)
                     {
                         draggedNode.Remove();
                         targetNode.Nodes.Add(draggedNode);
-                        if (targetNode.Tag is QuestionGroup parentGroup)
+                        if (targetNode.Tag is QuestionGroupBuilder parentGroup)
                             StructureChanged?.Invoke(this, new StructChangedArgs(group, parentGroup));
                         else
-                            StructureChanged?.Invoke(this, new StructChangedArgs(group, targetNode.Tag as Ticket));
+                            StructureChanged?.Invoke(this, new StructChangedArgs(group, targetNode.Tag as TicketBuilder));
                     }
                     targetNode.Expand();
                 }
@@ -143,8 +237,10 @@ namespace SimplExServer.Controls
                     object obj = tree.SelectedNode.Tag;
                     tree.Nodes.Clear();
                     tree.Nodes.AddRange(bufferedCollection);
+                    SearchText = string.Empty;
                     cancelButton.Enabled = false;
-                    tree.SelectedNode = tree.GetAllNodes().Where(a => a.Tag?.Equals(obj) ?? false).FirstOrDefault();
+                    tree.AllowDrop = true;
+                    tree.SelectedNode = tree.GetAllNodes().Single(a => a.Tag?.Equals(obj) ?? false);
                 }
                 GoToProperties?.Invoke(this);
             }
@@ -177,6 +273,7 @@ namespace SimplExServer.Controls
         {
             tree.Nodes.Clear();
             tree.Nodes.AddRange(bufferedCollection);
+            SearchText = string.Empty;
             cancelButton.Enabled = false;
             tree.AllowDrop = true;
         }
@@ -189,19 +286,91 @@ namespace SimplExServer.Controls
                 return true;
             return ContainsNode(nodeA, nodeB.Parent);
         }
-        private void LoadQuestionGroup(TreeNode parentNode, QuestionGroup group)
+        private TreeNode LoadTheme(ThemeBuilder themeBuilder)
         {
-            TreeNode node = parentNode.Nodes.Add($"Группа '{group.QuestionGroupName}'");
-            node.Tag = group;
-            node.ContextMenu = contextMenu;
-            for (int i = 0; i < group.ChildQuestionGroups.Count; i++)
-                LoadQuestionGroup(node, group.ChildQuestionGroups[i]);
-            for (int i = 0; i < group.Questions.Count; i++)
-            {
-                TreeNode treeNode = node.Nodes.Add($"Вопрос №{group.Questions[i].QuestionNumber}");
-                treeNode.Tag = group.Questions[i];
-                treeNode.ContextMenu = contextMenu;
-            }
+            TreeNode result = new TreeNode($"Тема '{themeBuilder.ThemeName}'");
+            result.Tag = themeBuilder;
+            return result;
+        }
+
+        private TreeNode LoadTicket(TicketBuilder ticketBuilder)
+        {
+            TreeNode result = new TreeNode($"Билет '{ticketBuilder.TicketName}'");
+            result.Tag = ticketBuilder;
+            result.ContextMenu = contextMenu;
+            for (int i = 0; i < ticketBuilder.QuestionGroupBuilders.Count; i++)
+                result.Nodes.Add(LoadQuestionGroup(ticketBuilder.QuestionGroupBuilders[i]));
+            return result;
+        }
+        private TreeNode LoadQuestionGroup(QuestionGroupBuilder group)
+        {
+            TreeNode result = new TreeNode($"Группа '{group.QuestionGroupName}'");
+            result.Tag = group;
+            result.ContextMenu = contextMenu;
+            int i;
+            for (i = 0; i < group.QuestionGroupBuilders.Count; i++)
+                result.Nodes.Add(LoadQuestionGroup(group.QuestionGroupBuilders[i]));
+            for (i = 0; i < group.QuestionBuilders.Count; i++)
+                result.Nodes.Add(LoadQuestion(group.QuestionBuilders[i]));
+            return result;
+        }
+        private TreeNode LoadQuestion(QuestionBuilder questionBuilder)
+        {
+            TreeNode result = new TreeNode($"Вопрос №{1 + questionBuilder.QuestionNumber}");
+            result.Tag = questionBuilder;
+            result.ContextMenu = contextMenu;
+            return result;
+        }
+        private void SearchBoxResize(object sender, EventArgs e) => ((Control)sender).Invalidate();
+
+        private void UpButtonClick(object sender, EventArgs e)
+        {
+            string tempText = tree.SelectedNode.PrevNode.Text;
+            object tempTag = tree.SelectedNode.PrevNode.Tag;
+            TreeNode tempNode = tree.SelectedNode.PrevNode;
+            TreeNode[] tempCollection = tree.SelectedNode.PrevNode.Nodes.Cast<TreeNode>().ToArray();
+            TreeNode[] mainCollection = tree.SelectedNode.Nodes.Cast<TreeNode>().ToArray();
+            tree.SelectedNode.PrevNode.Nodes.Clear();
+            tree.SelectedNode.Nodes.Clear();
+            tree.SelectedNode.PrevNode.Text = tree.SelectedNode.Text;
+            tree.SelectedNode.PrevNode.Tag = tree.SelectedNode.Tag;
+            tree.SelectedNode.PrevNode.Nodes.AddRange(mainCollection);
+            tree.SelectedNode.Text = tempText;
+            tree.SelectedNode.Tag = tempTag;
+            tree.SelectedNode.Nodes.AddRange(tempCollection);
+            tree.SelectedNode = tempNode;
+        }
+        private void DownButtonClick(object sender, EventArgs e)
+        {
+            string tempText = tree.SelectedNode.NextNode.Text;
+            object tempTag = tree.SelectedNode.NextNode.Tag;
+            TreeNode tempNode = tree.SelectedNode.NextNode;
+            TreeNode[] tempCollection = tree.SelectedNode.NextNode.Nodes.Cast<TreeNode>().ToArray();
+            TreeNode[] mainCollection = tree.SelectedNode.Nodes.Cast<TreeNode>().ToArray();
+            tree.SelectedNode.NextNode.Nodes.Clear();
+            tree.SelectedNode.Nodes.Clear();
+            tree.SelectedNode.NextNode.Text = tree.SelectedNode.Text;
+            tree.SelectedNode.NextNode.Tag = tree.SelectedNode.Tag;
+            tree.SelectedNode.NextNode.Nodes.AddRange(mainCollection);
+            tree.SelectedNode.Text = tempText;
+            tree.SelectedNode.Tag = tempTag;
+            tree.SelectedNode.Nodes.AddRange(tempCollection);
+            tree.SelectedNode = tempNode;
+        }
+
+        public void SelectObject(object obj)
+        {
+            tree.SelectedNode = tree.GetAllNodes().Single(a => ReferenceEquals(a.Tag, obj));
+            tree.SelectedNode.Expand();
+        }
+        public void RefreshTickets()
+        {
+            TicketBuilders = ticketBuilders;
+        }
+
+        public void RefreshThemes()
+        {
+            ThemeBuilders = themesBuilders;
         }
     }
     static class TreeExtensions
@@ -221,5 +390,6 @@ namespace SimplExServer.Controls
                 result.AddRange(child.GetAllNodes());
             return result;
         }
+        internal static IList<TreeNode> ToList(this TreeNodeCollection collection) => collection.Cast<TreeNode>().ToList();
     }
 }

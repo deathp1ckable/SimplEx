@@ -1,4 +1,5 @@
-﻿using SimplExServer.Common;
+﻿using SimplExServer.Builders;
+using SimplExServer.Common;
 using SimplExServer.Model;
 using SimplExServer.Model.Inherited;
 using SimplExServer.View;
@@ -6,10 +7,10 @@ using System;
 
 namespace SimplExServer.Presenter
 {
-    class EditFiveStepMarkSystemPresenter : IntegrablePresenter<MarkSystem, IEditFiveStepMarkSystemView>, IEditMarkSystemPresenter
+    class EditFiveStepMarkSystemPresenter : IntegrablePresenter<MarkSystemBuilder, IEditFiveStepMarkSystemView>, IEditMarkSystemPresenter
     {
-        FiveStepMarkSystem fiveStepMarkSystem;
-        public MarkSystem MarkSystem { get => fiveStepMarkSystem; set => fiveStepMarkSystem = (FiveStepMarkSystem)value; }
+        FiveStepMarkSystemBuilder fiveStepMarkSystem;
+        public MarkSystemBuilder MarkSystem { get => fiveStepMarkSystem; set => fiveStepMarkSystem = (FiveStepMarkSystemBuilder)value; }
         public EditFiveStepMarkSystemPresenter(IEditFiveStepMarkSystemView view, IApplicationController applicationController) : base(view, applicationController)
         {
             View.SaveChanges += SaveChanges;
@@ -19,32 +20,32 @@ namespace SimplExServer.Presenter
         private void SaveChanges(IEditMarkSystemView sender)
         { 
             IEditFiveStepMarkSystemView editor =  (IEditFiveStepMarkSystemView)sender;
-            fiveStepMarkSystem.fivePercent = editor.FivePercent;
-            fiveStepMarkSystem.fourPercent = editor.FourPercent;
-            fiveStepMarkSystem.threePercent = editor.ThreePercent;
-            fiveStepMarkSystem.twoPercent = editor.TwoPercent;
-            fiveStepMarkSystem.onePercent = editor.OnePercent;
+            fiveStepMarkSystem.FivePercent = editor.FivePercent;
+            fiveStepMarkSystem.FourPercent = editor.FourPercent;
+            fiveStepMarkSystem.ThreePercent = editor.ThreePercent;
+            fiveStepMarkSystem.TwoPercent = editor.TwoPercent;
+            fiveStepMarkSystem.OnePercent = editor.OnePercent;
             editor.Saved = true;
         }
         private void CancelChanges(IEditMarkSystemView sender)
         {
             IEditFiveStepMarkSystemView editor = (IEditFiveStepMarkSystemView)sender;
-            editor.FivePercent = fiveStepMarkSystem.fivePercent;
-            editor.FourPercent = fiveStepMarkSystem.fourPercent;
-            editor.ThreePercent = fiveStepMarkSystem.threePercent;
-            editor.TwoPercent = fiveStepMarkSystem.twoPercent;
-            editor.OnePercent = fiveStepMarkSystem.onePercent;
+            editor.FivePercent = fiveStepMarkSystem.FivePercent;
+            editor.FourPercent = fiveStepMarkSystem.FourPercent;
+            editor.ThreePercent = fiveStepMarkSystem.ThreePercent;
+            editor.TwoPercent = fiveStepMarkSystem.TwoPercent;
+            editor.OnePercent = fiveStepMarkSystem.OnePercent;
             editor.Saved = true;
         }
         private void Changed(IEditMarkSystemView sender) => sender.Saved = false;
-        public override void Run(MarkSystem argumnet)
+        public override void Run(MarkSystemBuilder argumnet)
         {
             MarkSystem = argumnet;
-            View.FivePercent = fiveStepMarkSystem.fivePercent;
-            View.FourPercent = fiveStepMarkSystem.fourPercent;
-            View.ThreePercent = fiveStepMarkSystem.threePercent;
-            View.TwoPercent = fiveStepMarkSystem.twoPercent;
-            View.OnePercent = fiveStepMarkSystem.onePercent;
+            View.FivePercent = fiveStepMarkSystem.FivePercent;
+            View.FourPercent = fiveStepMarkSystem.FourPercent;
+            View.ThreePercent = fiveStepMarkSystem.ThreePercent;
+            View.TwoPercent = fiveStepMarkSystem.TwoPercent;
+            View.OnePercent = fiveStepMarkSystem.OnePercent;
             View.Saved = true;
         }
         public void Integrate(Action<IEditMarkSystemView> integrator) => base.Integrate(integrator);

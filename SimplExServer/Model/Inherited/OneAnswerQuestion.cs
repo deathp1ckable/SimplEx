@@ -1,18 +1,20 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+
 namespace SimplExServer.Model.Inherited
 {
     public class OneAnswerQuestion : Question
     {
         public class OneAnswerQuestionContent
         {
-            public string QuestionContent { get; set; }
-            public string[] Answers { get; set; }
+            public string Text { get; set; } = string.Empty;
+            public List<string> Answers { get; set; } = new List<string>();
         }
-        private OneAnswerQuestionContent content;
+        public OneAnswerQuestionContent QuestionContent { get; private set; } = new OneAnswerQuestionContent();
         public override string Content
         {
-            get => JsonConvert.SerializeObject(content);
-            set => content = JsonConvert.DeserializeObject<OneAnswerQuestionContent>(value);
+            get => JsonConvert.SerializeObject(QuestionContent);
+            set => QuestionContent = JsonConvert.DeserializeObject<OneAnswerQuestionContent>(value);
         }
         public override double CheckAnswer(Answer answer)
         {
@@ -21,14 +23,17 @@ namespace SimplExServer.Model.Inherited
             else return 0;
         }
 
-        public override object Clone() => new OneAnswerQuestion()
+        public override object Clone()
         {
-            Content = Content,
-            QuestionNumber = QuestionNumber,
-            Points = Points,
-            RightAnswer = (Answer)RightAnswer.Clone(),
-            QuestionTheme = QuestionTheme,
-            TicketNumber = TicketNumber
-        };
+            OneAnswerQuestion result = new OneAnswerQuestion()
+            {
+                Content = Content,
+                Points = Points,
+                RightAnswer = (Answer)RightAnswer?.Clone()
+            };
+            if (result.RightAnswer != null)
+                result.RightAnswer.Question = result;
+            return result;
+        }
     }
 }

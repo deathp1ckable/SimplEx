@@ -1,12 +1,11 @@
-﻿using System;
+﻿using SimplExServer.Builders;
 using SimplExServer.View;
-using System.Windows.Forms;
-using SimplExServer.Model.Inherited;
+using System;
 using System.Drawing;
-
+using System.Windows.Forms;
 namespace SimplExServer.Controls
 {
-    public partial class EditMarkSystemPropertiesControl : UserControl, IEditMarkSystemPropertiesView
+    public partial class EditMarkSystemControl : UserControl, IEditMarkSystemPropertiesView
     {
         private Type tempType;
         private Type[] markSystemTypes;
@@ -46,7 +45,7 @@ namespace SimplExServer.Controls
                 markSystemTypeList.Items.Clear();
                 for (int i = 0; i < markSystemTypes.Length; i++)
                 {
-                    if (markSystemTypes[i] == typeof(FiveStepMarkSystem))
+                    if (markSystemTypes[i] == typeof(FiveStepMarkSystemBuilder))
                         markSystemTypeList.Items.Add("Обычная пятиступенчатая");
                 }
                 MarkSystemType = tempType;
@@ -55,7 +54,7 @@ namespace SimplExServer.Controls
         public string Description { get => descriptionBox.Text; set => descriptionBox.Text = value; }
         public bool Saved { get => EditMarkSystemView?.Saved ?? false; set => EditMarkSystemView.Saved = value; }
 
-        public EditMarkSystemPropertiesControl()
+        public EditMarkSystemControl()
         {
             InitializeComponent();
         }

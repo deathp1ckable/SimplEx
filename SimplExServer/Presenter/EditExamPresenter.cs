@@ -1,20 +1,19 @@
-﻿using SimplExServer.Common;
-using SimplExServer.Model;
-using SimplExServer.Model.Builders;
+﻿using SimplExServer.Builders;
+using SimplExServer.Common;
 using SimplExServer.View;
 using System.Text.RegularExpressions;
 namespace SimplExServer.Presenter
 {
-    class EditPopertiesPresenter : IntegrablePresenter<Exam, IEditPropertiesView>
+    class EditExamPresenter : IntegrablePresenter<ExamBuilder, IEditPropertiesView>
     {
         private static readonly Regex passwordRegex = new Regex("([a-zA-Z0-9]{4,})$");
-        public EditPopertiesPresenter(IEditPropertiesView view, IApplicationController applicationController) : base(view, applicationController)
+        public EditExamPresenter(IEditPropertiesView view, IApplicationController applicationController) : base(view, applicationController)
         {
             View.CancelChanges += CancelProperties;
             View.SaveChanges += SaveProperties;
             View.Changed += PropertiesChanged;
         }
-        public override void Run(Exam argumnet)
+        public override void Run(ExamBuilder argumnet)
         {
             Argumnet = argumnet;
             View.ExamName = Argumnet.ExamName;

@@ -44,10 +44,10 @@
             this.questionCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.maxPointsLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.treePanel = new System.Windows.Forms.Panel();
             this.propertiesPanel = new System.Windows.Forms.Panel();
             this.unsavedPropertiesTip = new System.Windows.Forms.ToolTip(this.components);
             this.unsavedMarkSystemToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.treePanel = new System.Windows.Forms.Panel();
             this.subHeaderPanel.SuspendLayout();
             this.headerPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -109,7 +109,7 @@
             this.markSystemButton.Name = "markSystemButton";
             this.markSystemButton.Size = new System.Drawing.Size(200, 34);
             this.markSystemButton.TabIndex = 3;
-            this.markSystemButton.Tag = "2";
+            this.markSystemButton.Tag = "1";
             this.markSystemButton.Text = "Система оценивания";
             this.markSystemButton.UseVisualStyleBackColor = true;
             this.markSystemButton.Click += new System.EventHandler(this.TabStopClick);
@@ -123,7 +123,7 @@
             this.contentButton.Name = "contentButton";
             this.contentButton.Size = new System.Drawing.Size(200, 34);
             this.contentButton.TabIndex = 1;
-            this.contentButton.Tag = "1";
+            this.contentButton.Tag = "2";
             this.contentButton.Text = "Содержание";
             this.contentButton.UseVisualStyleBackColor = true;
             this.contentButton.Click += new System.EventHandler(this.TabStopClick);
@@ -228,6 +228,16 @@
             this.splitContainer.TabIndex = 6;
             this.splitContainer.TabStop = false;
             // 
+            // treePanel
+            // 
+            this.treePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treePanel.Location = new System.Drawing.Point(3, 30);
+            this.treePanel.Name = "treePanel";
+            this.treePanel.Size = new System.Drawing.Size(419, 541);
+            this.treePanel.TabIndex = 6;
+            // 
             // propertiesPanel
             // 
             this.propertiesPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -253,16 +263,6 @@
             this.unsavedMarkSystemToolTip.IsBalloon = true;
             this.unsavedMarkSystemToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.unsavedMarkSystemToolTip.ToolTipTitle = "Данные не сохранены";
-            // 
-            // treePanel
-            // 
-            this.treePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.treePanel.Location = new System.Drawing.Point(3, 30);
-            this.treePanel.Name = "treePanel";
-            this.treePanel.Size = new System.Drawing.Size(419, 541);
-            this.treePanel.TabIndex = 6;
             // 
             // EditorForm
             // 

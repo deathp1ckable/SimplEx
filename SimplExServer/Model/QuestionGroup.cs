@@ -4,41 +4,49 @@ namespace SimplExServer.Model
 {
     public class QuestionGroup : ICloneable
     {
+        public string QuestionGroupName { get; set; } = string.Empty;
+
         public QuestionGroup ParentQuestionGroup { get; set; }
         public Ticket ParentTicket { get; set; }
-        public string QuestionGroupName { get; set; } = string.Empty;
-        public List<QuestionGroup> ChildQuestionGroups { get; set; } = new List<QuestionGroup>();
+
+        public List<QuestionGroup> QuestionGroups { get; set; } = new List<QuestionGroup>();
         public List<Question> Questions { get; set; } = new List<Question>();
+
         public override string ToString() => $"{QuestionGroupName}";
-        public Question[] GetQuestions(QuestionGroup group)
+
+        public Question[] GetQuestions()
         {
             List<Question> result = new List<Question>(Questions);
-            int i;
-            for (i = 0; i < group.ChildQuestionGroups.Count; i++)
-                result.AddRange(GetQuestions(group.ChildQuestionGroups[i]));
+            for (int i = 0; i < QuestionGroups.Count; i++)
+                result.AddRange(QuestionGroups[i].GetQuestions());
             return result.ToArray();
         }
-        public QuestionGroup[] GetQuestionGroups(QuestionGroup group)
+        public QuestionGroup[] GetQuestionGroups()
         {
-            List<QuestionGroup> result = new List<QuestionGroup>();
+            List<QuestionGroup> result = new List<QuestionGroup>(QuestionGroups);
             int i;
-            for (i = 0; i < group.ChildQuestionGroups.Count; i++)
-                result.AddRange(GetQuestionGroups(group.ChildQuestionGroups[i]));
-            result.AddRange(group.ChildQuestionGroups);
+            for (i = 0; i < QuestionGroups.Count; i++)
+                result.AddRange(QuestionGroups[i].GetQuestionGroups());
             return result.ToArray();
         }
+
         public object Clone()
         {
             int i;
-            QuestionGroup result = new QuestionGroup()
-            {
-                QuestionGroupName = QuestionGroupName,
-                ParentQuestionGroup = ParentQuestionGroup
-            };
+            QuestionGroup result = new QuestionGroup();
+            result.QuestionGroupName = QuestionGroupName;
             for (i = 0; i < Questions.Count; i++)
-                result.Questions.Add((Question)Questions[i].Clone());
-            for (i = 0; i < ChildQuestionGroups.Count; i++)
-                result.ChildQuestionGroups.Add((QuestionGroup)ChildQuestionGroups[i].Clone());
+            {
+                Question question = (Question)Questions[i].Clone();
+                question.ParentQuestionGroup = result;
+                result.Questions.Add(question);
+            }
+            for (i = 0; i < QuestionGroups.Count; i++)
+            {
+                QuestionGroup group = (QuestionGroup)QuestionGroups[i].Clone();
+                group.ParentQuestionGroup = result;
+                result.QuestionGroups.Add(group);
+            }
             return result;
         }
     }

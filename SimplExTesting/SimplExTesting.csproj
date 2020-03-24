@@ -105,6 +105,10 @@
       <Project>{C2162ACA-B53D-429B-A30C-6F4777A21762}</Project>
       <Name>SimplExNetworking</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SimplExServer\SimplExServer.csproj">
+      <Project>{16BA4E63-24E3-4825-8907-0CE23D25DEFC}</Project>
+      <Name>SimplExServer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

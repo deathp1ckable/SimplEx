@@ -9,8 +9,8 @@ namespace SimplExServer.DatabaseHandling.Maps
         {
             MapId("ExamID");
             Map("Name", () => Instance.ExamName, (a) => Instance.ExamName = a);
-            Map("Discipline", () => Instance.Discipline, (a) => Instance.Discipline = a);
             Map("Password", () => Instance.Password, (a) => Instance.Password = a);
+            Map("Discipline", () => Instance.Discipline, (a) => Instance.Discipline = a);
             Map("CreatorName", () => Instance.CreatorName, (a) => Instance.CreatorName = a);
             Map("CreatorSurname", () => Instance.CreatorSurname, (a) => Instance.CreatorSurname = a);
             Map("CreatorPatronimyc", () => Instance.CreatorPatronimyc, (a) => Instance.CreatorPatronimyc = a);
