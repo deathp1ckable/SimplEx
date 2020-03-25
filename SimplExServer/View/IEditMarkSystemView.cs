@@ -2,9 +2,8 @@
 
 namespace SimplExServer.View
 {
-    public interface IEditMarkSystemView : IView
+    public interface IEditMarkSystemView : IIntegrableView
     {
-        void Hide();
         void CallSaveChanges();
         void CallCancelChanges();
         void MessageWrongData(string reason);

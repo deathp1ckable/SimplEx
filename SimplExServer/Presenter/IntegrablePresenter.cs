@@ -4,7 +4,7 @@ using System;
 
 namespace SimplExServer.Presenter
 {
-    abstract class IntegrablePresenter<TArgument, TView> : Presenter<TArgument, TView> where TView : class, IView
+    abstract class IntegrablePresenter<TArgument, TView> : Presenter<TArgument, TView> where TView : class, IIntegrableView
     {
         protected IntegrablePresenter(TView view, IApplicationController applicationController) : base(view, applicationController) { }
         public void Integrate(Action<TView> integrator) => integrator(View);

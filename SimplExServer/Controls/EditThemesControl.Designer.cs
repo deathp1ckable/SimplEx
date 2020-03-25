@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.label3 = new System.Windows.Forms.Label();
-            this.cancelButton = new System.Windows.Forms.Button();
+            this.addButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label3
@@ -42,25 +42,26 @@
             this.label3.TabIndex = 32;
             this.label3.Text = "Управление темами:";
             // 
-            // cancelButton
+            // addButton
             // 
-            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelButton.Location = new System.Drawing.Point(3, 31);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(715, 23);
-            this.cancelButton.TabIndex = 64;
-            this.cancelButton.Text = "Добавить новую тему";
-            this.cancelButton.UseVisualStyleBackColor = false;
+            this.addButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.addButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addButton.Location = new System.Drawing.Point(3, 31);
+            this.addButton.Name = "addButton";
+            this.addButton.Size = new System.Drawing.Size(715, 23);
+            this.addButton.TabIndex = 64;
+            this.addButton.Text = "Добавить новую тему";
+            this.addButton.UseVisualStyleBackColor = false;
+            this.addButton.Click += new System.EventHandler(this.AddButtonClick);
             // 
             // EditThemesControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.addButton);
             this.Controls.Add(this.label3);
             this.Name = "EditThemesControl";
             this.Size = new System.Drawing.Size(723, 449);
@@ -72,6 +73,6 @@
         #endregion
 
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.Button addButton;
     }
 }

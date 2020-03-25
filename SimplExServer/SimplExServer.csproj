@@ -88,17 +88,35 @@
     <Compile Include="Controls\EditMarkSystemControl.Designer.cs">
       <DependentUpon>EditMarkSystemControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EditOneAnswerQuestionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditOneAnswerQuestionControl.Designer.cs">
+      <DependentUpon>EditOneAnswerQuestionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\EditPropertiesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\EditPropertiesControl.Designer.cs">
       <DependentUpon>EditPropertiesControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EditQuestionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditQuestionControl.Designer.cs">
+      <DependentUpon>EditQuestionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\EditQuestionGroupControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\EditQuestionGroupControl.Designer.cs">
       <DependentUpon>EditQuestionGroupControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditSaveControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditSaveControl.Designer.cs">
+      <DependentUpon>EditSaveControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\EditThemeControl.cs">
       <SubType>UserControl</SubType>
@@ -178,6 +196,9 @@
     <Compile Include="Model\Exam.cs" />
     <Compile Include="Model\Theme.cs" />
     <Compile Include="Model\Ticket.cs" />
+    <Compile Include="Presenter\EditThemePresenter.cs" />
+    <Compile Include="Presenter\EditThemesPresenter.cs" />
+    <Compile Include="Presenter\EditTicketsPresenter.cs" />
     <Compile Include="Services\DeepCloner.cs" />
     <Compile Include="Services\Encryptor.cs" />
     <Compile Include="Common\IApplicationController.cs" />
@@ -215,7 +236,11 @@
       <DependentUpon>SessionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\IEditMarkSystemPropertiesView.cs" />
+    <Compile Include="View\IEditThemesView.cs" />
+    <Compile Include="View\IEditThemeView.cs" />
+    <Compile Include="View\IEditTicketsView.cs" />
     <Compile Include="View\IEditTreeView.cs" />
+    <Compile Include="View\IIntegrableView.cs" />
     <Compile Include="View\IView.cs" />
     <EmbeddedResource Include="Controls\EditFiveStepMarkSystemControl.resx">
       <DependentUpon>EditFiveStepMarkSystemControl.cs</DependentUpon>
@@ -223,11 +248,20 @@
     <EmbeddedResource Include="Controls\EditMarkSystemControl.resx">
       <DependentUpon>EditMarkSystemControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditOneAnswerQuestionControl.resx">
+      <DependentUpon>EditOneAnswerQuestionControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\EditPropertiesControl.resx">
       <DependentUpon>EditPropertiesControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditQuestionControl.resx">
+      <DependentUpon>EditQuestionControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\EditQuestionGroupControl.resx">
       <DependentUpon>EditQuestionGroupControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditSaveControl.resx">
+      <DependentUpon>EditSaveControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\EditThemeControl.resx">
       <DependentUpon>EditThemeControl.cs</DependentUpon>

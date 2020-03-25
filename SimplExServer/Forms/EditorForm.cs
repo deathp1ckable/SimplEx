@@ -1,4 +1,5 @@
-﻿using SimplExServer.View;
+﻿using SimplExServer.Builders;
+using SimplExServer.View;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -9,12 +10,14 @@ namespace SimplExServer
     {
         private ApplicationContext context;
         private Button disabledButton;
-        private double maxPoints;
         private int questionCount;
         private DateTime lastChangeDate;
         private DateTime creationDate;
         public IEditMarkSystemPropertiesView MarkSystemPropertiesView { get; private set; }
         public IEditPropertiesView EditPropertiesView { get; private set; }
+        public IEditThemesView EditThemesView { get; private set; }
+        public IEditThemeView EditThemeView { get; private set; }
+        public IEditTicketsView EditTicketsView { get; private set; }
         public IEditTreeView EditTreeView { get; private set; }
         public DateTime CreationDate
         {
@@ -43,15 +46,8 @@ namespace SimplExServer
                 questionCountLabel.Text = "Количество вопросов: " + value;
             }
         }
-        public double MaxPoints
-        {
-            get => maxPoints;
-            set
-            {
-                maxPoints = value;
-                maxPointsLabel.Text = "Максимальный бал: " + value;
-            }
-        }
+
+
         public EditorForm(ApplicationContext context)
         {
             InitializeComponent();
@@ -108,13 +104,42 @@ namespace SimplExServer
         {
             if (EditTreeView != null)
             {
-                EditTreeView.GoToProperties += EditTreeViewGoToProperties;
+                EditTreeView.GoToProperties -= EditTreeViewGoToProperties;
+                EditTreeView.NodeChanged -= EditTreeViewNodeChanged;
             }
-            EditTreeView = view;
+                EditTreeView = view;
             EditTreeView.GoToProperties += EditTreeViewGoToProperties;
+            EditTreeView.NodeChanged += EditTreeViewNodeChanged;
             UserControl control = (UserControl)EditTreeView;
             control.Parent = treePanel;
             control.Size = treePanel.Size;
+            control.Location = new Point(0, 0);
+            control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        }
+        public void SetEditThemesView(IEditThemesView view)
+        {
+            EditThemesView = view;
+            UserControl control = (UserControl)EditThemesView;
+            control.Parent = propertiesPanel;
+            control.Size = propertiesPanel.Size;
+            control.Location = new Point(0, 0);
+            control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        }
+        public void SetEditThemeView(IEditThemeView view)
+        {
+            EditThemeView = view;
+            UserControl control = (UserControl)EditThemeView;
+            control.Parent = propertiesPanel;
+            control.Size = propertiesPanel.Size;
+            control.Location = new Point(0, 0);
+            control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        }
+        public void SetEditTicketsView(IEditTicketsView view)
+        {
+            EditTicketsView = view;
+            UserControl control = (UserControl)EditTicketsView;
+            control.Parent = propertiesPanel;
+            control.Size = propertiesPanel.Size;
             control.Location = new Point(0, 0);
             control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         }
@@ -139,6 +164,7 @@ namespace SimplExServer
             markSystemButton.Text = "Система оценивания" + (sender.Saved ? "" : "*");
             unsavedMarkSystemToolTip.Active = !sender.Saved;
         }
+
         private void TabStopClick(object sender, EventArgs e)
         {
             Button senderButton = (Button)sender;
@@ -150,22 +176,51 @@ namespace SimplExServer
             switch (int.Parse(senderButton.Tag.ToString()))
             {
                 case 0:
+                    HideAllProperties();
                     EditPropertiesView?.Show();
-                    MarkSystemPropertiesView?.Hide();
                     break;
                 case 1:
-                    EditPropertiesView?.Hide();
+                    HideAllProperties();
                     MarkSystemPropertiesView?.Show();
                     break;
                 case 2:
-                    EditPropertiesView?.Hide();
-                    MarkSystemPropertiesView?.Hide();
+                    HideAllProperties();
+                    OpenPropertiesPanel();
                     break;
                 case 3:
-                    EditPropertiesView?.Hide();
-                    MarkSystemPropertiesView?.Hide();
+                    HideAllProperties();
                     break;
             }
+        }
+
+        private void OpenPropertiesPanel()
+        {
+            HideAllProperties();
+            if (EditTreeView.CurrentObject == null)
+            {
+                if (EditTreeView.CurrentSection == Section.Themes)
+                    EditThemesView.Show();
+                else if (EditTreeView.CurrentSection == Section.Tickets)
+                    EditTicketsView.Show();
+            }
+            else
+            {
+                if (EditTreeView.CurrentObject is ThemeBuilder)
+                    EditThemeView.Show();
+            }
+        }
+        private void HideAllProperties()
+        {
+            EditPropertiesView?.Hide();
+            MarkSystemPropertiesView?.Hide();
+            EditThemesView?.Hide();
+            EditTicketsView?.Hide();
+            EditThemeView.Hide();
+        }
+        private void EditTreeViewNodeChanged(IEditTreeView sender)
+        {
+            if (int.Parse(disabledButton.Tag.ToString()) == 2)
+                OpenPropertiesPanel();
         }
     }
 }

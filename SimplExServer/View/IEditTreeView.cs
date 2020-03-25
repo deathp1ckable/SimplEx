@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 namespace SimplExServer.View
 {
-    public interface IEditTreeView : IView
+    public interface IEditTreeView : IIntegrableView
     {
         IList<ThemeBuilder> ThemeBuilders { get; set; }
         IList<TicketBuilder> TicketBuilders { get; set; }
@@ -20,7 +20,6 @@ namespace SimplExServer.View
         event ViewActionHandler<IEditTreeView, QuestionPastedArgs> QuestionPasted;
         event ViewActionHandler<IEditTreeView, QuestionGroupCopiedArgs> QuestionGroupCopied;
         event ViewActionHandler<IEditTreeView, QuestionGroupPastedArgs> QuestionGroupPasted;
-
         void SelectObject(object obj);
         void RefreshTickets();
         void RefreshThemes();

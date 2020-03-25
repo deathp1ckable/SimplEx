@@ -37,6 +37,9 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
+            this.markSystemTypeList = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button2
@@ -80,7 +83,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(3, 145);
+            this.button1.Location = new System.Drawing.Point(3, 87);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(715, 23);
             this.button1.TabIndex = 84;
@@ -115,7 +118,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelButton.Location = new System.Drawing.Point(3, 116);
+            this.cancelButton.Location = new System.Drawing.Point(3, 193);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(715, 23);
             this.cancelButton.TabIndex = 81;
@@ -138,17 +141,54 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(3, 87);
+            this.button3.Location = new System.Drawing.Point(3, 164);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(715, 23);
             this.button3.TabIndex = 88;
             this.button3.Text = "Добавить вопрос";
             this.button3.UseVisualStyleBackColor = false;
             // 
+            // markSystemTypeList
+            // 
+            this.markSystemTypeList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.markSystemTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.markSystemTypeList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.markSystemTypeList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.markSystemTypeList.FormattingEnabled = true;
+            this.markSystemTypeList.Location = new System.Drawing.Point(106, 135);
+            this.markSystemTypeList.Name = "markSystemTypeList";
+            this.markSystemTypeList.Size = new System.Drawing.Size(612, 23);
+            this.markSystemTypeList.TabIndex = 90;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label5.Location = new System.Drawing.Point(4, 136);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(96, 19);
+            this.label5.TabIndex = 89;
+            this.label5.Text = "Тип вопроса:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label6.Location = new System.Drawing.Point(4, 113);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(180, 19);
+            this.label6.TabIndex = 91;
+            this.label6.Text = "Управление вопросами:";
+            // 
             // EditQuestionGroupControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.markSystemTypeList);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label2);
@@ -176,5 +216,8 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ComboBox markSystemTypeList;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }

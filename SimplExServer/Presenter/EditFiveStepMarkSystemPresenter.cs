@@ -10,7 +10,7 @@ namespace SimplExServer.Presenter
     class EditFiveStepMarkSystemPresenter : IntegrablePresenter<MarkSystemBuilder, IEditFiveStepMarkSystemView>, IEditMarkSystemPresenter
     {
         FiveStepMarkSystemBuilder fiveStepMarkSystem;
-        public MarkSystemBuilder MarkSystem { get => fiveStepMarkSystem; set => fiveStepMarkSystem = (FiveStepMarkSystemBuilder)value; }
+        public MarkSystemBuilder MarkSystemBuilder { get => fiveStepMarkSystem; set => fiveStepMarkSystem = (FiveStepMarkSystemBuilder)value; }
         public EditFiveStepMarkSystemPresenter(IEditFiveStepMarkSystemView view, IApplicationController applicationController) : base(view, applicationController)
         {
             View.SaveChanges += SaveChanges;
@@ -40,7 +40,7 @@ namespace SimplExServer.Presenter
         private void Changed(IEditMarkSystemView sender) => sender.Saved = false;
         public override void Run(MarkSystemBuilder argumnet)
         {
-            MarkSystem = argumnet;
+            MarkSystemBuilder = argumnet;
             View.FivePercent = fiveStepMarkSystem.FivePercent;
             View.FourPercent = fiveStepMarkSystem.FourPercent;
             View.ThreePercent = fiveStepMarkSystem.ThreePercent;

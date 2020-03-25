@@ -28,22 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cancelButton = new System.Windows.Forms.Button();
+            this.addButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // cancelButton
+            // addButton
             // 
-            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelButton.Location = new System.Drawing.Point(3, 31);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(717, 23);
-            this.cancelButton.TabIndex = 66;
-            this.cancelButton.Text = "Добавить новый билет";
-            this.cancelButton.UseVisualStyleBackColor = false;
+            this.addButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.addButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addButton.Location = new System.Drawing.Point(3, 31);
+            this.addButton.Name = "addButton";
+            this.addButton.Size = new System.Drawing.Size(717, 23);
+            this.addButton.TabIndex = 66;
+            this.addButton.Text = "Добавить новый билет";
+            this.addButton.UseVisualStyleBackColor = false;
+            this.addButton.Click += new System.EventHandler(this.AddButtonClick);
             // 
             // label3
             // 
@@ -60,7 +61,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.addButton);
             this.Controls.Add(this.label3);
             this.Name = "EditTicketsControl";
             this.Size = new System.Drawing.Size(725, 449);
@@ -71,7 +72,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.Label label3;
     }
 }

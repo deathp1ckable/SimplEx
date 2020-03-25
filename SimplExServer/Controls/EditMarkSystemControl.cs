@@ -31,7 +31,7 @@ namespace SimplExServer.Controls
                             MarkSystemTypeChanged?.Invoke(this);
                             return;
                         }
-                    throw new Exception("Type not assigned");
+                    throw new Exception("Type not assigned.");
                 }
                 else tempType = value;
             }
@@ -48,16 +48,14 @@ namespace SimplExServer.Controls
                     if (markSystemTypes[i] == typeof(FiveStepMarkSystemBuilder))
                         markSystemTypeList.Items.Add("Обычная пятиступенчатая");
                 }
-                MarkSystemType = tempType;
+                if (tempType != null)
+                    MarkSystemType = tempType;
             }
         }
         public string Description { get => descriptionBox.Text; set => descriptionBox.Text = value; }
         public bool Saved { get => EditMarkSystemView?.Saved ?? false; set => EditMarkSystemView.Saved = value; }
 
-        public EditMarkSystemControl()
-        {
-            InitializeComponent();
-        }
+        public EditMarkSystemControl() => InitializeComponent();
         public void Close() => Dispose();
         public void SetEditMarkSystemView(IEditMarkSystemView view)
         {
@@ -93,6 +91,5 @@ namespace SimplExServer.Controls
         }
         private void ChangedHandle(object sender, EventArgs e) => InvokeChanged(EditMarkSystemView);
         private void MarkSystemTypeListResize(object sender, EventArgs e) => ((Control)sender).Invalidate();
-
     }
 }

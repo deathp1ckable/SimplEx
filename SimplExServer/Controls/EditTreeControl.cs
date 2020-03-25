@@ -75,13 +75,13 @@ namespace SimplExServer.Controls
         {
             get
             {
-                if (CurrentObject == null)
+                if (tree.SelectedNode == null)
                     return Section.Themes;
                 if (ReferenceEquals(tree.Nodes["Tickets"], tree.SelectedNode))
                     return Section.Tickets;
                 else if (ReferenceEquals(tree.Nodes["Themes"], tree.SelectedNode))
                     return Section.Themes;
-                if (ContainsNode(tree.Nodes["Tickets"], tree.SelectedNode))
+                if (ContainsNode(tree.Nodes["Themes"], tree.SelectedNode))
                     return Section.Tickets;
                 else return Section.Themes;
             }

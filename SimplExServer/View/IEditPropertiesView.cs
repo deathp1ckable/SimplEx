@@ -2,7 +2,7 @@
 
 namespace SimplExServer.View
 {
-    public interface IEditPropertiesView : IView
+    public interface IEditPropertiesView : IIntegrableView
     {
         string ExamName { get; set; }
         string Discipline { get; set; }
@@ -23,7 +23,6 @@ namespace SimplExServer.View
         void MessageWrongCreatorPatronimyc(string reason);
         void MessageWrongPassword(string reason);
         void MessageWrongRepeat(string reason);
-        void Hide();
         event ViewActionHandler<IEditPropertiesView> SaveChanges;
         event ViewActionHandler<IEditPropertiesView> CancelChanges;
         event ViewActionHandler<IEditPropertiesView> Changed;

@@ -1,7 +1,7 @@
 ﻿using System;
 namespace SimplExServer.View
 {
-    public interface IEditMarkSystemPropertiesView : IView
+    public interface IEditMarkSystemPropertiesView : IIntegrableView
     {
         Type MarkSystemType { get; set; }
         Type[] MarkSystemTypes { get; set; }
@@ -9,7 +9,6 @@ namespace SimplExServer.View
         bool Saved { get; set; }
         IEditMarkSystemView EditMarkSystemView { get; }
         void SetEditMarkSystemView(IEditMarkSystemView view);
-        void Hide();
         event ViewActionHandler<IEditMarkSystemPropertiesView> SaveChanges;
         event ViewActionHandler<IEditMarkSystemPropertiesView> CancelChanges;
         event ViewActionHandler<IEditMarkSystemPropertiesView> Changed;

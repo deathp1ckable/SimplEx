@@ -30,15 +30,15 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImportQuestionForm));
             this.rightPanel = new System.Windows.Forms.Panel();
+            this.listBox3 = new System.Windows.Forms.ListBox();
+            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.pageBut = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.listBox2 = new System.Windows.Forms.ListBox();
-            this.listBox3 = new System.Windows.Forms.ListBox();
             this.cancelButton = new System.Windows.Forms.Button();
             this.searchButton = new System.Windows.Forms.Button();
             this.searchBox = new System.Windows.Forms.ComboBox();
@@ -59,6 +59,44 @@
             this.rightPanel.Name = "rightPanel";
             this.rightPanel.Size = new System.Drawing.Size(350, 456);
             this.rightPanel.TabIndex = 1;
+            // 
+            // listBox3
+            // 
+            this.listBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.listBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listBox3.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.ItemHeight = 19;
+            this.listBox3.Location = new System.Drawing.Point(12, 271);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(325, 133);
+            this.listBox3.TabIndex = 22;
+            // 
+            // listBox2
+            // 
+            this.listBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.listBox2.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.listBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listBox2.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.ItemHeight = 19;
+            this.listBox2.Location = new System.Drawing.Point(12, 48);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(325, 171);
+            this.listBox2.TabIndex = 21;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Calibri", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.ForeColor = System.Drawing.SystemColors.Control;
+            this.label1.Location = new System.Drawing.Point(6, 232);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(107, 36);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "Файлы:";
             // 
             // pageBut
             // 
@@ -83,18 +121,6 @@
             this.label2.Size = new System.Drawing.Size(180, 36);
             this.label2.TabIndex = 11;
             this.label2.Text = "База данных:";
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Calibri", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(6, 232);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(107, 36);
-            this.label1.TabIndex = 17;
-            this.label1.Text = "Файлы:";
             // 
             // label3
             // 
@@ -134,7 +160,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(436, 30);
             this.button2.TabIndex = 19;
-            this.button2.Text = "Предпросмотр";
+            this.button2.Text = "Просмотреть вопрос";
             this.button2.UseVisualStyleBackColor = false;
             // 
             // listBox1
@@ -142,37 +168,14 @@
             this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listBox1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 19;
             this.listBox1.Location = new System.Drawing.Point(362, 48);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(436, 289);
+            this.listBox1.Size = new System.Drawing.Size(436, 285);
             this.listBox1.TabIndex = 20;
-            // 
-            // listBox2
-            // 
-            this.listBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.listBox2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.listBox2.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.ItemHeight = 19;
-            this.listBox2.Location = new System.Drawing.Point(12, 48);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(325, 175);
-            this.listBox2.TabIndex = 21;
-            // 
-            // listBox3
-            // 
-            this.listBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.listBox3.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.listBox3.FormattingEnabled = true;
-            this.listBox3.ItemHeight = 19;
-            this.listBox3.Location = new System.Drawing.Point(12, 271);
-            this.listBox3.Name = "listBox3";
-            this.listBox3.Size = new System.Drawing.Size(325, 137);
-            this.listBox3.TabIndex = 22;
             // 
             // cancelButton
             // 
@@ -217,7 +220,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ClientSize = new System.Drawing.Size(804, 452);
+            this.ClientSize = new System.Drawing.Size(804, 456);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.searchButton);
             this.Controls.Add(this.searchBox);

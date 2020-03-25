@@ -12,12 +12,14 @@ namespace SimplExServer.Presenter
             ApplicationController.Run<EditExamPresenter, ExamBuilder>(Argumnet).Integrate(View.SetEditPropertiesView);
             ApplicationController.Run<EditMarkSystemPresenter, ExamBuilder>(Argumnet).Integrate(View.SetEditMarkSystemPropertiesView);
             ApplicationController.Run<EditTreePresenter, ExamBuilder>(Argumnet).Integrate(View.SetEditTreeView);
+            ApplicationController.Run<EditThemesPresenter, EditArgumnet>(new EditArgumnet(Argumnet, View.EditTreeView)).Integrate(View.SetEditThemesView);
+            ApplicationController.Run<EditTicketsPresenter, EditArgumnet>(new EditArgumnet(Argumnet, View.EditTreeView)).Integrate(View.SetEditTicketsView);
+            ApplicationController.Run<EditThemePresenter, EditArgumnet>(new EditArgumnet(Argumnet, View.EditTreeView)).Integrate(View.SetEditThemeView);
             if (Argumnet.Instance.CreationDate == null)
                 View.EditPropertiesView.Saved = false;
             View.CreationDate = Argumnet.CreationDate.Value;
             View.LastChangeDate = Argumnet.LastChangeDate.Value;
-            View.QuestionCount = 0;
-            View.MaxPoints = 0;
+            View.QuestionCount = Argumnet.GetQuestionBuilders().Length;
             View.Show();
         }
     }

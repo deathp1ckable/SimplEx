@@ -29,15 +29,11 @@ namespace SimplExServer
                 .RegisterView<IEditTreeView, EditTreeControl>()
                 .RegisterView<IEditMarkSystemPropertiesView, EditMarkSystemControl>()
                 .RegisterView<IEditFiveStepMarkSystemView, EditFiveStepMarkSystemControl>()
+                .RegisterView<IEditThemesView, EditThemesControl>()
+                .RegisterView<IEditTicketsView, EditTicketsControl>()
+                .RegisterView<IEditThemeView, EditThemeControl>()
                 .RegisterIntstance(context);
             ExamBuilder examBuilder = new ExamBuilder();
-            examBuilder.AddTheme("123");
-            examBuilder.AddTheme("12345");
-            QuestionGroupBuilder questionGroupBuilder = examBuilder.AddTicket("123").AddQuestionGroup("124345");
-            QuestionGroupBuilder questionGroupBuilder1 = questionGroupBuilder.AddQuestionGroup("12");
-            questionGroupBuilder.AddQuestion(new OneAnswerQuestion()); 
-            questionGroupBuilder.AddQuestion(new OneAnswerQuestion());
-            questionGroupBuilder1.AddQuestion(new OneAnswerQuestion());
             controller.Run<EditMainPresenter, ExamBuilder>(examBuilder);
             Application.Run(context);
         }

@@ -42,7 +42,6 @@
             this.creationDateLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.lastChangeDateLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.questionCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.maxPointsLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.treePanel = new System.Windows.Forms.Panel();
             this.propertiesPanel = new System.Windows.Forms.Panel();
@@ -168,8 +167,7 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.creationDateLabel,
             this.lastChangeDateLabel,
-            this.questionCountLabel,
-            this.maxPointsLabel});
+            this.questionCountLabel});
             this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.statusStrip.Location = new System.Drawing.Point(0, 635);
             this.statusStrip.Name = "statusStrip";
@@ -196,12 +194,6 @@
             this.questionCountLabel.Name = "questionCountLabel";
             this.questionCountLabel.Size = new System.Drawing.Size(131, 17);
             this.questionCountLabel.Text = "Количество вопросов:";
-            // 
-            // maxPointsLabel
-            // 
-            this.maxPointsLabel.Name = "maxPointsLabel";
-            this.maxPointsLabel.Size = new System.Drawing.Size(120, 17);
-            this.maxPointsLabel.Text = "Максимальный бал:";
             // 
             // splitContainer
             // 
@@ -306,7 +298,6 @@
         private System.Windows.Forms.ToolStripStatusLabel lastChangeDateLabel;
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.ToolStripStatusLabel questionCountLabel;
-        private System.Windows.Forms.ToolStripStatusLabel maxPointsLabel;
         private System.Windows.Forms.Panel propertiesPanel;
         private System.Windows.Forms.ToolTip unsavedPropertiesTip;
         private System.Windows.Forms.ToolTip unsavedMarkSystemToolTip;
