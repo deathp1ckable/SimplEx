@@ -1,11 +1,6 @@
 ﻿using SimplExServer.Builders;
 using SimplExServer.Common;
 using SimplExServer.View;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimplExServer.Presenter
 {
@@ -17,9 +12,9 @@ namespace SimplExServer.Presenter
         }
         private void ViewThemeAdded(IEditThemesView sender)
         {
-            ThemeBuilder builder = Argumnet.ExamBuilder.AddTheme("Новая Тема");
-            Argumnet.EditTreeView.RefreshThemes();
-            Argumnet.EditTreeView.SelectObject(builder);
+            ThemeBuilder builder = Argument.ExamBuilder.AddTheme("Новая Тема");
+            Argument.EditTreeView.RefreshThemes();
+            Argument.EditTreeView.SelectObject(builder);
         }
     }
     class EditArgumnet

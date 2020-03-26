@@ -1,5 +1,4 @@
 ﻿using SimplExServer.Common;
-using SimplExServer.Model.Inherited;
 using SimplExServer.View;
 
 namespace SimplExServer.Presenter
@@ -16,7 +15,7 @@ namespace SimplExServer.Presenter
     }
     abstract class AbstractPresenter<TArgumnet> : IPresenter<TArgumnet>
     {
-        protected TArgumnet Argumnet { get; set; }
+        protected TArgumnet Argument { get; set; }
         protected IView View { get; set; }
         protected IApplicationController ApplicationController { get; set; }
         protected AbstractPresenter(IView view, IApplicationController applicationController)
@@ -26,7 +25,7 @@ namespace SimplExServer.Presenter
         }
         public virtual void Run(TArgumnet argument)
         {
-            Argumnet = argument;
+            Argument = argument;
             View.Show();
         }
     }

@@ -107,7 +107,7 @@ namespace SimplExServer
                 EditTreeView.GoToProperties -= EditTreeViewGoToProperties;
                 EditTreeView.NodeChanged -= EditTreeViewNodeChanged;
             }
-                EditTreeView = view;
+            EditTreeView = view;
             EditTreeView.GoToProperties += EditTreeViewGoToProperties;
             EditTreeView.NodeChanged += EditTreeViewNodeChanged;
             UserControl control = (UserControl)EditTreeView;
@@ -153,6 +153,7 @@ namespace SimplExServer
             disabledButton.Enabled = false;
             EditPropertiesView?.Hide();
             MarkSystemPropertiesView?.Hide();
+            EditTreeViewNodeChanged(sender);
         }
         private void ModifyProperties(IEditPropertiesView sender)
         {
@@ -184,7 +185,6 @@ namespace SimplExServer
                     MarkSystemPropertiesView?.Show();
                     break;
                 case 2:
-                    HideAllProperties();
                     OpenPropertiesPanel();
                     break;
                 case 3:

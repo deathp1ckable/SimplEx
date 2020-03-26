@@ -15,16 +15,16 @@ namespace SimplExServer.Presenter
         }
         public override void Run(ExamBuilder argumnet)
         {
-            Argumnet = argumnet;
-            View.ExamName = Argumnet.ExamName;
-            View.Discipline = Argumnet.Discipline;
-            View.Password = Argumnet.Password;
-            View.CreatorName = Argumnet.CreatorName;
-            View.CreatorSurname = Argumnet.CreatorSurname;
-            View.CreatorPatronimyc = Argumnet.CreatorPatronimyc;
-            View.ExaminationTime = Argumnet.ExaminationTime;
-            View.FirstNumber = Argumnet.FirstNumber;
-            View.Description = Argumnet.Description;
+            Argument = argumnet;
+            View.ExamName = Argument.ExamName;
+            View.Discipline = Argument.Discipline;
+            View.Password = Argument.Password;
+            View.CreatorName = Argument.CreatorName;
+            View.CreatorSurname = Argument.CreatorSurname;
+            View.CreatorPatronimyc = Argument.CreatorPatronimyc;
+            View.ExaminationTime = Argument.ExaminationTime;
+            View.FirstNumber = Argument.FirstNumber;
+            View.Description = Argument.Description;
         }
         private void PropertiesChanged(IEditPropertiesView sender)
         {
@@ -70,30 +70,30 @@ namespace SimplExServer.Presenter
                     return;
                 }
             }
-            Argumnet.ExamName = sender.ExamName;
-            Argumnet.Discipline = sender.Discipline;
-            Argumnet.Password = sender.Password;
-            Argumnet.CreatorName = sender.CreatorName;
-            Argumnet.CreatorSurname = sender.CreatorSurname;
-            Argumnet.CreatorPatronimyc = sender.CreatorPatronimyc;
-            Argumnet.ExaminationTime = sender.ExaminationTime;
-            Argumnet.FirstNumber = sender.FirstNumber;
-            Argumnet.Description = sender.Description;
+            Argument.ExamName = sender.ExamName;
+            Argument.Discipline = sender.Discipline;
+            Argument.Password = sender.Password;
+            Argument.CreatorName = sender.CreatorName;
+            Argument.CreatorSurname = sender.CreatorSurname;
+            Argument.CreatorPatronimyc = sender.CreatorPatronimyc;
+            Argument.ExaminationTime = sender.ExaminationTime;
+            Argument.FirstNumber = sender.FirstNumber;
+            Argument.Description = sender.Description;
 
             View.Saved = true;
         }
         private void CancelProperties(IEditPropertiesView sender)
         {
 
-            sender.ExamName = Argumnet.ExamName;
-            sender.Description = Argumnet.Discipline;
-            sender.Password = Argumnet.Password;
-            sender.CreatorName = Argumnet.CreatorName;
-            sender.CreatorSurname = Argumnet.CreatorSurname;
-            sender.CreatorPatronimyc = Argumnet.CreatorPatronimyc;
-            sender.ExaminationTime = Argumnet.ExaminationTime;
-            sender.FirstNumber = Argumnet.FirstNumber;
-            sender.Description = Argumnet.Description;
+            sender.ExamName = Argument.ExamName;
+            sender.Description = Argument.Discipline;
+            sender.Password = Argument.Password;
+            sender.CreatorName = Argument.CreatorName;
+            sender.CreatorSurname = Argument.CreatorSurname;
+            sender.CreatorPatronimyc = Argument.CreatorPatronimyc;
+            sender.ExaminationTime = Argument.ExaminationTime;
+            sender.FirstNumber = Argument.FirstNumber;
+            sender.Description = Argument.Description;
             if (sender.ExamName.Length <= 0)
             {
                 sender.MessageWrongExamName("Введите название теста.");

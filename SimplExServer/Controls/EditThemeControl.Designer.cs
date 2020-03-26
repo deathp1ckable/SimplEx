@@ -33,6 +33,7 @@
             this.themeBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.countLabel = new System.Windows.Forms.Label();
+            this.saveButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label3
@@ -51,7 +52,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.deleteButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.deleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.deleteButton.Location = new System.Drawing.Point(3, 404);
+            this.deleteButton.Location = new System.Drawing.Point(3, 400);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(717, 23);
             this.deleteButton.TabIndex = 64;
@@ -69,6 +70,7 @@
             this.themeBox.Name = "themeBox";
             this.themeBox.Size = new System.Drawing.Size(664, 21);
             this.themeBox.TabIndex = 66;
+            this.themeBox.TextChanged += new System.EventHandler(this.ThemeBoxTextChanged);
             // 
             // label4
             // 
@@ -86,18 +88,33 @@
             this.countLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.countLabel.AutoSize = true;
             this.countLabel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.countLabel.Location = new System.Drawing.Point(3, 430);
+            this.countLabel.Location = new System.Drawing.Point(3, 426);
             this.countLabel.Name = "countLabel";
             this.countLabel.Size = new System.Drawing.Size(171, 19);
             this.countLabel.TabIndex = 78;
             this.countLabel.Text = "Количество вопросов: 0";
             this.countLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // saveButton
+            // 
+            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveButton.Location = new System.Drawing.Point(3, 58);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(717, 23);
+            this.saveButton.TabIndex = 79;
+            this.saveButton.Text = "Сохранить тему";
+            this.saveButton.UseVisualStyleBackColor = false;
+            this.saveButton.Click += new System.EventHandler(this.SaveButtonClick);
+            // 
             // EditThemeControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.saveButton);
             this.Controls.Add(this.countLabel);
             this.Controls.Add(this.themeBox);
             this.Controls.Add(this.label4);
@@ -117,5 +134,6 @@
         private System.Windows.Forms.TextBox themeBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label countLabel;
+        private System.Windows.Forms.Button saveButton;
     }
 }

@@ -12,9 +12,9 @@ namespace SimplExServer.Presenter
         }
         private void ViewTicketAdded(IEditTicketsView sender)
         {
-            TicketBuilder builder = Argumnet.ExamBuilder.AddTicket("Новый Билет");
-            Argumnet.EditTreeView.RefreshTickets();
-            Argumnet.EditTreeView.SelectObject(builder);
+            TicketBuilder builder = Argument.ExamBuilder.AddTicket("Новый Билет");
+            Argument.EditTreeView.RefreshTickets();
+            Argument.EditTreeView.SelectObject(builder);
         }
     }
 }

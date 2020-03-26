@@ -34,6 +34,7 @@ namespace SimplExServer
                 .RegisterView<IEditThemeView, EditThemeControl>()
                 .RegisterIntstance(context);
             ExamBuilder examBuilder = new ExamBuilder();
+            examBuilder.AddTheme("Theme");
             controller.Run<EditMainPresenter, ExamBuilder>(examBuilder);
             Application.Run(context);
         }

@@ -1,10 +1,10 @@
-﻿using SimplExServer.View;
+﻿using SimplExServer.Builders;
+using SimplExServer.View;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
-using SimplExServer.Builders;
 
 namespace SimplExServer.Controls
 {
@@ -18,6 +18,7 @@ namespace SimplExServer.Controls
         private bool questionCopied;
 
         private bool IsSearched { get => cancelButton.Enabled; set => cancelButton.Enabled = value; }
+
         public event ViewActionHandler<IEditTreeView> NodeChanged;
         public event ViewActionHandler<IEditTreeView> GoToProperties;
         public event ViewActionHandler<IEditTreeView> Searched;
@@ -104,7 +105,7 @@ namespace SimplExServer.Controls
             tree.Nodes["Themes"].ContextMenu = contextMenu;
             tree.Nodes["Tickets"].ContextMenu = contextMenu;
         }
-
+        public void Close() => Dispose();
         private void ContextMenuPaste(object sender, EventArgs e)
         {
             if (questionCopied)
@@ -153,28 +154,9 @@ namespace SimplExServer.Controls
                 contextMenu.MenuItems[2].Enabled = contextMenu.MenuItems[3].Enabled = true;
         }
 
-        public void Close() => Dispose();
-
         private void TreeAfterSelect(object sender, TreeViewEventArgs e)
         {
-            CurrentObject = tree.SelectedNode.Tag;
-            NodeChanged?.Invoke(this);
-            if (CurrentObject != null)
-            {
-                if (tree.SelectedNode.PrevNode != null)
-                    upButton.Enabled = true;
-                else
-                    upButton.Enabled = false;
-                if (tree.SelectedNode.NextNode != null)
-                    downButton.Enabled = true;
-                else
-                    downButton.Enabled = false;
-            }
-            else
-            {
-                upButton.Enabled = false;
-                downButton.Enabled = false;
-            }
+            CheckMovers();
         }
 
         private void TreeItemDrag(object sender, ItemDragEventArgs e)
@@ -182,7 +164,11 @@ namespace SimplExServer.Controls
             if (e.Button == MouseButtons.Left && ((TreeNode)e.Item).Tag is QuestionGroupBuilder)
                 DoDragDrop(e.Item, DragDropEffects.Move);
         }
-        private void TreeDragEnter(object sender, DragEventArgs e) => e.Effect = e.AllowedEffect;
+        private void TreeDragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = e.AllowedEffect;
+        }
+
         private void TreeDragOver(object sender, DragEventArgs e)
         {
             Point targetPoint = tree.PointToClient(new Point(e.X, e.Y));
@@ -219,14 +205,12 @@ namespace SimplExServer.Controls
                 }
             }
         }
-
         private void TreeMouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-            {
-                tree.SelectedNode = tree.GetNodeAt(new Point(e.X, e.Y));
-                TreeAfterSelect(sender, null);
-            }
+            TreeNode selectedNode = tree.SelectedNode;
+            tree.SelectedNode = tree.GetNodeAt(new Point(e.X, e.Y));
+            if (!ReferenceEquals(tree.SelectedNode, selectedNode))
+                SelectNode();
         }
         private void TreeMouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -286,13 +270,39 @@ namespace SimplExServer.Controls
                 return true;
             return ContainsNode(nodeA, nodeB.Parent);
         }
+        private void SelectNode()
+        {
+            CurrentObject = tree.SelectedNode?.Tag;
+            NodeChanged?.Invoke(this);
+            CheckMovers();
+        }
+        private void CheckMovers()
+        {
+            if (CurrentObject != null)
+            {
+                if (tree.SelectedNode.PrevNode != null)
+                    upButton.Enabled = true;
+                else
+                    upButton.Enabled = false;
+                if (tree.SelectedNode.NextNode != null)
+                    downButton.Enabled = true;
+                else
+                    downButton.Enabled = false;
+            }
+            else
+            {
+                upButton.Enabled = false;
+                downButton.Enabled = false;
+            }
+        }
+
         private TreeNode LoadTheme(ThemeBuilder themeBuilder)
         {
             TreeNode result = new TreeNode($"Тема '{themeBuilder.ThemeName}'");
             result.Tag = themeBuilder;
+            result.ContextMenu = contextMenu;
             return result;
         }
-
         private TreeNode LoadTicket(TicketBuilder ticketBuilder)
         {
             TreeNode result = new TreeNode($"Билет '{ticketBuilder.TicketName}'");
@@ -321,56 +331,69 @@ namespace SimplExServer.Controls
             result.ContextMenu = contextMenu;
             return result;
         }
+
         private void SearchBoxResize(object sender, EventArgs e) => ((Control)sender).Invalidate();
 
         private void UpButtonClick(object sender, EventArgs e)
         {
-            string tempText = tree.SelectedNode.PrevNode.Text;
-            object tempTag = tree.SelectedNode.PrevNode.Tag;
-            TreeNode tempNode = tree.SelectedNode.PrevNode;
-            TreeNode[] tempCollection = tree.SelectedNode.PrevNode.Nodes.Cast<TreeNode>().ToArray();
-            TreeNode[] mainCollection = tree.SelectedNode.Nodes.Cast<TreeNode>().ToArray();
-            tree.SelectedNode.PrevNode.Nodes.Clear();
-            tree.SelectedNode.Nodes.Clear();
-            tree.SelectedNode.PrevNode.Text = tree.SelectedNode.Text;
-            tree.SelectedNode.PrevNode.Tag = tree.SelectedNode.Tag;
-            tree.SelectedNode.PrevNode.Nodes.AddRange(mainCollection);
-            tree.SelectedNode.Text = tempText;
-            tree.SelectedNode.Tag = tempTag;
-            tree.SelectedNode.Nodes.AddRange(tempCollection);
-            tree.SelectedNode = tempNode;
+            TreeNode prevNode = (TreeNode)tree.SelectedNode.PrevNode.Clone();
+            TreeNode selectedNode = (TreeNode)tree.SelectedNode.Clone();
+            tree.SelectedNode.Replace(prevNode);
+            tree.SelectedNode.PrevNode.Replace(selectedNode);
+            tree.SelectedNode = selectedNode;
+            CheckMovers();
         }
         private void DownButtonClick(object sender, EventArgs e)
         {
-            string tempText = tree.SelectedNode.NextNode.Text;
-            object tempTag = tree.SelectedNode.NextNode.Tag;
-            TreeNode tempNode = tree.SelectedNode.NextNode;
-            TreeNode[] tempCollection = tree.SelectedNode.NextNode.Nodes.Cast<TreeNode>().ToArray();
-            TreeNode[] mainCollection = tree.SelectedNode.Nodes.Cast<TreeNode>().ToArray();
-            tree.SelectedNode.NextNode.Nodes.Clear();
-            tree.SelectedNode.Nodes.Clear();
-            tree.SelectedNode.NextNode.Text = tree.SelectedNode.Text;
-            tree.SelectedNode.NextNode.Tag = tree.SelectedNode.Tag;
-            tree.SelectedNode.NextNode.Nodes.AddRange(mainCollection);
-            tree.SelectedNode.Text = tempText;
-            tree.SelectedNode.Tag = tempTag;
-            tree.SelectedNode.Nodes.AddRange(tempCollection);
-            tree.SelectedNode = tempNode;
+            TreeNode nextNode = (TreeNode)tree.SelectedNode.NextNode.Clone();
+            TreeNode selectedNode = (TreeNode)tree.SelectedNode.Clone();
+            tree.SelectedNode.Replace(nextNode);
+            tree.SelectedNode.NextNode.Replace(selectedNode);
+            tree.SelectedNode = selectedNode;
+            CheckMovers();
         }
 
         public void SelectObject(object obj)
         {
-            tree.SelectedNode = tree.GetAllNodes().Single(a => ReferenceEquals(a.Tag, obj));
+            if (obj == null)
+                tree.SelectedNode = tree.Nodes["Themes"];
+            tree.SelectedNode = tree.GetAllNodes().Where(a => ReferenceEquals(a.Tag, obj)).FirstOrDefault();
+            if (tree == null)
+                return;
             tree.SelectedNode.Expand();
+            SelectNode();
+        }
+        public void SelectObject(Section section)
+        {
+            if (section == Section.Themes)
+                tree.SelectedNode = tree.Nodes["Themes"];
+            else
+                tree.SelectedNode = tree.Nodes["Tickets"];
+            tree.SelectedNode.Expand();
+            SelectNode();
         }
         public void RefreshTickets()
         {
             TicketBuilders = ticketBuilders;
         }
-
         public void RefreshThemes()
         {
             ThemeBuilders = themesBuilders;
+        }
+        public void RefreshObject(object obj)
+        {
+            TreeNode node = tree.GetAllNodes().Where(a => ReferenceEquals(a.Tag, obj)).FirstOrDefault();
+            if (node == null)
+                return;
+            int index = node.Index;
+            if (node.Tag is ThemeBuilder themeBuilder)
+                node.Replace(LoadTheme(themeBuilder));
+            else if (node.Tag is TicketBuilder ticketBuilder)
+                node.Replace(LoadTicket(ticketBuilder));
+            else if (node.Tag is QuestionGroupBuilder questionGroupBuilder)
+                node.Replace(LoadQuestionGroup(questionGroupBuilder));
+            else if (node.Tag is QuestionBuilder questionBuilder)
+                node.Replace(LoadQuestion(questionBuilder));
         }
     }
     static class TreeExtensions
@@ -390,6 +413,16 @@ namespace SimplExServer.Controls
                 result.AddRange(child.GetAllNodes());
             return result;
         }
+        internal static void Replace(this TreeNode toReplace, TreeNode value)
+        {
+            TreeNode parentNode = toReplace.Parent;
+            int selectedIndex = toReplace.TreeView.SelectedNode.Index;
+            int index = parentNode.Nodes.IndexOf(toReplace);
+            parentNode.Nodes.RemoveAt(index);
+            parentNode.Nodes.Insert(index, value);
+            parentNode.TreeView.SelectedNode = parentNode.Nodes[selectedIndex];
+        }
         internal static IList<TreeNode> ToList(this TreeNodeCollection collection) => collection.Cast<TreeNode>().ToList();
+        internal static TreeNode[] ToArray(this TreeNodeCollection collection) => collection.Cast<TreeNode>().ToArray();
     }
 }

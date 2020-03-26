@@ -21,8 +21,10 @@ namespace SimplExServer.View
         event ViewActionHandler<IEditTreeView, QuestionGroupCopiedArgs> QuestionGroupCopied;
         event ViewActionHandler<IEditTreeView, QuestionGroupPastedArgs> QuestionGroupPasted;
         void SelectObject(object obj);
+        void SelectObject(Section section);
         void RefreshTickets();
         void RefreshThemes();
+        void RefreshObject(object obj);
     }
     public enum Section { Themes, Tickets };
     public class StructChangedArgs : EventArgs

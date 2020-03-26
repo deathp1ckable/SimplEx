@@ -82,9 +82,9 @@ namespace SimplExServer.Presenter
         }
         public override void Run(ExamBuilder argument)
         {
-            Argumnet = argument;
-            View.ThemeBuilders = Argumnet.ThemeBuilders;
-            View.TicketBuilders = Argumnet.TicketBuilders;
+            Argument = argument;
+            View.ThemeBuilders = Argument.ThemeBuilders;
+            View.TicketBuilders = Argument.TicketBuilders;
         }
     }
 }

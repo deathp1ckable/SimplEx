@@ -16,13 +16,13 @@ namespace SimplExServer.Presenter
 
         public override void Run(ExamBuilder argumnet)
         {
-            Argumnet = argumnet;
+            Argument = argumnet;
 
-            presenters.Add(ApplicationController.Run<EditFiveStepMarkSystemPresenter, MarkSystemBuilder>(Argumnet.MarkSystemBuilder));
+            presenters.Add(ApplicationController.Run<EditFiveStepMarkSystemPresenter, MarkSystemBuilder>(Argument.MarkSystemBuilder));
 
-            View.Description = Argumnet.MarkSystemBuilder.Description;
+            View.Description = Argument.MarkSystemBuilder.Description;
             View.MarkSystemTypes = new[] { typeof(FiveStepMarkSystemBuilder) };
-            View.MarkSystemType = Argumnet.MarkSystemBuilder.GetType();
+            View.MarkSystemType = Argument.MarkSystemBuilder.GetType();
             MarkSystemTypeChanged(View);
         }
 
@@ -30,7 +30,7 @@ namespace SimplExServer.Presenter
         {
             IEditMarkSystemPresenter presenter = GetMarkSystemPresenter(sender.MarkSystemType);
             presenter.Integrate(sender.SetEditMarkSystemView);
-            Argumnet.MarkSystemBuilder = presenter.MarkSystemBuilder;
+            Argument.MarkSystemBuilder = presenter.MarkSystemBuilder;
         }
         private IEditMarkSystemPresenter GetMarkSystemPresenter(Type markSystemType) => presenters.Single(a => a.MarkSystemBuilder.GetType() == markSystemType);
     }
