@@ -28,78 +28,84 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button2 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.themeBox = new System.Windows.Forms.TextBox();
+            this.addGroupButton = new System.Windows.Forms.Button();
+            this.groupCountLabel = new System.Windows.Forms.Label();
+            this.questionsCountLabel = new System.Windows.Forms.Label();
+            this.deleteButton = new System.Windows.Forms.Button();
+            this.groupBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.cancelButton = new System.Windows.Forms.Button();
+            this.importButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.markSystemTypeList = new System.Windows.Forms.ComboBox();
+            this.addButton = new System.Windows.Forms.Button();
+            this.questionTypesList = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.saveButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button2
+            // addGroupButton
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.addGroupButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(3, 58);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(715, 23);
-            this.button2.TabIndex = 87;
-            this.button2.Text = "Добавить группу вопросов";
-            this.button2.UseVisualStyleBackColor = false;
+            this.addGroupButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.addGroupButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addGroupButton.Location = new System.Drawing.Point(3, 58);
+            this.addGroupButton.Name = "addGroupButton";
+            this.addGroupButton.Size = new System.Drawing.Size(715, 23);
+            this.addGroupButton.TabIndex = 87;
+            this.addGroupButton.Text = "Добавить группу вопросов";
+            this.addGroupButton.UseVisualStyleBackColor = false;
+            this.addGroupButton.Click += new System.EventHandler(this.AddGroupButtonClick);
             // 
-            // label2
+            // groupCountLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(4, 425);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(212, 19);
-            this.label2.TabIndex = 86;
-            this.label2.Text = "Количество групп вопросов: 0";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.groupCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupCountLabel.AutoSize = true;
+            this.groupCountLabel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupCountLabel.Location = new System.Drawing.Point(4, 425);
+            this.groupCountLabel.Name = "groupCountLabel";
+            this.groupCountLabel.Size = new System.Drawing.Size(212, 19);
+            this.groupCountLabel.TabIndex = 86;
+            this.groupCountLabel.Text = "Количество групп вопросов: 0";
+            this.groupCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label1
+            // questionsCountLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(4, 406);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(171, 19);
-            this.label1.TabIndex = 85;
-            this.label1.Text = "Количество вопросов: 0";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.questionsCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.questionsCountLabel.AutoSize = true;
+            this.questionsCountLabel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.questionsCountLabel.Location = new System.Drawing.Point(4, 406);
+            this.questionsCountLabel.Name = "questionsCountLabel";
+            this.questionsCountLabel.Size = new System.Drawing.Size(171, 19);
+            this.questionsCountLabel.TabIndex = 85;
+            this.questionsCountLabel.Text = "Количество вопросов: 0";
+            this.questionsCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // button1
+            // deleteButton
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(3, 87);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(715, 23);
-            this.button1.TabIndex = 84;
-            this.button1.Text = "Удалить группу";
-            this.button1.UseVisualStyleBackColor = false;
+            this.deleteButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.deleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.deleteButton.Location = new System.Drawing.Point(3, 380);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(715, 23);
+            this.deleteButton.TabIndex = 84;
+            this.deleteButton.Text = "Удалить группу";
+            this.deleteButton.UseVisualStyleBackColor = false;
+            this.deleteButton.Click += new System.EventHandler(this.DeleteButtonClick);
             // 
-            // themeBox
+            // groupBox
             // 
-            this.themeBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.themeBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.themeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.themeBox.Location = new System.Drawing.Point(139, 31);
-            this.themeBox.Name = "themeBox";
-            this.themeBox.Size = new System.Drawing.Size(579, 21);
-            this.themeBox.TabIndex = 83;
+            this.groupBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupBox.Location = new System.Drawing.Point(139, 31);
+            this.groupBox.Name = "groupBox";
+            this.groupBox.Size = new System.Drawing.Size(579, 21);
+            this.groupBox.TabIndex = 83;
+            this.groupBox.TextChanged += new System.EventHandler(this.GroupBoxTextChanged);
             // 
             // label4
             // 
@@ -112,18 +118,19 @@
             this.label4.Text = "Название группы:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // cancelButton
+            // importButton
             // 
-            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.importButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelButton.Location = new System.Drawing.Point(3, 193);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(715, 23);
-            this.cancelButton.TabIndex = 81;
-            this.cancelButton.Text = "Импорт вопроса";
-            this.cancelButton.UseVisualStyleBackColor = false;
+            this.importButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.importButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.importButton.Location = new System.Drawing.Point(3, 193);
+            this.importButton.Name = "importButton";
+            this.importButton.Size = new System.Drawing.Size(715, 23);
+            this.importButton.TabIndex = 81;
+            this.importButton.Text = "Импорт вопроса";
+            this.importButton.UseVisualStyleBackColor = false;
+            this.importButton.Click += new System.EventHandler(this.ImportButtonClick);
             // 
             // label3
             // 
@@ -135,31 +142,32 @@
             this.label3.TabIndex = 80;
             this.label3.Text = "Управление группой:";
             // 
-            // button3
+            // addButton
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(3, 164);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(715, 23);
-            this.button3.TabIndex = 88;
-            this.button3.Text = "Добавить вопрос";
-            this.button3.UseVisualStyleBackColor = false;
+            this.addButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.addButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addButton.Location = new System.Drawing.Point(3, 164);
+            this.addButton.Name = "addButton";
+            this.addButton.Size = new System.Drawing.Size(715, 23);
+            this.addButton.TabIndex = 88;
+            this.addButton.Text = "Добавить вопрос";
+            this.addButton.UseVisualStyleBackColor = false;
+            this.addButton.Click += new System.EventHandler(this.AddButtonClick);
             // 
-            // markSystemTypeList
+            // questionTypesList
             // 
-            this.markSystemTypeList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.questionTypesList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.markSystemTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.markSystemTypeList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.markSystemTypeList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.markSystemTypeList.FormattingEnabled = true;
-            this.markSystemTypeList.Location = new System.Drawing.Point(106, 135);
-            this.markSystemTypeList.Name = "markSystemTypeList";
-            this.markSystemTypeList.Size = new System.Drawing.Size(612, 23);
-            this.markSystemTypeList.TabIndex = 90;
+            this.questionTypesList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.questionTypesList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.questionTypesList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.questionTypesList.FormattingEnabled = true;
+            this.questionTypesList.Location = new System.Drawing.Point(106, 135);
+            this.questionTypesList.Name = "questionTypesList";
+            this.questionTypesList.Size = new System.Drawing.Size(612, 23);
+            this.questionTypesList.TabIndex = 90;
             // 
             // label5
             // 
@@ -182,24 +190,40 @@
             this.label6.TabIndex = 91;
             this.label6.Text = "Управление вопросами:";
             // 
+            // saveButton
+            // 
+            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveButton.Location = new System.Drawing.Point(3, 87);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(715, 23);
+            this.saveButton.TabIndex = 93;
+            this.saveButton.Text = "Сохранить группу вопросов";
+            this.saveButton.UseVisualStyleBackColor = false;
+            this.saveButton.Click += new System.EventHandler(this.SaveButtonClick);
+            // 
             // EditQuestionGroupControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.saveButton);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.markSystemTypeList);
+            this.Controls.Add(this.questionTypesList);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.themeBox);
+            this.Controls.Add(this.addButton);
+            this.Controls.Add(this.addGroupButton);
+            this.Controls.Add(this.groupCountLabel);
+            this.Controls.Add(this.questionsCountLabel);
+            this.Controls.Add(this.deleteButton);
+            this.Controls.Add(this.groupBox);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.importButton);
             this.Controls.Add(this.label3);
             this.Name = "EditQuestionGroupControl";
-            this.Size = new System.Drawing.Size(725, 449);
+            this.Size = new System.Drawing.Size(723, 447);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -207,17 +231,18 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox themeBox;
+        private System.Windows.Forms.Button addGroupButton;
+        private System.Windows.Forms.Label groupCountLabel;
+        private System.Windows.Forms.Label questionsCountLabel;
+        private System.Windows.Forms.Button deleteButton;
+        private System.Windows.Forms.TextBox groupBox;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.Button importButton;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.ComboBox markSystemTypeList;
+        private System.Windows.Forms.Button addButton;
+        private System.Windows.Forms.ComboBox questionTypesList;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button saveButton;
     }
 }

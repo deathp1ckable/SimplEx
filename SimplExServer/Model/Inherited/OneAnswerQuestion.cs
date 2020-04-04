@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace SimplExServer.Model.Inherited
@@ -8,7 +9,9 @@ namespace SimplExServer.Model.Inherited
         public class OneAnswerQuestionContent
         {
             public string Text { get; set; } = string.Empty;
-            public List<string> Answers { get; set; } = new List<string>();
+            public string Letters { get; set; } = string.Empty;
+            public string Devider { get; set; } = string.Empty;
+            public IList<string> Answers { get; set; } = new List<string>();
         }
         public OneAnswerQuestionContent QuestionContent { get; private set; } = new OneAnswerQuestionContent();
         public override string Content
@@ -33,6 +36,13 @@ namespace SimplExServer.Model.Inherited
             };
             if (result.RightAnswer != null)
                 result.RightAnswer.Question = result;
+            return result;
+        }
+        public override string ToString()
+        {
+            string result = QuestionContent.Text + Environment.NewLine;
+            for (int i = 0; i < QuestionContent.Answers.Count; i++)
+                result += QuestionContent.Letters[i] + QuestionContent.Devider + " " + QuestionContent.Answers[i] + Environment.NewLine;
             return result;
         }
     }

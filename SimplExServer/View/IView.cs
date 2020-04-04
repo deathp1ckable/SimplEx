@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace SimplExServer.View
 {
     public interface IView

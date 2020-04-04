@@ -3,8 +3,10 @@ namespace SimplExDb.Internal
 {
     internal class Row
     {
-        public readonly DataRow DataRow;
-        public readonly object Instance;
+        public DataRow DataRow { get; private set; }
+        public object Instance { get; private set; }
+        public bool IsCommited { get; set; }
+
         public Row(DataRow dataRow, object instance)
         {
             DataRow = dataRow;

@@ -30,6 +30,7 @@
         {
             this.label3 = new System.Windows.Forms.Label();
             this.addButton = new System.Windows.Forms.Button();
+            this.themesCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label3
@@ -56,11 +57,24 @@
             this.addButton.UseVisualStyleBackColor = false;
             this.addButton.Click += new System.EventHandler(this.AddButtonClick);
             // 
+            // themesCount
+            // 
+            this.themesCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.themesCount.AutoSize = true;
+            this.themesCount.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.themesCount.Location = new System.Drawing.Point(3, 427);
+            this.themesCount.Name = "themesCount";
+            this.themesCount.Size = new System.Drawing.Size(133, 19);
+            this.themesCount.TabIndex = 87;
+            this.themesCount.Text = "Количество тем: 0";
+            this.themesCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // EditThemesControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.themesCount);
             this.Controls.Add(this.addButton);
             this.Controls.Add(this.label3);
             this.Name = "EditThemesControl";
@@ -74,5 +88,6 @@
 
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button addButton;
+        private System.Windows.Forms.Label themesCount;
     }
 }

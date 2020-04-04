@@ -1,6 +1,7 @@
 ﻿using SimplExServer.Builders;
 using SimplExServer.View;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 namespace SimplExServer.Controls
@@ -8,23 +9,39 @@ namespace SimplExServer.Controls
     public partial class EditMarkSystemControl : UserControl, IEditMarkSystemPropertiesView
     {
         private Type tempType;
-        private Type[] markSystemTypes;
+        private IList<Type> markSystemTypes;
+        private IEditMarkSystemView editMarkSystemView;
 
-        public event ViewActionHandler<IEditMarkSystemPropertiesView> SaveChanges;
-        public event ViewActionHandler<IEditMarkSystemPropertiesView> CancelChanges;
+        public event ViewActionHandler<IEditMarkSystemPropertiesView> Saved;
+        public event ViewActionHandler<IEditMarkSystemPropertiesView> Canceled;
         public event ViewActionHandler<IEditMarkSystemPropertiesView> Changed;
         public event ViewActionHandler<IEditMarkSystemPropertiesView> MarkSystemTypeChanged;
 
-        private int CurrentType { get => markSystemTypeList.SelectedIndex; set => markSystemTypeList.SelectedIndex = value; }
-        public IEditMarkSystemView EditMarkSystemView { get; private set; }
+        private int CurrentType { get => markSystemTypesList.SelectedIndex; set => markSystemTypesList.SelectedIndex = value; }
+        public IEditMarkSystemView EditMarkSystemView
+        {
+            get => editMarkSystemView;
+            set
+            {
+                if (editMarkSystemView != null)
+                    editMarkSystemView.Changed -= InvokeChanged;
+                editMarkSystemView = value;
+                editMarkSystemView.Changed += InvokeChanged;
+                UserControl control = (UserControl)editMarkSystemView;
+                control.Parent = propertiesPanel;
+                control.Size = propertiesPanel.Size;
+                control.Location = new Point(0, 0);
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+        }
         public Type MarkSystemType
         {
-            get => MarkSystemTypes[CurrentType];
+            get => markSystemTypes[CurrentType];
             set
             {
                 if (markSystemTypes != null)
                 {
-                    for (int i = 0; i < markSystemTypes.Length; i++)
+                    for (int i = 0; i < markSystemTypes.Count; i++)
                         if (markSystemTypes[i] == value)
                         {
                             CurrentType = i;
@@ -36,57 +53,51 @@ namespace SimplExServer.Controls
                 else tempType = value;
             }
         }
-        public Type[] MarkSystemTypes
+        public IList<Type> MarkSystemTypes
         {
-            get => markSystemTypes;
             set
             {
                 markSystemTypes = value;
-                markSystemTypeList.Items.Clear();
-                for (int i = 0; i < markSystemTypes.Length; i++)
+                markSystemTypesList.Items.Clear();
+                for (int i = 0; i < markSystemTypes.Count; i++)
                 {
                     if (markSystemTypes[i] == typeof(FiveStepMarkSystemBuilder))
-                        markSystemTypeList.Items.Add("Обычная пятиступенчатая");
+                        markSystemTypesList.Items.Add("Обычная пятиступенчатая");
                 }
                 if (tempType != null)
                     MarkSystemType = tempType;
             }
         }
         public string Description { get => descriptionBox.Text; set => descriptionBox.Text = value; }
-        public bool Saved { get => EditMarkSystemView?.Saved ?? false; set => EditMarkSystemView.Saved = value; }
+        public bool IsSaved
+        {
+            get => editMarkSystemView?.Saved ?? false; set
+            {
+                if (editMarkSystemView != null)
+                    editMarkSystemView.Saved = value;
+            }
+        }
 
         public EditMarkSystemControl() => InitializeComponent();
         public void Close() => Dispose();
-        public void SetEditMarkSystemView(IEditMarkSystemView view)
-        {
-            view.Changed += InvokeChanged;
-            if (EditMarkSystemView != null)
-                EditMarkSystemView.Changed -= InvokeChanged;
-            EditMarkSystemView = view;
-            UserControl control = (UserControl)EditMarkSystemView;
-            control.Parent = propertiesPanel;
-            control.Size = propertiesPanel.Size;
-            control.Location = new Point(0, 0);
-            control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-        }
         private void SaveButtonClick(object sender, EventArgs e)
         {
             EditMarkSystemView.CallSaveChanges();
-            SaveChanges?.Invoke(this);
+            Saved?.Invoke(this);
         }
         private void CancelButtonClick(object sender, EventArgs e)
         {
             EditMarkSystemView.CallCancelChanges();
-            CancelChanges?.Invoke(this);
+            Canceled?.Invoke(this);
         }
         private void MarkSystemTypeListSelectedIndexChanged(object sender, EventArgs e)
         {
-            MarkSystemType = MarkSystemTypes[markSystemTypeList.SelectedIndex];
+            MarkSystemType = markSystemTypes[markSystemTypesList.SelectedIndex];
             Changed?.Invoke(this);
         }
         private void InvokeChanged(IEditMarkSystemView sender)
         {
-            Saved = false;
+            IsSaved = false;
             Changed?.Invoke(this);
         }
         private void ChangedHandle(object sender, EventArgs e) => InvokeChanged(EditMarkSystemView);

@@ -6,6 +6,6 @@ namespace SimplExServer.Presenter
     interface IEditMarkSystemPresenter 
     {
         MarkSystemBuilder MarkSystemBuilder { get; set; }
-        void Integrate(Action<IEditMarkSystemView> integrator);
+        IEditMarkSystemView View { get; }
     }
 }

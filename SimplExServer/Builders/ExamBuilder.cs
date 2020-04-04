@@ -124,25 +124,32 @@ namespace SimplExServer.Builders
         {
             base.Load((Exam)instance.Clone());
 
-            if (Instance.CreationDate == null)
-            {
-                Instance.CreationDate = DateTime.Now;
-                Instance.LastChangeDate = DateTime.Now;
-            }
-
             CreatorName = Instance.CreatorName;
             CreatorSurname = Instance.CreatorSurname;
             CreatorPatronimyc = Instance.CreatorPatronimyc;
-            ExamName = Instance.ExamName;
+            ExamName = Instance.Name;
             Discipline = Instance.Discipline;
             Description = Instance.Description;
             Password = Instance.Password;
             FirstNumber = Instance.FirstNumber;
-            ExaminationTime = Instance.ExaminationTime;
+            ExaminationTime = Instance.Time;
+
             CreationDate = Instance.CreationDate;
             LastChangeDate = Instance.LastChangeDate;
 
             MarkSystemBuilder = MarkSystemBuilder.CreateBuilder(Instance.MarkSystem, this);
+
+            if (Instance.CreationDate == null)
+            {
+                CreationDate = DateTime.Now;
+                LastChangeDate = DateTime.Now;
+                CreatorName = "Имя автора";
+                CreatorSurname = "Фамилия автора";
+                CreatorPatronimyc = "Отчество автора";
+                ExamName = "Новый экзамен";
+                Discipline = "Без Дисциплины";
+                Description = "Без описания";
+            }
 
             int i;
             for (i = 0; i < Instance.Themes.Count; i++)
@@ -161,16 +168,17 @@ namespace SimplExServer.Builders
         public override Exam GetBuildedInstance()
         {
             Instance.LastChangeDate = DateTime.Now;
+            Instance.CreationDate = CreationDate;
 
             Instance.CreatorName = CreatorName;
             Instance.CreatorSurname = CreatorSurname;
             Instance.CreatorPatronimyc = CreatorPatronimyc;
-            Instance.ExamName = ExamName;
+            Instance.Name = ExamName;
             Instance.Discipline = Discipline;
             Instance.Description = Description;
             Instance.Password = Password;
             Instance.FirstNumber = FirstNumber;
-            Instance.ExaminationTime = ExaminationTime;
+            Instance.Time = ExaminationTime;
 
             Instance.ExecutionResults.Clear();
             Instance.Themes.Clear();
@@ -184,8 +192,12 @@ namespace SimplExServer.Builders
                 Instance.Tickets[i].TicketNumber = i;
             }
             for (i = 0; i < themeBuilders.Count; i++)
-                Instance.Themes.Add(themeBuilders[i].GetBuildedInstance());
-            return base.GetBuildedInstance();
+            {
+                Theme theme = themeBuilders[i].GetBuildedInstance();
+                theme.ThemeNumber = i;
+                Instance.Themes.Add(theme);
+            }
+            return Instance;
         }
     }
 }

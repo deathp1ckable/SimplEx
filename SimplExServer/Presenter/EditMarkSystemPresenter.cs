@@ -12,11 +12,14 @@ namespace SimplExServer.Presenter
         private readonly List<IEditMarkSystemPresenter> presenters = new List<IEditMarkSystemPresenter>();
 
         public EditMarkSystemPresenter(IEditMarkSystemPropertiesView view, IApplicationController applicationController) : base(view, applicationController)
-          => view.MarkSystemTypeChanged += MarkSystemTypeChanged;
-
-        public override void Run(ExamBuilder argumnet)
         {
-            Argument = argumnet;
+            view.MarkSystemTypeChanged += MarkSystemTypeChanged;
+            view.Saved += ViewSaveChanges;
+            view.Canceled += ViewCanceled;
+        }
+        public override void Run(ExamBuilder argument)
+        {
+            Argument = argument;
 
             presenters.Add(ApplicationController.Run<EditFiveStepMarkSystemPresenter, MarkSystemBuilder>(Argument.MarkSystemBuilder));
 
@@ -25,11 +28,21 @@ namespace SimplExServer.Presenter
             View.MarkSystemType = Argument.MarkSystemBuilder.GetType();
             MarkSystemTypeChanged(View);
         }
-
+        private void ViewCanceled(IEditMarkSystemPropertiesView sender)
+        {
+            sender.Description = Argument.MarkSystemBuilder.Description;
+            sender.MarkSystemType = Argument.MarkSystemBuilder.GetType();
+            sender.EditMarkSystemView = GetMarkSystemPresenter(sender.MarkSystemType).View;
+        }
+        private void ViewSaveChanges(IEditMarkSystemPropertiesView sender)
+        {
+            Argument.MarkSystemBuilder = GetMarkSystemPresenter(sender.MarkSystemType).MarkSystemBuilder;
+            Argument.MarkSystemBuilder.Description = sender.Description;
+        }
         private void MarkSystemTypeChanged(IEditMarkSystemPropertiesView sender)
         {
             IEditMarkSystemPresenter presenter = GetMarkSystemPresenter(sender.MarkSystemType);
-            presenter.Integrate(sender.SetEditMarkSystemView);
+            sender.EditMarkSystemView  = presenter.View;
             Argument.MarkSystemBuilder = presenter.MarkSystemBuilder;
         }
         private IEditMarkSystemPresenter GetMarkSystemPresenter(Type markSystemType) => presenters.Single(a => a.MarkSystemBuilder.GetType() == markSystemType);

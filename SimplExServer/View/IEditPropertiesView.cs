@@ -2,7 +2,7 @@
 
 namespace SimplExServer.View
 {
-    public interface IEditPropertiesView : IIntegrableView
+    public interface IEditPropertiesView : IHideableView
     {
         string ExamName { get; set; }
         string Discipline { get; set; }
@@ -14,7 +14,7 @@ namespace SimplExServer.View
         double ExaminationTime { get; set; }
         int FirstNumber { get; set; }
         string Description { get; set; }
-        bool Saved { get; set; }
+        bool IsSaved { get; set; }
 
         void MessageWrongExamName(string reason);
         void MessageWrongDiscipline(string reason);
@@ -23,8 +23,8 @@ namespace SimplExServer.View
         void MessageWrongCreatorPatronimyc(string reason);
         void MessageWrongPassword(string reason);
         void MessageWrongRepeat(string reason);
-        event ViewActionHandler<IEditPropertiesView> SaveChanges;
-        event ViewActionHandler<IEditPropertiesView> CancelChanges;
+        event ViewActionHandler<IEditPropertiesView> ChangesSaved;
+        event ViewActionHandler<IEditPropertiesView> ChangesCanceled;
         event ViewActionHandler<IEditPropertiesView> Changed;
     }
 }

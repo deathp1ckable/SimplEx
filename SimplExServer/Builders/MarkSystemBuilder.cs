@@ -34,7 +34,7 @@ namespace SimplExServer.Builders
         public override MarkSystem GetBuildedInstance()
         {
             Instance.Description = Description;
-            return base.GetBuildedInstance();
+            return Instance;
         }
     }
 }

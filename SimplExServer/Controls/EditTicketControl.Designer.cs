@@ -28,66 +28,72 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.themeBox = new System.Windows.Forms.TextBox();
+            this.components = new System.ComponentModel.Container();
+            this.groupCountLabel = new System.Windows.Forms.Label();
+            this.questionsCountLabel = new System.Windows.Forms.Label();
+            this.deleteButton = new System.Windows.Forms.Button();
+            this.ticketBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.cancelButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.addGroupButton = new System.Windows.Forms.Button();
+            this.questionsList = new System.Windows.Forms.ListBox();
             this.label5 = new System.Windows.Forms.Label();
             this.downButton = new System.Windows.Forms.Button();
             this.upButton = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.watchButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.questionContentToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
-            // label2
+            // groupCountLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(2, 424);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(212, 19);
-            this.label2.TabIndex = 78;
-            this.label2.Text = "Количество групп вопросов: 0";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.groupCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupCountLabel.AutoSize = true;
+            this.groupCountLabel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupCountLabel.Location = new System.Drawing.Point(2, 426);
+            this.groupCountLabel.Name = "groupCountLabel";
+            this.groupCountLabel.Size = new System.Drawing.Size(212, 19);
+            this.groupCountLabel.TabIndex = 78;
+            this.groupCountLabel.Text = "Количество групп вопросов: 0";
+            this.groupCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label1
+            // questionsCountLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(2, 405);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(171, 19);
-            this.label1.TabIndex = 77;
-            this.label1.Text = "Количество вопросов: 0";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.questionsCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.questionsCountLabel.AutoSize = true;
+            this.questionsCountLabel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.questionsCountLabel.Location = new System.Drawing.Point(2, 407);
+            this.questionsCountLabel.Name = "questionsCountLabel";
+            this.questionsCountLabel.Size = new System.Drawing.Size(171, 19);
+            this.questionsCountLabel.TabIndex = 77;
+            this.questionsCountLabel.Text = "Количество вопросов: 0";
+            this.questionsCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // button1
+            // deleteButton
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(4, 87);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(715, 23);
-            this.button1.TabIndex = 76;
-            this.button1.Text = "Удалить билет";
-            this.button1.UseVisualStyleBackColor = false;
+            this.deleteButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.deleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.deleteButton.Location = new System.Drawing.Point(3, 87);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(713, 23);
+            this.deleteButton.TabIndex = 76;
+            this.deleteButton.Text = "Удалить билет";
+            this.deleteButton.UseVisualStyleBackColor = false;
+            this.deleteButton.Click += new System.EventHandler(this.DeleteButtonClick);
             // 
-            // themeBox
+            // ticketBox
             // 
-            this.themeBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.ticketBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.themeBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.themeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.themeBox.Location = new System.Drawing.Point(140, 31);
-            this.themeBox.Name = "themeBox";
-            this.themeBox.Size = new System.Drawing.Size(579, 21);
-            this.themeBox.TabIndex = 75;
+            this.ticketBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ticketBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ticketBox.Location = new System.Drawing.Point(140, 31);
+            this.ticketBox.Name = "ticketBox";
+            this.ticketBox.Size = new System.Drawing.Size(576, 21);
+            this.ticketBox.TabIndex = 75;
+            this.ticketBox.TextChanged += new System.EventHandler(this.TicketBoxTextChanged);
             // 
             // label4
             // 
@@ -100,19 +106,6 @@
             this.label4.Text = "Название билета:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // cancelButton
-            // 
-            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelButton.Location = new System.Drawing.Point(4, 379);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(715, 23);
-            this.cancelButton.TabIndex = 73;
-            this.cancelButton.Text = "Упорядочить вопросы";
-            this.cancelButton.UseVisualStyleBackColor = false;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -123,28 +116,33 @@
             this.label3.TabIndex = 72;
             this.label3.Text = "Управление билетом:";
             // 
-            // button2
+            // addGroupButton
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.addGroupButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(4, 58);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(715, 23);
-            this.button2.TabIndex = 79;
-            this.button2.Text = "Добавить группу вопросов";
-            this.button2.UseVisualStyleBackColor = false;
+            this.addGroupButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.addGroupButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addGroupButton.Location = new System.Drawing.Point(3, 58);
+            this.addGroupButton.Name = "addGroupButton";
+            this.addGroupButton.Size = new System.Drawing.Size(713, 23);
+            this.addGroupButton.TabIndex = 79;
+            this.addGroupButton.Text = "Добавить группу вопросов";
+            this.addGroupButton.UseVisualStyleBackColor = false;
+            this.addGroupButton.Click += new System.EventHandler(this.AddGroupButtonClick);
             // 
-            // listBox1
+            // questionsList
             // 
-            this.listBox1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 19;
-            this.listBox1.Location = new System.Drawing.Point(4, 135);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(714, 194);
-            this.listBox1.TabIndex = 80;
+            this.questionsList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.questionsList.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.questionsList.FormattingEnabled = true;
+            this.questionsList.ItemHeight = 19;
+            this.questionsList.Location = new System.Drawing.Point(4, 135);
+            this.questionsList.Name = "questionsList";
+            this.questionsList.Size = new System.Drawing.Size(712, 213);
+            this.questionsList.TabIndex = 80;
+            this.questionsList.SelectedIndexChanged += new System.EventHandler(this.QuestionsListSelectedIndexChanged);
             // 
             // label5
             // 
@@ -152,23 +150,24 @@
             this.label5.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label5.Location = new System.Drawing.Point(3, 113);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(161, 19);
+            this.label5.Size = new System.Drawing.Size(245, 19);
             this.label5.TabIndex = 81;
-            this.label5.Text = "Управление билетом:";
+            this.label5.Text = "Управление порядком вопросов:";
             // 
             // downButton
             // 
-            this.downButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.downButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.downButton.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.downButton.Enabled = false;
             this.downButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.downButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.downButton.Location = new System.Drawing.Point(82, 335);
+            this.downButton.Location = new System.Drawing.Point(79, 356);
             this.downButton.Name = "downButton";
             this.downButton.Size = new System.Drawing.Size(70, 23);
             this.downButton.TabIndex = 83;
             this.downButton.Text = "▼";
             this.downButton.UseVisualStyleBackColor = false;
+            this.downButton.Click += new System.EventHandler(this.DownButtonClick);
             // 
             // upButton
             // 
@@ -177,46 +176,68 @@
             this.upButton.Enabled = false;
             this.upButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.upButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.upButton.Location = new System.Drawing.Point(6, 335);
+            this.upButton.Location = new System.Drawing.Point(3, 356);
             this.upButton.Name = "upButton";
             this.upButton.Size = new System.Drawing.Size(70, 23);
             this.upButton.TabIndex = 82;
             this.upButton.Text = "▲";
             this.upButton.UseVisualStyleBackColor = false;
+            this.upButton.Click += new System.EventHandler(this.UpButtonClick);
             // 
-            // button3
+            // watchButton
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.watchButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(156, 335);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(562, 23);
-            this.button3.TabIndex = 84;
-            this.button3.Text = "Просмотреть вопрос";
-            this.button3.UseVisualStyleBackColor = false;
+            this.watchButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.watchButton.Enabled = false;
+            this.watchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.watchButton.Location = new System.Drawing.Point(155, 356);
+            this.watchButton.Name = "watchButton";
+            this.watchButton.Size = new System.Drawing.Size(561, 23);
+            this.watchButton.TabIndex = 84;
+            this.watchButton.Text = "Просмотреть вопрос";
+            this.watchButton.UseVisualStyleBackColor = false;
+            this.watchButton.Click += new System.EventHandler(this.WatchButtonClick);
+            // 
+            // saveButton
+            // 
+            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveButton.Location = new System.Drawing.Point(3, 385);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(713, 23);
+            this.saveButton.TabIndex = 85;
+            this.saveButton.Text = "Сохранить билет";
+            this.saveButton.UseVisualStyleBackColor = false;
+            this.saveButton.Click += new System.EventHandler(this.SaveButtonClick);
+            // 
+            // questionContentToolTip
+            // 
+            this.questionContentToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.questionContentToolTip.ToolTipTitle = "Текст вопроса";
             // 
             // EditTicketControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.watchButton);
             this.Controls.Add(this.downButton);
             this.Controls.Add(this.upButton);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.themeBox);
+            this.Controls.Add(this.questionsList);
+            this.Controls.Add(this.addGroupButton);
+            this.Controls.Add(this.groupCountLabel);
+            this.Controls.Add(this.questionsCountLabel);
+            this.Controls.Add(this.deleteButton);
+            this.Controls.Add(this.ticketBox);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.label3);
             this.Name = "EditTicketControl";
-            this.Size = new System.Drawing.Size(721, 447);
+            this.Size = new System.Drawing.Size(721, 449);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -224,18 +245,19 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox themeBox;
+        private System.Windows.Forms.Label groupCountLabel;
+        private System.Windows.Forms.Label questionsCountLabel;
+        private System.Windows.Forms.Button deleteButton;
+        private System.Windows.Forms.TextBox ticketBox;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button addGroupButton;
+        private System.Windows.Forms.ListBox questionsList;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button downButton;
         private System.Windows.Forms.Button upButton;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button watchButton;
+        private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.ToolTip questionContentToolTip;
     }
 }

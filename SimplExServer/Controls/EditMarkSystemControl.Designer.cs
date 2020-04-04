@@ -30,7 +30,7 @@
         {
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.markSystemTypeList = new System.Windows.Forms.ComboBox();
+            this.markSystemTypesList = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.descriptionBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -62,18 +62,18 @@
             // 
             // markSystemTypeList
             // 
-            this.markSystemTypeList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.markSystemTypesList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.markSystemTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.markSystemTypeList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.markSystemTypeList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.markSystemTypeList.FormattingEnabled = true;
-            this.markSystemTypeList.Location = new System.Drawing.Point(198, 26);
-            this.markSystemTypeList.Name = "markSystemTypeList";
-            this.markSystemTypeList.Size = new System.Drawing.Size(520, 23);
-            this.markSystemTypeList.TabIndex = 36;
-            this.markSystemTypeList.SelectedIndexChanged += new System.EventHandler(this.MarkSystemTypeListSelectedIndexChanged);
-            this.markSystemTypeList.Resize += new System.EventHandler(this.MarkSystemTypeListResize);
+            this.markSystemTypesList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.markSystemTypesList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.markSystemTypesList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.markSystemTypesList.FormattingEnabled = true;
+            this.markSystemTypesList.Location = new System.Drawing.Point(198, 26);
+            this.markSystemTypesList.Name = "markSystemTypeList";
+            this.markSystemTypesList.Size = new System.Drawing.Size(520, 23);
+            this.markSystemTypesList.TabIndex = 36;
+            this.markSystemTypesList.SelectedIndexChanged += new System.EventHandler(this.MarkSystemTypeListSelectedIndexChanged);
+            this.markSystemTypesList.Resize += new System.EventHandler(this.MarkSystemTypeListResize);
             // 
             // label1
             // 
@@ -156,7 +156,7 @@
             this.Controls.Add(this.propertiesPanel);
             this.Controls.Add(this.descriptionBox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.markSystemTypeList);
+            this.Controls.Add(this.markSystemTypesList);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Name = "EditMarkSystemPropertiesControl";
@@ -169,7 +169,7 @@
         #endregion
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox markSystemTypeList;
+        private System.Windows.Forms.ComboBox markSystemTypesList;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox descriptionBox;
         private System.Windows.Forms.Label label2;

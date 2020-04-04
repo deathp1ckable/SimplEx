@@ -10,6 +10,9 @@ namespace SimplExServer.Controls
 {
     public partial class EditTreeControl : UserControl, IEditTreeView
     {
+        private readonly List<object> visitedObjects = new List<object>();
+        private int visitedOffset;
+
         private IList<ThemeBuilder> themesBuilders;
         private IList<TicketBuilder> ticketBuilders;
         private TreeNode[] bufferedCollection;
@@ -19,6 +22,7 @@ namespace SimplExServer.Controls
 
         private bool IsSearched { get => cancelButton.Enabled; set => cancelButton.Enabled = value; }
 
+        public event ViewActionHandler<IEditTreeView> Refreshed;
         public event ViewActionHandler<IEditTreeView> NodeChanged;
         public event ViewActionHandler<IEditTreeView> GoToProperties;
         public event ViewActionHandler<IEditTreeView> Searched;
@@ -52,6 +56,8 @@ namespace SimplExServer.Controls
         }
         public object CurrentObject { get; private set; }
         public string SearchText { get => searchBox.Text; set => searchBox.Text = value; }
+        public int MaxVisitedNodes { get; set; } = 100;
+
         public object[] SearchResult
         {
             set
@@ -98,14 +104,65 @@ namespace SimplExServer.Controls
             contextMenu.MenuItems.Add("Копировать", ContextMenuCopy);
             contextMenu.MenuItems.Add("Вырезать", ContextMenuCut);
             contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add("Перейти к свойствам", (a, b) => GoToProperties?.Invoke(this));
+            contextMenu.MenuItems.Add("Перейти к свойствам", (a, b) =>
+            {
+                GoToProperties?.Invoke(this);
+                tree.SelectedNode.Expand();
+            });
             contextMenu.MenuItems[0].Enabled = false;
-            tree.Nodes["Themes"].Tag = null;
-            tree.Nodes["Tickets"].Tag = null;
+            tree.Nodes["Themes"].Tag = new object();
+            tree.Nodes["Tickets"].Tag = new object();
             tree.Nodes["Themes"].ContextMenu = contextMenu;
             tree.Nodes["Tickets"].ContextMenu = contextMenu;
         }
         public void Close() => Dispose();
+
+        public void SelectObject(object obj)
+        {
+            if (obj == null)
+                tree.SelectedNode = tree.Nodes["Themes"];
+            tree.SelectedNode = tree.GetAllNodes().Where(a => ReferenceEquals(a.Tag, obj)).FirstOrDefault();
+            if (tree.SelectedNode == null)
+                return;
+            tree.SelectedNode.Expand();
+            SelectNode();
+        }
+        public void SelectObject(Section section)
+        {
+            if (section == Section.Themes)
+                tree.SelectedNode = tree.Nodes["Themes"];
+            else
+                tree.SelectedNode = tree.Nodes["Tickets"];
+            tree.SelectedNode.Expand();
+            SelectNode();
+        }
+        public void RefreshTickets()
+        {
+            TicketBuilders = ticketBuilders; 
+            Refreshed?.Invoke(this);
+        }
+        public void RefreshThemes()
+        {
+            ThemeBuilders = themesBuilders;
+            Refreshed?.Invoke(this);
+        }
+        public void RefreshObject(object obj)
+        {
+            TreeNode node = tree.GetAllNodes().Where(a => ReferenceEquals(a.Tag, obj)).FirstOrDefault();
+            if (node == null)
+                return;
+            int index = node.Index;
+            if (node.Tag is ThemeBuilder themeBuilder)
+                node.Replace(LoadTheme(themeBuilder));
+            else if (node.Tag is TicketBuilder ticketBuilder)
+                node.Replace(LoadTicket(ticketBuilder));
+            else if (node.Tag is QuestionGroupBuilder questionGroupBuilder)
+                node.Replace(LoadQuestionGroup(questionGroupBuilder));
+            else if (node.Tag is QuestionBuilder questionBuilder)
+                node.Replace(LoadQuestion(questionBuilder));
+            Refreshed?.Invoke(this);
+        }
+
         private void ContextMenuPaste(object sender, EventArgs e)
         {
             if (questionCopied)
@@ -157,6 +214,7 @@ namespace SimplExServer.Controls
         private void TreeAfterSelect(object sender, TreeViewEventArgs e)
         {
             CheckMovers();
+            CheckVisitedObjects();
         }
 
         private void TreeItemDrag(object sender, ItemDragEventArgs e)
@@ -210,7 +268,14 @@ namespace SimplExServer.Controls
             TreeNode selectedNode = tree.SelectedNode;
             tree.SelectedNode = tree.GetNodeAt(new Point(e.X, e.Y));
             if (!ReferenceEquals(tree.SelectedNode, selectedNode))
+            {
                 SelectNode();
+                if (visitedOffset > 0)
+                    visitedObjects.RemoveRange(visitedObjects.Count - visitedOffset, visitedOffset);
+                visitedOffset = 0;
+                AddVisitedObject(tree.SelectedNode.Tag);
+                CheckVisitedObjects();
+            }
         }
         private void TreeMouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -273,6 +338,8 @@ namespace SimplExServer.Controls
         private void SelectNode()
         {
             CurrentObject = tree.SelectedNode?.Tag;
+            if (ReferenceEquals(tree.SelectedNode, tree.Nodes["Themes"]) || ReferenceEquals(tree.SelectedNode, tree.Nodes["Tickets"]))
+                CurrentObject = null;
             NodeChanged?.Invoke(this);
             CheckMovers();
         }
@@ -294,6 +361,23 @@ namespace SimplExServer.Controls
                 upButton.Enabled = false;
                 downButton.Enabled = false;
             }
+        }
+        private void CheckVisitedObjects()
+        {
+            if (visitedOffset > 0)
+                nextButton.Enabled = true;
+            else
+                nextButton.Enabled = false;
+            if (visitedObjects.Count > visitedOffset + 1)
+                backButton.Enabled = true;
+            else
+                backButton.Enabled = false;
+        }
+        private void AddVisitedObject(object obj)
+        {
+            visitedObjects.Add(obj);
+            if (visitedObjects.Count > MaxVisitedNodes)
+                visitedObjects.RemoveAt(0);
         }
 
         private TreeNode LoadTheme(ThemeBuilder themeBuilder)
@@ -336,64 +420,36 @@ namespace SimplExServer.Controls
 
         private void UpButtonClick(object sender, EventArgs e)
         {
-            TreeNode prevNode = (TreeNode)tree.SelectedNode.PrevNode.Clone();
-            TreeNode selectedNode = (TreeNode)tree.SelectedNode.Clone();
-            tree.SelectedNode.Replace(prevNode);
-            tree.SelectedNode.PrevNode.Replace(selectedNode);
-            tree.SelectedNode = selectedNode;
+            TreeNode prevNode = tree.SelectedNode.PrevNode;
+            TreeNode selectedNode =tree.SelectedNode;
+            TreeNode clonedSelectedNode = (TreeNode)tree.SelectedNode.Clone();
+            selectedNode.Replace((TreeNode)prevNode.Clone());
+            prevNode.Replace(clonedSelectedNode);
+            tree.SelectedNode = clonedSelectedNode;
             CheckMovers();
         }
         private void DownButtonClick(object sender, EventArgs e)
         {
-            TreeNode nextNode = (TreeNode)tree.SelectedNode.NextNode.Clone();
-            TreeNode selectedNode = (TreeNode)tree.SelectedNode.Clone();
-            tree.SelectedNode.Replace(nextNode);
-            tree.SelectedNode.NextNode.Replace(selectedNode);
-            tree.SelectedNode = selectedNode;
+            TreeNode nextNode = tree.SelectedNode.NextNode;
+            TreeNode selectedNode = tree.SelectedNode;
+            TreeNode clonedSelectedNode = (TreeNode)tree.SelectedNode.Clone();
+            selectedNode.Replace((TreeNode)nextNode.Clone());
+            nextNode.Replace(clonedSelectedNode);
+            tree.SelectedNode = clonedSelectedNode;
             CheckMovers();
         }
 
-        public void SelectObject(object obj)
+        private void BackButtonClick(object sender, EventArgs e)
         {
-            if (obj == null)
-                tree.SelectedNode = tree.Nodes["Themes"];
-            tree.SelectedNode = tree.GetAllNodes().Where(a => ReferenceEquals(a.Tag, obj)).FirstOrDefault();
-            if (tree == null)
-                return;
-            tree.SelectedNode.Expand();
-            SelectNode();
+            visitedOffset++;
+            SelectObject(visitedObjects[visitedObjects.Count - 1 - visitedOffset]);
+            tree.Focus();
         }
-        public void SelectObject(Section section)
+        private void NextButtonClick(object sender, EventArgs e)
         {
-            if (section == Section.Themes)
-                tree.SelectedNode = tree.Nodes["Themes"];
-            else
-                tree.SelectedNode = tree.Nodes["Tickets"];
-            tree.SelectedNode.Expand();
-            SelectNode();
-        }
-        public void RefreshTickets()
-        {
-            TicketBuilders = ticketBuilders;
-        }
-        public void RefreshThemes()
-        {
-            ThemeBuilders = themesBuilders;
-        }
-        public void RefreshObject(object obj)
-        {
-            TreeNode node = tree.GetAllNodes().Where(a => ReferenceEquals(a.Tag, obj)).FirstOrDefault();
-            if (node == null)
-                return;
-            int index = node.Index;
-            if (node.Tag is ThemeBuilder themeBuilder)
-                node.Replace(LoadTheme(themeBuilder));
-            else if (node.Tag is TicketBuilder ticketBuilder)
-                node.Replace(LoadTicket(ticketBuilder));
-            else if (node.Tag is QuestionGroupBuilder questionGroupBuilder)
-                node.Replace(LoadQuestionGroup(questionGroupBuilder));
-            else if (node.Tag is QuestionBuilder questionBuilder)
-                node.Replace(LoadQuestion(questionBuilder));
+            visitedOffset--;
+            SelectObject(visitedObjects[visitedObjects.Count - 1 - visitedOffset]);
+            tree.Focus();
         }
     }
     static class TreeExtensions
@@ -416,13 +472,29 @@ namespace SimplExServer.Controls
         internal static void Replace(this TreeNode toReplace, TreeNode value)
         {
             TreeNode parentNode = toReplace.Parent;
-            int selectedIndex = toReplace.TreeView.SelectedNode.Index;
             int index = parentNode.Nodes.IndexOf(toReplace);
             parentNode.Nodes.RemoveAt(index);
             parentNode.Nodes.Insert(index, value);
-            parentNode.TreeView.SelectedNode = parentNode.Nodes[selectedIndex];
         }
-        internal static IList<TreeNode> ToList(this TreeNodeCollection collection) => collection.Cast<TreeNode>().ToList();
-        internal static TreeNode[] ToArray(this TreeNodeCollection collection) => collection.Cast<TreeNode>().ToArray();
+
+        internal static IList<TreeNode> ToList(this TreeNodeCollection collection)
+        {
+            return collection.Cast<TreeNode>().ToList();
+        }
+        internal static TreeNode[] ToArray(this TreeNodeCollection collection)
+        {
+            return collection.Cast<TreeNode>().ToArray();
+        }
+    }
+    class NodeTagEqualityComparer : IEqualityComparer<TreeNode>
+    {
+        public bool Equals(TreeNode x, TreeNode y)
+        {
+            return ReferenceEquals(x.Tag, y.Tag);
+        }
+        public int GetHashCode(TreeNode obj)
+        {
+            return obj.Tag.GetHashCode();
+        }
     }
 }

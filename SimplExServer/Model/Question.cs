@@ -19,31 +19,8 @@ namespace SimplExServer.Model
             set => rightAnswer = value;
         }
         public Theme Theme { get; set; }
-
         public QuestionGroup ParentQuestionGroup { get; set; }
-
-        public Question(QuestionData data)
-        {
-            Theme = data.Theme;
-            Points = data.Points;
-            Content = data.Content;
-            RightAnswer = data.RightAnswer;
-            QuestionNumber = data.QuestionNumber;
-            ParentQuestionGroup = data.ParentQuestionGroup;
-        }
         public Question() { }
-        public QuestionData GetQuestionData()
-        {
-            return new QuestionData()
-            {
-                Theme = Theme,
-                Points = Points,
-                Content = Content,
-                RightAnswer = RightAnswer,
-                QuestionNumber = QuestionNumber,
-                ParentQuestionGroup = ParentQuestionGroup
-            };
-        }
         public abstract object Clone();
         public abstract double CheckAnswer(Answer answer);
     }

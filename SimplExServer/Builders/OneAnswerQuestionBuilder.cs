@@ -10,7 +10,6 @@ namespace SimplExServer.Builders
     {
         private int rightAnswerIndex;
         private new OneAnswerQuestion Instance => (OneAnswerQuestion)base.Instance;
-
         public string Text { get; set; }
         public double Points { get; set; }
         public int RightAnswerIndex
@@ -23,7 +22,9 @@ namespace SimplExServer.Builders
                 rightAnswerIndex = value;
             }
         }
-        public List<string> Answers { get; private set; }
+        public List<string> Answers { get; set; }
+        public string Devider { get; set; }
+        public string Letters { get; set; }
         public OneAnswerQuestionBuilder(OneAnswerQuestion instance, QuestionGroupBuilder questionGroupBuilder) : base(questionGroupBuilder) => Load(instance);
 
         public override Question GetDuplicate()
@@ -31,6 +32,8 @@ namespace SimplExServer.Builders
             OneAnswerQuestion result = new OneAnswerQuestion();
             result.QuestionContent.Text = Text;
             result.QuestionContent.Answers = Answers;
+            result.QuestionContent.Letters = Letters;
+            result.QuestionContent.Devider = Devider;
             result.Points = Points;
             if (Answers.Count != 0)
                 result.RightAnswer = new Answer() { Content = Answers[rightAnswerIndex] };
@@ -50,6 +53,8 @@ namespace SimplExServer.Builders
             Points = Instance.Points;
             Text = Instance.QuestionContent.Text;
             Answers = new List<string>(Instance.QuestionContent.Answers);
+            Letters = Instance.QuestionContent.Letters;
+            Devider = Instance.QuestionContent.Devider;
             if (Instance.RightAnswer != null)
                 rightAnswerIndex = Answers.IndexOf(Instance.RightAnswer.Content);
         }
@@ -61,9 +66,17 @@ namespace SimplExServer.Builders
             Instance.QuestionContent.Text = Text;
             Instance.QuestionContent.Answers = Answers;
             Instance.Points = Points;
-            Instance.RightAnswer = new Answer() { Content = Answers[rightAnswerIndex] };
-            return base.GetBuildedInstance();
+            Instance.QuestionContent.Letters = Letters;
+            if (Answers.Count > 0)
+                Instance.RightAnswer = new Answer() { Content = Answers[rightAnswerIndex] };
+            return Instance;
         }
-        public override string ToString() => $"{QuestionNumber} {Points} {Text} {(Answers.Count > 0 ? Answers[RightAnswerIndex] : "")} {ThemeBuilder?.ThemeName ?? ""}";
+        public override string ToString()
+        {
+            string result = Text + Environment.NewLine;
+            for (int i = 0; i < Answers.Count; i++)
+                result += Letters[i] + Devider + " " + Answers[i] + Environment.NewLine;
+            return result;
+        }
     }
 }

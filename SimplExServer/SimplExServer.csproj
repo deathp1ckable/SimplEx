@@ -58,8 +58,14 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="protobuf-net, Version=2.4.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.4.4\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
@@ -94,11 +100,11 @@
     <Compile Include="Controls\EditOneAnswerQuestionControl.Designer.cs">
       <DependentUpon>EditOneAnswerQuestionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\EditPropertiesControl.cs">
+    <Compile Include="Controls\EditExamControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\EditPropertiesControl.Designer.cs">
-      <DependentUpon>EditPropertiesControl.cs</DependentUpon>
+    <Compile Include="Controls\EditExamControl.Designer.cs">
+      <DependentUpon>EditExamControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\EditQuestionControl.cs">
       <SubType>UserControl</SubType>
@@ -148,28 +154,57 @@
     <Compile Include="Controls\EditTreeControl.Designer.cs">
       <DependentUpon>EditTreeControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="DatabaseHandling\DatabaseHandler.cs" />
-    <Compile Include="DatabaseHandling\Maps\AnswerMap.cs" />
-    <Compile Include="DatabaseHandling\Maps\ExamMap.cs" />
-    <Compile Include="DatabaseHandling\Maps\ExecutionResultMap.cs" />
-    <Compile Include="DatabaseHandling\Maps\ExecutorAnswerMap.cs" />
-    <Compile Include="DatabaseHandling\Maps\MarkSystemMap.cs" />
-    <Compile Include="DatabaseHandling\Maps\QuestionGroupMap.cs" />
-    <Compile Include="DatabaseHandling\Maps\QuestionMap.cs" />
-    <Compile Include="DatabaseHandling\Maps\SimplExDBMap.cs" />
-    <Compile Include="DatabaseHandling\Maps\ThemeMap.cs" />
-    <Compile Include="DatabaseHandling\Maps\TicketMap.cs" />
+    <Compile Include="Forms\LoadingContextForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoadingContextForm.Designer.cs">
+      <DependentUpon>LoadingContextForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LogInDbForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LogInDbForm.Designer.cs">
+      <DependentUpon>LogInDbForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PasswordEnterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PasswordEnterForm.Designer.cs">
+      <DependentUpon>PasswordEnterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presenter\AbstractPresenter.cs" />
+    <Compile Include="Presenter\ImportPresenter.cs" />
+    <Compile Include="Presenter\LoadingContextPresnter.cs" />
+    <Compile Include="Presenter\LoadingPresenter.cs" />
+    <Compile Include="Presenter\LogInDbPresenter.cs" />
+    <Compile Include="Presenter\PasswordEnterPresenter.cs" />
+    <Compile Include="Presenter\StartPresenter.cs" />
+    <Compile Include="Presenter\StartSessionArgument.cs" />
+    <Compile Include="Presenter\StartSessionPresenter.cs" />
+    <Compile Include="Services\DatabaseExamSaver.cs" />
+    <Compile Include="Services\DatabaseHandling\ExamDatabaseWorker.cs" />
+    <Compile Include="Services\DatabaseService.cs" />
+    <Compile Include="Services\DatabaseHandling\Maps\AnswerMap.cs" />
+    <Compile Include="Services\DatabaseHandling\Maps\ExamMap.cs" />
+    <Compile Include="Services\DatabaseHandling\Maps\ExecutionResultMap.cs" />
+    <Compile Include="Services\DatabaseHandling\Maps\ExecutorAnswerMap.cs" />
+    <Compile Include="Services\DatabaseHandling\Maps\MarkSystemDataMap.cs" />
+    <Compile Include="Services\DatabaseHandling\Maps\QuestionGroupMap.cs" />
+    <Compile Include="Services\DatabaseHandling\Maps\QuestionMap.cs" />
+    <Compile Include="Services\DatabaseHandling\Maps\SimplExDBMap.cs" />
+    <Compile Include="Services\DatabaseHandling\Maps\ThemeMap.cs" />
+    <Compile Include="Services\DatabaseHandling\Maps\TicketMap.cs" />
     <Compile Include="Forms\EditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\EditorForm.Designer.cs">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ImportQuestionForm.cs">
+    <Compile Include="Forms\ImportForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ImportQuestionForm.Designer.cs">
-      <DependentUpon>ImportQuestionForm.cs</DependentUpon>
+    <Compile Include="Forms\ImportForm.Designer.cs">
+      <DependentUpon>ImportForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LoadingForm.cs">
       <SubType>Form</SubType>
@@ -188,16 +223,23 @@
     <Compile Include="Model\Answer.cs" />
     <Compile Include="Model\ExecutionResult.cs" />
     <Compile Include="Model\ExecutorAnswer.cs" />
-    <Compile Include="Model\MarkSystemData.cs" />
+    <Compile Include="Model\Data\MarkSystemData.cs" />
     <Compile Include="Model\MarkSystem.cs" />
-    <Compile Include="Model\QuestionData.cs" />
+    <Compile Include="Model\Data\QuestionData.cs" />
     <Compile Include="Model\QuestionGroup.cs" />
     <Compile Include="Model\Question.cs" />
     <Compile Include="Model\Exam.cs" />
     <Compile Include="Model\Theme.cs" />
     <Compile Include="Model\Ticket.cs" />
+    <Compile Include="Presenter\EditArgumnet.cs" />
+    <Compile Include="Presenter\EditContentArgumnet.cs" />
+    <Compile Include="Presenter\EditOneAnswerQuestionPresenter.cs" />
+    <Compile Include="Presenter\EditQuestionGroupPresenter.cs" />
+    <Compile Include="Presenter\EditQuestionPresenter.cs" />
+    <Compile Include="Presenter\EditSavingPresenter.cs" />
     <Compile Include="Presenter\EditThemePresenter.cs" />
     <Compile Include="Presenter\EditThemesPresenter.cs" />
+    <Compile Include="Presenter\EditTicketPresenter.cs" />
     <Compile Include="Presenter\EditTicketsPresenter.cs" />
     <Compile Include="Services\DeepCloner.cs" />
     <Compile Include="Services\Encryptor.cs" />
@@ -209,9 +251,16 @@
     <Compile Include="Presenter\IEditMarkSystemPresenter.cs" />
     <Compile Include="Presenter\EditMarkSystemPresenter.cs" />
     <Compile Include="Presenter\IntegrablePresenter.cs" />
+    <Compile Include="Services\ExamFileWorker.cs" />
+    <Compile Include="Services\ExamsListService.cs" />
+    <Compile Include="Services\FileExamSaver.cs" />
+    <Compile Include="Services\IExamSaver.cs" />
+    <Compile Include="Services\InvalidPasswordException.cs" />
+    <Compile Include="View\DetachedEventArgs.cs" />
     <Compile Include="View\IEditFiveStepMarkSystemView.cs" />
     <Compile Include="View\IEditMarkSystemView.cs" />
     <Compile Include="View\IEditMain.cs" />
+    <Compile Include="View\IEditOneAnswerQuestionView.cs" />
     <Compile Include="View\IEditPropertiesView.cs" />
     <Compile Include="Presenter\IPresenter.cs" />
     <Compile Include="Presenter\Presenter.cs" />
@@ -236,12 +285,30 @@
       <DependentUpon>SessionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\IEditMarkSystemPropertiesView.cs" />
+    <Compile Include="View\IEditQuestionGroupView.cs" />
+    <Compile Include="View\IEditQuestionView.cs" />
+    <Compile Include="View\IEditSavingView.cs" />
     <Compile Include="View\IEditThemesView.cs" />
     <Compile Include="View\IEditThemeView.cs" />
     <Compile Include="View\IEditTicketsView.cs" />
+    <Compile Include="View\IEditTicketView.cs" />
     <Compile Include="View\IEditTreeView.cs" />
-    <Compile Include="View\IIntegrableView.cs" />
+    <Compile Include="View\IHideableView.cs" />
+    <Compile Include="View\IImportView.cs" />
+    <Compile Include="View\ILoadingContextView.cs" />
+    <Compile Include="View\ILoadingView.cs" />
+    <Compile Include="View\ILogInView.cs" />
+    <Compile Include="View\IPasswordEnterView.cs" />
+    <Compile Include="View\IStartSessionView.cs" />
+    <Compile Include="View\IStartView.cs" />
     <Compile Include="View\IView.cs" />
+    <Compile Include="View\OpenExamEventArgs.cs" />
+    <Compile Include="View\QuestionCopiedArgs.cs" />
+    <Compile Include="View\QuestionGroupCopiedArgs.cs" />
+    <Compile Include="View\QuestionGroupPastedArgs.cs" />
+    <Compile Include="View\QuestionPastedArgs.cs" />
+    <Compile Include="View\SavedAsEventArgs.cs" />
+    <Compile Include="View\StructChangedArgs.cs" />
     <EmbeddedResource Include="Controls\EditFiveStepMarkSystemControl.resx">
       <DependentUpon>EditFiveStepMarkSystemControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -251,8 +318,8 @@
     <EmbeddedResource Include="Controls\EditOneAnswerQuestionControl.resx">
       <DependentUpon>EditOneAnswerQuestionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\EditPropertiesControl.resx">
-      <DependentUpon>EditPropertiesControl.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\EditExamControl.resx">
+      <DependentUpon>EditExamControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\EditQuestionControl.resx">
       <DependentUpon>EditQuestionControl.cs</DependentUpon>
@@ -281,11 +348,23 @@
     <EmbeddedResource Include="Forms\EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ImportQuestionForm.resx">
-      <DependentUpon>ImportQuestionForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ImportForm.resx">
+      <DependentUpon>ImportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoadingContextForm.resx">
+      <DependentUpon>LoadingContextForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoadingForm.resx">
       <DependentUpon>LoadingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LogInDbForm.resx">
+      <DependentUpon>LogInDbForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PasswordEnterForm.resx">
+      <DependentUpon>PasswordEnterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SessionForm.resx">
+      <DependentUpon>SessionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\StartSessionForm.resx">
       <DependentUpon>StartSessionForm.cs</DependentUpon>
@@ -347,6 +426,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="logo.ico" />
+    <None Include="Resources\loadingGif.gif" />
+    <None Include="Resources\logoPicture.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

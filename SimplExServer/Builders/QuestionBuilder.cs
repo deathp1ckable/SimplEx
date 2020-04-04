@@ -14,6 +14,11 @@ namespace SimplExServer.Builders
             get => themeBuilder;
             set
             {
+                if(value == null)
+                {
+                    themeBuilder = null;
+                    return;
+                }
                 if (value.ParentExamBuilder != ParentQuestionGroupBuilder.GetParentTicketBuilder().ParentExamBuilder)
                     throw new Exception("This builder is not assigned to the parent builder.");
                 themeBuilder = value;

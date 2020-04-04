@@ -9,13 +9,13 @@ namespace SimplExServer.Presenter
         private static readonly Regex passwordRegex = new Regex("([a-zA-Z0-9]{4,})$");
         public EditExamPresenter(IEditPropertiesView view, IApplicationController applicationController) : base(view, applicationController)
         {
-            View.CancelChanges += CancelProperties;
-            View.SaveChanges += SaveProperties;
-            View.Changed += PropertiesChanged;
+            view.ChangesCanceled += CancelProperties;
+            view.ChangesSaved += SaveProperties;
+            view.Changed += PropertiesChanged;
         }
-        public override void Run(ExamBuilder argumnet)
+        public override void Run(ExamBuilder argument)
         {
-            Argument = argumnet;
+            Argument = argument;
             View.ExamName = Argument.ExamName;
             View.Discipline = Argument.Discipline;
             View.Password = Argument.Password;
@@ -25,10 +25,11 @@ namespace SimplExServer.Presenter
             View.ExaminationTime = Argument.ExaminationTime;
             View.FirstNumber = Argument.FirstNumber;
             View.Description = Argument.Description;
+            View.IsSaved = true;
         }
         private void PropertiesChanged(IEditPropertiesView sender)
         {
-            sender.Saved = false;
+            sender.IsSaved = false;
         }
         private void SaveProperties(IEditPropertiesView sender)
         {
@@ -80,7 +81,7 @@ namespace SimplExServer.Presenter
             Argument.FirstNumber = sender.FirstNumber;
             Argument.Description = sender.Description;
 
-            View.Saved = true;
+            View.IsSaved = true;
         }
         private void CancelProperties(IEditPropertiesView sender)
         {
@@ -132,7 +133,7 @@ namespace SimplExServer.Presenter
                     return;
                 }
             }
-            sender.Saved = true;
+            sender.IsSaved = true;
         }
     }
 }

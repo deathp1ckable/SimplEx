@@ -28,39 +28,41 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.numberLabel = new System.Windows.Forms.Label();
+            this.deleteButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.propertiesPanel = new System.Windows.Forms.Panel();
-            this.markSystemTypeList = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.themesList = new System.Windows.Forms.ComboBox();
+            this.questionTypeLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label2
+            // numberLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(2, 402);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(129, 19);
-            this.label2.TabIndex = 86;
-            this.label2.Text = "Номер вопроса: 0";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.numberLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.numberLabel.AutoSize = true;
+            this.numberLabel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.numberLabel.Location = new System.Drawing.Point(2, 402);
+            this.numberLabel.Name = "numberLabel";
+            this.numberLabel.Size = new System.Drawing.Size(129, 19);
+            this.numberLabel.TabIndex = 86;
+            this.numberLabel.Text = "Номер вопроса: 0";
+            this.numberLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // button1
+            // deleteButton
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(3, 376);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(713, 23);
-            this.button1.TabIndex = 84;
-            this.button1.Text = "Удалить вопрос";
-            this.button1.UseVisualStyleBackColor = false;
+            this.deleteButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.deleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.deleteButton.Location = new System.Drawing.Point(3, 376);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(711, 23);
+            this.deleteButton.TabIndex = 84;
+            this.deleteButton.Text = "Удалить вопрос";
+            this.deleteButton.UseVisualStyleBackColor = false;
+            this.deleteButton.Click += new System.EventHandler(this.DeleteButtonClick);
             // 
             // label4
             // 
@@ -79,9 +81,9 @@
             this.label3.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label3.Location = new System.Drawing.Point(2, 6);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(161, 19);
+            this.label3.Size = new System.Drawing.Size(172, 19);
             this.label3.TabIndex = 80;
-            this.label3.Text = "Управление билетом:";
+            this.label3.Text = "Управление вопросом:";
             // 
             // label1
             // 
@@ -100,44 +102,46 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.propertiesPanel.Location = new System.Drawing.Point(3, 75);
             this.propertiesPanel.Name = "propertiesPanel";
-            this.propertiesPanel.Size = new System.Drawing.Size(713, 293);
+            this.propertiesPanel.Size = new System.Drawing.Size(711, 293);
             this.propertiesPanel.TabIndex = 87;
             // 
-            // markSystemTypeList
+            // themesList
             // 
-            this.markSystemTypeList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.themesList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.markSystemTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.markSystemTypeList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.markSystemTypeList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.markSystemTypeList.FormattingEnabled = true;
-            this.markSystemTypeList.Location = new System.Drawing.Point(114, 27);
-            this.markSystemTypeList.Name = "markSystemTypeList";
-            this.markSystemTypeList.Size = new System.Drawing.Size(602, 23);
-            this.markSystemTypeList.TabIndex = 37;
+            this.themesList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.themesList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.themesList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.themesList.FormattingEnabled = true;
+            this.themesList.Location = new System.Drawing.Point(114, 27);
+            this.themesList.Name = "themesList";
+            this.themesList.Size = new System.Drawing.Size(600, 23);
+            this.themesList.TabIndex = 37;
+            this.themesList.SelectedIndexChanged += new System.EventHandler(this.ThemesListSelectedIndexChanged);
             // 
-            // label5
+            // questionTypeLabel
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(2, 421);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(284, 19);
-            this.label5.TabIndex = 89;
-            this.label5.Text = "Тип вопроса: Тестовый с одним ответом";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.questionTypeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.questionTypeLabel.AutoSize = true;
+            this.questionTypeLabel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.questionTypeLabel.Location = new System.Drawing.Point(2, 421);
+            this.questionTypeLabel.Name = "questionTypeLabel";
+            this.questionTypeLabel.Size = new System.Drawing.Size(284, 19);
+            this.questionTypeLabel.TabIndex = 89;
+            this.questionTypeLabel.Text = "Тип вопроса: Тестовый с одним ответом";
+            this.questionTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // EditQuestionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.markSystemTypeList);
+            this.Controls.Add(this.questionTypeLabel);
+            this.Controls.Add(this.themesList);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.propertiesPanel);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.numberLabel);
+            this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Name = "EditQuestionControl";
@@ -148,13 +152,13 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label numberLabel;
+        private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel propertiesPanel;
-        private System.Windows.Forms.ComboBox markSystemTypeList;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox themesList;
+        private System.Windows.Forms.Label questionTypeLabel;
     }
 }

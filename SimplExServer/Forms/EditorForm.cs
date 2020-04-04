@@ -8,24 +8,189 @@ namespace SimplExServer
 {
     public partial class EditorForm : Form, IEditMainView
     {
+        object currentObject;
         private ApplicationContext context;
         private Button disabledButton;
         private int questionCount;
         private DateTime lastChangeDate;
         private DateTime creationDate;
-        public IEditMarkSystemPropertiesView MarkSystemPropertiesView { get; private set; }
-        public IEditPropertiesView EditPropertiesView { get; private set; }
-        public IEditThemesView EditThemesView { get; private set; }
-        public IEditThemeView EditThemeView { get; private set; }
-        public IEditTicketsView EditTicketsView { get; private set; }
-        public IEditTreeView EditTreeView { get; private set; }
+
+        private IEditMarkSystemPropertiesView editMarkSystemView;
+        private IEditPropertiesView editPropertiesView;
+        private IEditThemesView editThemesView;
+        private IEditThemeView editThemeView;
+        private IEditTicketsView editTicketsView;
+        private IEditTicketView editTicketView;
+        private IEditTreeView editTreeView;
+        private IEditQuestionGroupView editQuestionGroupView;
+        private IEditQuestionView editQuestionView;
+        private IEditSavingView editSavingView;
+
+        public IEditMarkSystemPropertiesView EditMarkSystemView
+        {
+            get => editMarkSystemView;
+            set
+            {
+                value.Canceled += ModifyMarkSystem;
+                value.Saved += ModifyMarkSystem;
+                value.Changed += ModifyMarkSystem;
+                if (editMarkSystemView != null)
+                {
+                    editMarkSystemView.Canceled -= ModifyMarkSystem;
+                    editMarkSystemView.Saved -= ModifyMarkSystem;
+                    editMarkSystemView.Changed -= ModifyMarkSystem;
+                }
+                editMarkSystemView = value;
+                if (!editMarkSystemView.IsSaved)
+                    ModifyMarkSystem(value);
+                UserControl control = (UserControl)editMarkSystemView;
+                control.Parent = propertiesPanel;
+                control.Size = propertiesPanel.Size;
+                control.Location = new Point(0, 0);
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+        }
+        public IEditPropertiesView EditPropertiesView
+        {
+            get => editPropertiesView;
+            set
+            {
+                if (editPropertiesView != null)
+                {
+                    editPropertiesView.Changed -= ModifyProperties;
+                    editPropertiesView.ChangesCanceled -= ModifyProperties;
+                    editPropertiesView.ChangesSaved -= ModifyProperties;
+                }
+                value.Changed += ModifyProperties;
+                value.ChangesCanceled += ModifyProperties;
+                value.ChangesSaved += ModifyProperties;
+                editPropertiesView = value;
+                if (!editPropertiesView.IsSaved)
+                    ModifyProperties(value);
+                UserControl control = (UserControl)editPropertiesView;
+                control.Parent = propertiesPanel;
+                control.Size = propertiesPanel.Size;
+                control.Location = new Point(0, 0);
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+        }
+        public IEditThemeView EditThemeView
+        {
+            get => editThemeView;
+            set
+            {
+                editThemeView = value;
+                UserControl control = (UserControl)editThemeView;
+                control.Parent = propertiesPanel;
+                control.Size = propertiesPanel.Size;
+                control.Location = new Point(0, 0);
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+        }
+        public IEditThemesView EditThemesView
+        {
+            get => editThemesView;
+            set
+            {
+                editThemesView = value;
+                UserControl control = (UserControl)editThemesView;
+                control.Parent = propertiesPanel;
+                control.Size = propertiesPanel.Size;
+                control.Location = new Point(0, 0);
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+        }
+        public IEditTicketsView EditTicketsView
+        {
+            get => editTicketsView;
+            set
+            {
+                editTicketsView = value;
+                UserControl control = (UserControl)editTicketsView;
+                control.Parent = propertiesPanel;
+                control.Size = propertiesPanel.Size;
+                control.Location = new Point(0, 0);
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+        }
+        public IEditTicketView EditTicketView
+        {
+            get => editTicketView; set
+            {
+                editTicketView = value;
+                UserControl control = (UserControl)editTicketView;
+                control.Parent = propertiesPanel;
+                control.Size = propertiesPanel.Size;
+                control.Location = new Point(0, 0);
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+        }
+        public IEditSavingView EditSavingView
+        {
+            get => editSavingView;
+            set
+            {
+                editSavingView = value;
+                UserControl control = (UserControl)editSavingView;
+                control.Parent = propertiesPanel;
+                control.Size = propertiesPanel.Size;
+                control.Location = new Point(0, 0);
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+        }
+        public IEditQuestionGroupView EditQuestionGroupView
+        {
+            get => editQuestionGroupView;
+            set
+            {
+                editQuestionGroupView = value;
+                UserControl control = (UserControl)editQuestionGroupView;
+                control.Parent = propertiesPanel;
+                control.Size = propertiesPanel.Size;
+                control.Location = new Point(0, 0);
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+        }
+        public IEditQuestionView EditQuestionView
+        {
+            get => editQuestionView;
+            set
+            {
+                editQuestionView = value;
+                UserControl control = (UserControl)editQuestionView;
+                control.Parent = propertiesPanel;
+                control.Size = propertiesPanel.Size;
+                control.Location = new Point(0, 0);
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+        }
+        public IEditTreeView EditTreeView
+        {
+            get => editTreeView;
+            set
+            {
+                if (editTreeView != null)
+                {
+                    editTreeView.GoToProperties -= EditTreeViewGoToProperties;
+                    editTreeView.NodeChanged -= EditTreeViewNodeChanged;
+                }
+                editTreeView = value;
+                editTreeView.GoToProperties += EditTreeViewGoToProperties;
+                editTreeView.NodeChanged += EditTreeViewNodeChanged;
+                UserControl control = (UserControl)editTreeView;
+                control.Parent = treePanel;
+                control.Size = treePanel.Size;
+                control.Location = new Point(0, 0);
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+        }
         public DateTime CreationDate
         {
             get => creationDate;
             set
             {
                 creationDate = value;
-                creationDateLabel.Text = "Дата создания: " + value.ToString("yy:MM:dd");
+                creationDateLabel.Text = "Дата создания: " + value.ToString("yyyy:MM:dd");
             }
         }
         public DateTime LastChangeDate
@@ -34,7 +199,7 @@ namespace SimplExServer
             set
             {
                 lastChangeDate = value;
-                lastChangeDateLabel.Text = "Дата изменения: " + value.ToString("yy:MM:dd");
+                lastChangeDateLabel.Text = "Дата изменения: " + value.ToString("yyyy:MM:dd");
             }
         }
         public int QuestionCount
@@ -47,7 +212,6 @@ namespace SimplExServer
             }
         }
 
-
         public EditorForm(ApplicationContext context)
         {
             InitializeComponent();
@@ -59,111 +223,33 @@ namespace SimplExServer
         }
         public new void Show()
         {
-            context.MainForm = this;
-            base.Show();
+            //   context.MainForm = this;
+            ShowDialog();
         }
-        public void SetEditPropertiesView(IEditPropertiesView view)
-        {
-            view.Changed += ModifyProperties;
-            view.CancelChanges += ModifyProperties;
-            view.SaveChanges += ModifyProperties;
-            if (EditPropertiesView != null)
-            {
-                EditPropertiesView.Changed -= ModifyProperties;
-                EditPropertiesView.CancelChanges -= ModifyProperties;
-                EditPropertiesView.SaveChanges -= ModifyProperties;
-            }
-            EditPropertiesView = view;
-            ModifyProperties(view);
-            UserControl control = (UserControl)EditPropertiesView;
-            control.Parent = propertiesPanel;
-            control.Size = propertiesPanel.Size;
-            control.Location = new Point(0, 0);
-            control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-        }
-        public void SetEditMarkSystemPropertiesView(IEditMarkSystemPropertiesView view)
-        {
-            view.CancelChanges += ModifyMarkSystem;
-            view.SaveChanges += ModifyMarkSystem;
-            view.Changed += ModifyMarkSystem;
-            if (MarkSystemPropertiesView != null)
-            {
-                MarkSystemPropertiesView.CancelChanges -= ModifyMarkSystem;
-                MarkSystemPropertiesView.SaveChanges -= ModifyMarkSystem;
-                MarkSystemPropertiesView.Changed -= ModifyMarkSystem;
-            }
-            MarkSystemPropertiesView = view;
-            ModifyMarkSystem(view);
-            UserControl control = (UserControl)MarkSystemPropertiesView;
-            control.Parent = propertiesPanel;
-            control.Size = propertiesPanel.Size;
-            control.Location = new Point(0, 0);
-            control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-        }
-        public void SetEditTreeView(IEditTreeView view)
-        {
-            if (EditTreeView != null)
-            {
-                EditTreeView.GoToProperties -= EditTreeViewGoToProperties;
-                EditTreeView.NodeChanged -= EditTreeViewNodeChanged;
-            }
-            EditTreeView = view;
-            EditTreeView.GoToProperties += EditTreeViewGoToProperties;
-            EditTreeView.NodeChanged += EditTreeViewNodeChanged;
-            UserControl control = (UserControl)EditTreeView;
-            control.Parent = treePanel;
-            control.Size = treePanel.Size;
-            control.Location = new Point(0, 0);
-            control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-        }
-        public void SetEditThemesView(IEditThemesView view)
-        {
-            EditThemesView = view;
-            UserControl control = (UserControl)EditThemesView;
-            control.Parent = propertiesPanel;
-            control.Size = propertiesPanel.Size;
-            control.Location = new Point(0, 0);
-            control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-        }
-        public void SetEditThemeView(IEditThemeView view)
-        {
-            EditThemeView = view;
-            UserControl control = (UserControl)EditThemeView;
-            control.Parent = propertiesPanel;
-            control.Size = propertiesPanel.Size;
-            control.Location = new Point(0, 0);
-            control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-        }
-        public void SetEditTicketsView(IEditTicketsView view)
-        {
-            EditTicketsView = view;
-            UserControl control = (UserControl)EditTicketsView;
-            control.Parent = propertiesPanel;
-            control.Size = propertiesPanel.Size;
-            control.Location = new Point(0, 0);
-            control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-        }
-
         private void EditTreeViewGoToProperties(IEditTreeView sender)
         {
-            disabledButton.BackColor = Color.FromArgb(171, 31, 47);
-            disabledButton.Enabled = true;
-            disabledButton = contentButton;
-            disabledButton.BackColor = SystemColors.ControlLight;
-            disabledButton.Enabled = false;
-            EditPropertiesView?.Hide();
-            MarkSystemPropertiesView?.Hide();
-            EditTreeViewNodeChanged(sender);
+            if (!ReferenceEquals(disabledButton, contentButton) || !ReferenceEquals(editTreeView.CurrentObject, currentObject))
+            {
+                disabledButton.BackColor = Color.FromArgb(171, 31, 47);
+                disabledButton.Enabled = true;
+                disabledButton = contentButton;
+                disabledButton.BackColor = SystemColors.ControlLight;
+                disabledButton.Enabled = false;
+                EditPropertiesView?.Hide();
+                EditMarkSystemView?.Hide();
+                currentObject = editTreeView.CurrentObject;
+                EditTreeViewNodeChanged(sender);
+            }
         }
         private void ModifyProperties(IEditPropertiesView sender)
         {
-            propertiesButton.Text = "Параметры" + (sender.Saved ? "" : "*");
-            unsavedPropertiesTip.Active = !sender.Saved;
+            propertiesButton.Text = "Параметры" + (sender.IsSaved ? "" : "*");
+            unsavedPropertiesTip.Active = !sender.IsSaved;
         }
         private void ModifyMarkSystem(IEditMarkSystemPropertiesView sender)
         {
-            markSystemButton.Text = "Система оценивания" + (sender.Saved ? "" : "*");
-            unsavedMarkSystemToolTip.Active = !sender.Saved;
+            markSystemButton.Text = "Система оценивания" + (sender.IsSaved ? "" : "*");
+            unsavedMarkSystemToolTip.Active = !sender.IsSaved;
         }
 
         private void TabStopClick(object sender, EventArgs e)
@@ -182,45 +268,62 @@ namespace SimplExServer
                     break;
                 case 1:
                     HideAllProperties();
-                    MarkSystemPropertiesView?.Show();
+                    EditMarkSystemView?.Show();
                     break;
                 case 2:
-                    OpenPropertiesPanel();
+                    OpenContentPanel();
                     break;
                 case 3:
                     HideAllProperties();
+                    EditSavingView.Show();
                     break;
             }
         }
-
-        private void OpenPropertiesPanel()
+        private void OpenContentPanel()
         {
             HideAllProperties();
             if (EditTreeView.CurrentObject == null)
             {
                 if (EditTreeView.CurrentSection == Section.Themes)
-                    EditThemesView.Show();
+                    EditThemesView?.Show();
                 else if (EditTreeView.CurrentSection == Section.Tickets)
-                    EditTicketsView.Show();
+                    EditTicketsView?.Show();
             }
             else
             {
                 if (EditTreeView.CurrentObject is ThemeBuilder)
-                    EditThemeView.Show();
+                    EditThemeView?.Show();
+                else if (EditTreeView.CurrentObject is TicketBuilder)
+                    EditTicketView?.Show();
+                else if (EditTreeView.CurrentObject is QuestionGroupBuilder)
+                    EditQuestionGroupView?.Show();
+                else if (EditTreeView.CurrentObject is QuestionBuilder)
+                    EditQuestionView?.Show();
             }
         }
         private void HideAllProperties()
         {
             EditPropertiesView?.Hide();
-            MarkSystemPropertiesView?.Hide();
+            EditMarkSystemView?.Hide();
             EditThemesView?.Hide();
             EditTicketsView?.Hide();
-            EditThemeView.Hide();
+            EditThemeView?.Hide();
+            EditTicketView?.Hide();
+            EditQuestionGroupView?.Hide();
+            EditQuestionView?.Hide();
+            EditSavingView?.Hide();
         }
         private void EditTreeViewNodeChanged(IEditTreeView sender)
         {
             if (int.Parse(disabledButton.Tag.ToString()) == 2)
-                OpenPropertiesPanel();
+                OpenContentPanel();
+        }
+
+        private void EditorFormFormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Закрыть редактор экзаменов?", "Выход из окна редактора", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.No)
+                e.Cancel = true;
         }
     }
 }

@@ -208,7 +208,7 @@
             // 
             this.splitContainer.Panel1.Controls.Add(this.treePanel);
             this.splitContainer.Panel1.Controls.Add(this.structureLabel);
-            this.splitContainer.Panel1MinSize = 200;
+            this.splitContainer.Panel1MinSize = 320;
             // 
             // splitContainer.Panel2
             // 
@@ -269,6 +269,7 @@
             this.MinimumSize = new System.Drawing.Size(849, 597);
             this.Name = "EditorForm";
             this.Text = "SimplEx Редактор";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EditorFormFormClosing);
             this.subHeaderPanel.ResumeLayout(false);
             this.headerPanel.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);

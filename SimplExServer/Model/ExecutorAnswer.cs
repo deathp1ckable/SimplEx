@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace SimplExServer.Model
+﻿namespace SimplExServer.Model
 {
     public class ExecutorAnswer 
-    {
+    {   
         public Question Question { get; set; }
         public string Content { get; set; } = string.Empty;
         public ExecutorAnswer(Question question, string content)

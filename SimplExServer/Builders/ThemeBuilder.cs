@@ -26,7 +26,7 @@ namespace SimplExServer.Builders
             if (!ParentExamBuilder.ThemeBuilders.Contains(this))
                 throw new Exception("This builder is not assigned to the parent builder.");
             Instance.ThemeName = ThemeName;
-            return base.GetBuildedInstance();
+            return Instance;
         }
         public override void Load(Theme instance)
         {

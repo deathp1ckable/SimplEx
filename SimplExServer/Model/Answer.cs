@@ -4,8 +4,9 @@ namespace SimplExServer.Model
 {
     public class Answer : ICloneable
     {
-        public Question Question{ get; set; }
+        public Question Question { get; set; }
         public string Content { get; set; } = string.Empty;
+
         public Answer(Question question, string content)
         {
             Question = question;

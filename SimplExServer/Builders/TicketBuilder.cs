@@ -188,7 +188,7 @@ namespace SimplExServer.Builders
                 group.ParentQuestionGroup = null;
                 Instance.QuestionGroups.Add(group);
             }
-            return base.GetBuildedInstance();
+            return Instance;
         }
         public override string ToString() => $"{TicketName}";
     }

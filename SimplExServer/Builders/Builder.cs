@@ -5,12 +5,7 @@ namespace SimplExServer.Builders
     {
         public T Instance { get; protected set; }
         public abstract void Reset();
-        public virtual T GetBuildedInstance()
-        {
-            T result = Instance;
-            Reset();
-            return result;
-        }
+        public abstract T GetBuildedInstance();
         public virtual void Load(T instance)
         {
             if (instance == null)

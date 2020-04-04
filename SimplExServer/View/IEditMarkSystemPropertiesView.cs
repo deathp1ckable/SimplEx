@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace SimplExServer.View
 {
-    public interface IEditMarkSystemPropertiesView : IIntegrableView
+    public interface IEditMarkSystemPropertiesView : IHideableView
     {
         Type MarkSystemType { get; set; }
-        Type[] MarkSystemTypes { get; set; }
+        IList<Type> MarkSystemTypes { set; }
         string Description { get; set; }
-        bool Saved { get; set; }
-        IEditMarkSystemView EditMarkSystemView { get; }
-        void SetEditMarkSystemView(IEditMarkSystemView view);
-        event ViewActionHandler<IEditMarkSystemPropertiesView> SaveChanges;
-        event ViewActionHandler<IEditMarkSystemPropertiesView> CancelChanges;
+        bool IsSaved { get; set; }
+        IEditMarkSystemView EditMarkSystemView { get; set; }
+
+        event ViewActionHandler<IEditMarkSystemPropertiesView> Saved;
+        event ViewActionHandler<IEditMarkSystemPropertiesView> Canceled;
         event ViewActionHandler<IEditMarkSystemPropertiesView> Changed;
         event ViewActionHandler<IEditMarkSystemPropertiesView> MarkSystemTypeChanged;
     }

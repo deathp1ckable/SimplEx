@@ -63,9 +63,29 @@ namespace SimplExServer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap loadingGif {
+            get {
+                object obj = ResourceManager.GetObject("loadingGif", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap logoAnimation {
             get {
                 object obj = ResourceManager.GetObject("logoAnimation", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap logoPicture {
+            get {
+                object obj = ResourceManager.GetObject("logoPicture", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

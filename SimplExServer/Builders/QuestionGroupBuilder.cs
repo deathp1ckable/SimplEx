@@ -47,7 +47,7 @@ namespace SimplExServer.Builders
                 QuestionGroup group = questionGroupBuilders[i].GetDuplicate();
                 group.ParentQuestionGroup = result;
                 group.ParentTicket = null;
-                result.QuestionGroups.Add(group);
+                result.ChildQuestionGroups.Add(group);
             }
             for (i = 0; i < questionBuilders.Count; i++)
             {
@@ -167,8 +167,8 @@ namespace SimplExServer.Builders
             QuestionGroupName = Instance.QuestionGroupName;
             for (int i = 0; i < Instance.Questions.Count; i++)
                 questionBuilders.Add(QuestionBuilder.CreateBuilder(Instance.Questions[i], this));
-            for (int i = 0; i < Instance.QuestionGroups.Count; i++)
-                questionGroupBuilders.Add(new QuestionGroupBuilder(Instance.QuestionGroups[i], this));
+            for (int i = 0; i < Instance.ChildQuestionGroups.Count; i++)
+                questionGroupBuilders.Add(new QuestionGroupBuilder(Instance.ChildQuestionGroups[i], this));
         }
         public override void Reset()
         {
@@ -183,7 +183,7 @@ namespace SimplExServer.Builders
             else if (ParentQuestionGroupBuilder != null && !ParentQuestionGroupBuilder.QuestionGroupBuilders.Contains(this))
                 throw new Exception("This builder is not assigned to the parent builder.");
             int i;
-            Instance.QuestionGroups.Clear();
+            Instance.ChildQuestionGroups.Clear();
             Instance.Questions.Clear();
             Instance.QuestionGroupName = QuestionGroupName;
             for (i = 0; i < questionGroupBuilders.Count; i++)
@@ -191,7 +191,7 @@ namespace SimplExServer.Builders
                 QuestionGroup group = questionGroupBuilders[i].GetBuildedInstance();
                 group.ParentQuestionGroup = Instance;
                 group.ParentTicket = null;
-                Instance.QuestionGroups.Add(group);
+                Instance.ChildQuestionGroups.Add(group);
             }
             for (i = 0; i < questionBuilders.Count; i++)
             {
@@ -200,7 +200,7 @@ namespace SimplExServer.Builders
                 question.Theme = questionBuilders[i].ThemeBuilder.Instance;
                 Instance.Questions.Add(question);
             }
-            return base.GetBuildedInstance();
+            return Instance;
         }
         public TicketBuilder GetParentTicketBuilder()
         {

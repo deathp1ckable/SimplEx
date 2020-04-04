@@ -98,7 +98,10 @@ namespace SimplExDb.Database
                         map.Columns[j].SetValue(dataTable.Rows[i][map.Columns[j].ColumnName]);
 
                     schemaTable.ImportRow(dataTable.Rows[i]);
-                    loadedRows.Add(tmp, new Row(schemaTable.Rows[schemaTable.Rows.Count - 1], tmp));
+                    loadedRows.Add(tmp, new Row(schemaTable.Rows[schemaTable.Rows.Count - 1], tmp)
+                    {
+                        IsCommited = true
+                    });
                     result[k++] = tmp;
                 }
                 else result[k++] = loaded;
@@ -126,7 +129,7 @@ namespace SimplExDb.Database
             command.CommandText = $"SELECT {selectStr} " +
                   $"FROM {parentMap.TableName} " +
                   $"INNER JOIN {childMap.TableName} ON " +
-                  $"{childMap.TableName}.{childMap.ForeignKeyNames[typeof(TParent)]} = {loadedRows[instance].DataRow[parentMap.KeyColumnName]} " +
+                  $"{childMap.TableName}.{childMap.ForeignKeyNames[typeof(TParent)].ColumnName} = {loadedRows[instance].DataRow[parentMap.KeyColumnName]} " +
                   $"WHERE {whereExpression};";
             MySqlDataReader reader = command.ExecuteReader();
             dataTable.Load(reader);
@@ -142,7 +145,10 @@ namespace SimplExDb.Database
                     for (j = 0; j < childMap.Columns.Length; j++)
                         childMap.Columns[j].SetValue(dataTable.Rows[i][childMap.Columns[j].ColumnName]);
                     schemaTable.ImportRow(dataTable.Rows[i]);
-                    loadedRows.Add(tmp, new Row(schemaTable.Rows[schemaTable.Rows.Count - 1], tmp));
+                    loadedRows.Add(tmp, new Row(schemaTable.Rows[schemaTable.Rows.Count - 1], tmp)
+                    {
+                        IsCommited = true
+                    });
                     result[k++] = tmp;
                 }
                 else result[k++] = loaded;
@@ -180,7 +186,10 @@ namespace SimplExDb.Database
             for (i = 0; i < parents.Length; i++)
                 row.SetParentRow(loadedRows[parents[i]].DataRow, Schema.GetRelation(loadedRows[parents[i]].DataRow.Table.TableName, map.TableName));
             dataTable.Rows.Add(row);
-            loadedRows.Add(instance, new Row(row, instance));
+            loadedRows.Add(instance, new Row(row, instance)
+            {
+                IsCommited = false
+            });
             updateRowQueue.Enqueue(row);
         }
         public void Regularize<T>(T instance, params object[] parents) where T : class
@@ -190,13 +199,14 @@ namespace SimplExDb.Database
             if (!loadedRows.ContainsKey(instance))
                 throw new ArgumentException("This instnace wasn't loaded. Use Insert() or Select() to load instance.");
             ClassMap<T> map = Schema.GetClassMapInstance(instance);
-            DataRow row = loadedRows[instance].DataRow;
+            Row temp = loadedRows[instance];
+            temp.IsCommited = false;
+            DataRow row = temp.DataRow;
             for (int i = 0; i < parents.Length; i++)
                 row.SetParentRow(loadedRows[parents[i]].DataRow, Schema.GetRelation(loadedRows[parents[i]].DataRow.Table.TableName, map.TableName));
             if (!updateRowQueue.Contains(row))
                 updateRowQueue.Enqueue(row);
         }
-        public DataRow GetRowOfInstance<T>(T instance) where T : class => loadedRows[instance].DataRow;
         public void Update<T>(T instance) where T : class
         {
             if (!isOpened)
@@ -204,7 +214,9 @@ namespace SimplExDb.Database
             if (!loadedRows.ContainsKey(instance))
                 throw new ArgumentException("This instnace wasn't loaded. Use Insert() or Select() to load instance.");
             ClassMap<T> map = Schema.GetClassMapInstance(instance);
-            DataRow row = loadedRows[instance].DataRow;
+            Row temp = loadedRows[instance];
+            temp.IsCommited = false;
+            DataRow row = temp.DataRow;
             for (int i = 0; i < map.Columns.Length; i++)
                 row[map.Columns[i].ColumnName] = map.Columns[i].GetValue();
             if (!updateRowQueue.Contains(row))
@@ -216,7 +228,9 @@ namespace SimplExDb.Database
                 throw new Exception("Attepting to use unopened controller.");
             if (!loadedRows.ContainsKey(instance))
                 throw new ArgumentException("This instnace wasn't loaded. Use Insert() or Select() to load instance.");
-            DataRow row = loadedRows[instance].DataRow;
+            Row temp = loadedRows[instance];
+            temp.IsCommited = false;
+            DataRow row = temp.DataRow;
             loadedRows.Remove(instance);
             row.AcceptChanges();
             if (!updateRowQueue.Contains(row))
@@ -230,7 +244,7 @@ namespace SimplExDb.Database
             int i;
             isDeleted = false;
             isAdded = false;
-            updateString = "SET FOREIGN_KEY_CHECKS = 0;";
+            updateString = "SET FOREIGN_KEY_CHECKS = 0; SET AUTOCOMMIT = 0;";
             while (updateRowQueue.Count > 0)
             {
                 row = updateRowQueue.Dequeue();
@@ -246,10 +260,13 @@ namespace SimplExDb.Database
                         {
                             colStr += $"{row.Table.Columns[i].ColumnName}, ";
                             if (ReferenceEquals(row.Table.Columns[i], row.Table.PrimaryKey[0]) || row.IsNull(i)) valStr += $"null, ";
+                            else if (row.Table.Columns[i].DataType == typeof(DateTime)) valStr += $"'{(DateTime)row[i]:yyyy:MM:dd HH:mm:ss}', ";
                             else valStr += $"'{row[i]}', ";
                         }
+
                         colStr = colStr.Remove(colStr.Length - 2, 2);
                         valStr = valStr.Remove(valStr.Length - 2, 2);
+
                         command.CommandText = $"INSERT INTO {row.Table} " +
                           $"({colStr}) " +
                           $"VALUES ({valStr})";
@@ -261,6 +278,7 @@ namespace SimplExDb.Database
                         string setStr = "";
                         for (i = 0; i < row.Table.Columns.Count; i++)
                             if (row.IsNull(i)) setStr += $"{row.Table.Columns[i].ColumnName} = null, ";
+                            else if (row.Table.Columns[i].DataType == typeof(DateTime)) setStr += $"{row.Table.Columns[i].ColumnName} = '{(DateTime)row[i]:yyyy:MM:dd HH:mm:ss}', ";
                             else setStr += $"{row.Table.Columns[i].ColumnName} = '{row[i]}', ";
                         setStr = setStr.Remove(setStr.Length - 2, 2);
 
@@ -288,6 +306,7 @@ namespace SimplExDb.Database
                         string setStr = "";
                         for (i = 0; i < row.Table.Columns.Count; i++)
                             if (row.IsNull(i)) setStr += $"{row.Table.Columns[i].ColumnName} = null, ";
+                            else if (row.Table.Columns[i].DataType == typeof(DateTime)) setStr += $"{row.Table.Columns[i].ColumnName} = '{(DateTime)row[i]:yyyy:MM:dd HH:mm:ss}', ";
                             else setStr += $"{row.Table.Columns[i].ColumnName} = '{row[i]}', ";
                         setStr = setStr.Remove(setStr.Length - 2, 2);
 
@@ -306,9 +325,67 @@ namespace SimplExDb.Database
                     if (rows[i].DataRow.RowState == DataRowState.Deleted)
                         loadedRows.Remove(rows[i].Instance);
             }
-            updateString += "SET FOREIGN_KEY_CHECKS = 1;";
+            updateString += "SET FOREIGN_KEY_CHECKS = 1;  SET AUTOCOMMIT = 1;";
             command.CommandText = updateString;
             command.ExecuteNonQuery();
+            foreach (Row temp in loadedRows.Values)
+                temp.IsCommited = true;
+        }
+
+        public int? GetIdentifier<T>(T instance) where T : class
+        {
+            if (loadedRows.TryGetValue(instance, out Row row))
+            {
+                DataRow dataRow = row.DataRow;
+                return int.Parse(dataRow[dataRow.Table.PrimaryKey[0]].ToString());
+            }
+            return null;
+        }
+        public bool IsLoaded<T>(T instance) where T : class
+        {
+            if (!isOpened)
+                throw new Exception("Attepting to use unopened controller.");
+            return loadedRows.ContainsKey(instance);
+        }
+        public bool IsIdentifierLoaded<T>(int id) where T : class
+        {
+            if (!isOpened)
+                throw new Exception("Attepting to use unopened controller.");
+            ClassMap<T> map = Schema.GetClassMapInstance((T)Activator.CreateInstance(typeof(T)));
+            DataTable table = Schema.SchemaDataSet.Tables[map.TableName];
+            string idStr = id.ToString();
+            for (int i = 0; i < table.Rows.Count; i++)
+                if (table.Rows[i][table.PrimaryKey[0]].ToString() == idStr)
+                    return true;
+            return false;
+        }
+        public bool IsCommited<T>(T instance) where T : class
+        {
+            if (!isOpened)
+                throw new Exception("Attepting to use unopened controller.");
+            loadedRows.TryGetValue(instance, out Row row);
+            return row.IsCommited;
+        }
+        public bool IsConnected()
+        {
+            try
+            {
+                command.CommandText = "SELECT 1;";
+                command.ExecuteNonQuery();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public DataTable ExecuteQuery(string query)
+        {
+            DataTable result = new DataTable();
+            command.CommandText = query;
+            result.Load(command.ExecuteReader());
+            return result;
         }
         public void Unload()
         {
@@ -316,17 +393,17 @@ namespace SimplExDb.Database
             updateRowQueue.Clear();
             loadedRows.Clear();
         }
-        public void Close()
-        {
-            Connection.Close();
-            isOpened = false;
-        }
+
+        public void Close() => Dispose();
         public void Dispose()
         {
             Connection.Dispose();
             Schema.Dispose();
-            command.Dispose();
+            if (command != null)
+                command.Dispose();
+            isOpened = false;
         }
+
         private T CheckLoading<T>(object key) where T : class
         {
             ClassMap<T> map = Schema.GetClassMapInstance<T>();

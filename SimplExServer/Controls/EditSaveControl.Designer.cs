@@ -29,19 +29,20 @@
         private void InitializeComponent()
         {
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.saveAsButton = new System.Windows.Forms.Button();
+            this.saveToDb = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.passwordCheck = new System.Windows.Forms.CheckBox();
-            this.markSystemTypeList = new System.Windows.Forms.ComboBox();
+            this.watchKeyButton = new System.Windows.Forms.Button();
+            this.watchTaskButton = new System.Windows.Forms.Button();
+            this.watchBlankButton = new System.Windows.Forms.Button();
+            this.setRightAnswerCheck = new System.Windows.Forms.CheckBox();
+            this.ticketsList = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.button8 = new System.Windows.Forms.Button();
+            this.watchClientViewButton = new System.Windows.Forms.Button();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.warningsList = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // label3
@@ -54,44 +55,47 @@
             this.label3.TabIndex = 32;
             this.label3.Text = "Сохраниние:";
             // 
-            // button1
+            // saveButton
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(7, 31);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(713, 23);
-            this.button1.TabIndex = 85;
-            this.button1.Text = "Сохранить";
-            this.button1.UseVisualStyleBackColor = false;
+            this.saveButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveButton.Location = new System.Drawing.Point(7, 31);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(711, 23);
+            this.saveButton.TabIndex = 85;
+            this.saveButton.Text = "Сохранить";
+            this.saveButton.UseVisualStyleBackColor = false;
+            this.saveButton.Click += new System.EventHandler(this.SaveButtonClick);
             // 
-            // button2
+            // saveAsButton
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.saveAsButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(7, 60);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(713, 23);
-            this.button2.TabIndex = 86;
-            this.button2.Text = "Сохранить как...";
-            this.button2.UseVisualStyleBackColor = false;
+            this.saveAsButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.saveAsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveAsButton.Location = new System.Drawing.Point(7, 60);
+            this.saveAsButton.Name = "saveAsButton";
+            this.saveAsButton.Size = new System.Drawing.Size(711, 23);
+            this.saveAsButton.TabIndex = 86;
+            this.saveAsButton.Text = "Сохранить как...";
+            this.saveAsButton.UseVisualStyleBackColor = false;
+            this.saveAsButton.Click += new System.EventHandler(this.SaveAsButtonClick);
             // 
-            // button3
+            // saveToDb
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.saveToDb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(7, 89);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(713, 23);
-            this.button3.TabIndex = 87;
-            this.button3.Text = "Сохранить в базу";
-            this.button3.UseVisualStyleBackColor = false;
+            this.saveToDb.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.saveToDb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveToDb.Location = new System.Drawing.Point(7, 89);
+            this.saveToDb.Name = "saveToDb";
+            this.saveToDb.Size = new System.Drawing.Size(711, 23);
+            this.saveToDb.TabIndex = 87;
+            this.saveToDb.Text = "Сохранить в базу";
+            this.saveToDb.UseVisualStyleBackColor = false;
+            this.saveToDb.Click += new System.EventHandler(this.SaveToDbClick);
             // 
             // label1
             // 
@@ -103,69 +107,76 @@
             this.label1.TabIndex = 88;
             this.label1.Text = "Предпросмотр:";
             // 
-            // button4
+            // watchKeyButton
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.watchKeyButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Location = new System.Drawing.Point(7, 166);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(713, 23);
-            this.button4.TabIndex = 89;
-            this.button4.Text = "Просмотреть ключ экзамена";
-            this.button4.UseVisualStyleBackColor = false;
+            this.watchKeyButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.watchKeyButton.Enabled = false;
+            this.watchKeyButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.watchKeyButton.Location = new System.Drawing.Point(7, 166);
+            this.watchKeyButton.Name = "watchKeyButton";
+            this.watchKeyButton.Size = new System.Drawing.Size(711, 23);
+            this.watchKeyButton.TabIndex = 89;
+            this.watchKeyButton.Text = "Просмотреть ключ экзамена";
+            this.watchKeyButton.UseVisualStyleBackColor = false;
+            this.watchKeyButton.Click += new System.EventHandler(this.WatchKeyButtonClick);
             // 
-            // button5
+            // watchTaskButton
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.watchTaskButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Location = new System.Drawing.Point(7, 195);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(713, 23);
-            this.button5.TabIndex = 90;
-            this.button5.Text = "Просмотреть задание";
-            this.button5.UseVisualStyleBackColor = false;
+            this.watchTaskButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.watchTaskButton.Enabled = false;
+            this.watchTaskButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.watchTaskButton.Location = new System.Drawing.Point(7, 195);
+            this.watchTaskButton.Name = "watchTaskButton";
+            this.watchTaskButton.Size = new System.Drawing.Size(711, 23);
+            this.watchTaskButton.TabIndex = 90;
+            this.watchTaskButton.Text = "Просмотреть задание";
+            this.watchTaskButton.UseVisualStyleBackColor = false;
+            this.watchTaskButton.Click += new System.EventHandler(this.WatchTaskButtonClick);
             // 
-            // button6
+            // watchBlankButton
             // 
-            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.watchBlankButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button6.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button6.Location = new System.Drawing.Point(7, 253);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(713, 23);
-            this.button6.TabIndex = 91;
-            this.button6.Text = "Просмотреть бланк выполнения";
-            this.button6.UseVisualStyleBackColor = false;
+            this.watchBlankButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.watchBlankButton.Enabled = false;
+            this.watchBlankButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.watchBlankButton.Location = new System.Drawing.Point(7, 253);
+            this.watchBlankButton.Name = "watchBlankButton";
+            this.watchBlankButton.Size = new System.Drawing.Size(711, 23);
+            this.watchBlankButton.TabIndex = 91;
+            this.watchBlankButton.Text = "Просмотреть бланк выполнения";
+            this.watchBlankButton.UseVisualStyleBackColor = false;
+            this.watchBlankButton.Click += new System.EventHandler(this.WatchBlankButtonClick);
             // 
-            // passwordCheck
+            // setRightAnswerCheck
             // 
-            this.passwordCheck.AutoSize = true;
-            this.passwordCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.passwordCheck.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.passwordCheck.Location = new System.Drawing.Point(7, 224);
-            this.passwordCheck.Name = "passwordCheck";
-            this.passwordCheck.Size = new System.Drawing.Size(243, 23);
-            this.passwordCheck.TabIndex = 92;
-            this.passwordCheck.Text = "Проставить правильные ответы";
-            this.passwordCheck.UseVisualStyleBackColor = true;
+            this.setRightAnswerCheck.AutoSize = true;
+            this.setRightAnswerCheck.Enabled = false;
+            this.setRightAnswerCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.setRightAnswerCheck.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.setRightAnswerCheck.Location = new System.Drawing.Point(7, 224);
+            this.setRightAnswerCheck.Name = "setRightAnswerCheck";
+            this.setRightAnswerCheck.Size = new System.Drawing.Size(243, 23);
+            this.setRightAnswerCheck.TabIndex = 92;
+            this.setRightAnswerCheck.Text = "Проставить правильные ответы";
+            this.setRightAnswerCheck.UseVisualStyleBackColor = true;
             // 
-            // markSystemTypeList
+            // ticketsList
             // 
-            this.markSystemTypeList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.ticketsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.markSystemTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.markSystemTypeList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.markSystemTypeList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.markSystemTypeList.FormattingEnabled = true;
-            this.markSystemTypeList.Location = new System.Drawing.Point(65, 137);
-            this.markSystemTypeList.Name = "markSystemTypeList";
-            this.markSystemTypeList.Size = new System.Drawing.Size(655, 23);
-            this.markSystemTypeList.TabIndex = 94;
+            this.ticketsList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ticketsList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ticketsList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ticketsList.FormattingEnabled = true;
+            this.ticketsList.Location = new System.Drawing.Point(65, 137);
+            this.ticketsList.Name = "ticketsList";
+            this.ticketsList.Size = new System.Drawing.Size(653, 23);
+            this.ticketsList.TabIndex = 94;
             // 
             // label4
             // 
@@ -178,18 +189,42 @@
             this.label4.Text = "Билет:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // button8
+            // watchClientViewButton
             // 
-            this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.watchClientViewButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button8.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button8.Location = new System.Drawing.Point(7, 282);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(713, 23);
-            this.button8.TabIndex = 96;
-            this.button8.Text = "Просмотреть клиентский вид";
-            this.button8.UseVisualStyleBackColor = false;
+            this.watchClientViewButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.watchClientViewButton.Enabled = false;
+            this.watchClientViewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.watchClientViewButton.Location = new System.Drawing.Point(7, 282);
+            this.watchClientViewButton.Name = "watchClientViewButton";
+            this.watchClientViewButton.Size = new System.Drawing.Size(711, 23);
+            this.watchClientViewButton.TabIndex = 96;
+            this.watchClientViewButton.Text = "Просмотреть клиентский вид";
+            this.watchClientViewButton.UseVisualStyleBackColor = false;
+            this.watchClientViewButton.Click += new System.EventHandler(this.WatchClientViewButtonClick);
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.DefaultExt = "*.smpx";
+            this.saveFileDialog.FileName = "Новый экзамен";
+            this.saveFileDialog.Filter = "*.smpx Файлы Экзаменов|*.smpx";
+            this.saveFileDialog.Title = "Сохранить экзамен";
+            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveFileDialogFileOk);
+            // 
+            // warningsList
+            // 
+            this.warningsList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.warningsList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.warningsList.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.warningsList.FormattingEnabled = true;
+            this.warningsList.ItemHeight = 23;
+            this.warningsList.Location = new System.Drawing.Point(7, 334);
+            this.warningsList.Name = "warningsList";
+            this.warningsList.Size = new System.Drawing.Size(711, 92);
+            this.warningsList.TabIndex = 97;
             // 
             // label2
             // 
@@ -198,40 +233,30 @@
             this.label2.Location = new System.Drawing.Point(3, 308);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(138, 19);
-            this.label2.TabIndex = 97;
+            this.label2.TabIndex = 98;
             this.label2.Text = "Предупреждения:";
-            // 
-            // listBox1
-            // 
-            this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listBox1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 19;
-            this.listBox1.Location = new System.Drawing.Point(7, 330);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(713, 95);
-            this.listBox1.TabIndex = 98;
             // 
             // EditSaveControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.listBox1);
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.markSystemTypeList);
+            this.Controls.Add(this.warningsList);
+            this.Controls.Add(this.watchClientViewButton);
+            this.Controls.Add(this.ticketsList);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.passwordCheck);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.setRightAnswerCheck);
+            this.Controls.Add(this.watchBlankButton);
+            this.Controls.Add(this.watchTaskButton);
+            this.Controls.Add(this.watchKeyButton);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.saveToDb);
+            this.Controls.Add(this.saveAsButton);
+            this.Controls.Add(this.saveButton);
             this.Controls.Add(this.label3);
             this.Name = "EditSaveControl";
-            this.Size = new System.Drawing.Size(725, 449);
+            this.Size = new System.Drawing.Size(723, 447);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -240,18 +265,19 @@
         #endregion
 
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Button saveAsButton;
+        private System.Windows.Forms.Button saveToDb;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.CheckBox passwordCheck;
-        private System.Windows.Forms.ComboBox markSystemTypeList;
+        private System.Windows.Forms.Button watchKeyButton;
+        private System.Windows.Forms.Button watchTaskButton;
+        private System.Windows.Forms.Button watchBlankButton;
+        private System.Windows.Forms.CheckBox setRightAnswerCheck;
+        private System.Windows.Forms.ComboBox ticketsList;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button watchClientViewButton;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.ListBox warningsList;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ListBox listBox1;
     }
 }

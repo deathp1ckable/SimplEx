@@ -30,6 +30,7 @@
         {
             this.addButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.ticketsCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // addButton
@@ -56,11 +57,24 @@
             this.label3.TabIndex = 65;
             this.label3.Text = "Управление билетами:";
             // 
+            // ticketsCount
+            // 
+            this.ticketsCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ticketsCount.AutoSize = true;
+            this.ticketsCount.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ticketsCount.Location = new System.Drawing.Point(3, 427);
+            this.ticketsCount.Name = "ticketsCount";
+            this.ticketsCount.Size = new System.Drawing.Size(164, 19);
+            this.ticketsCount.TabIndex = 88;
+            this.ticketsCount.Text = "Количество билетов: 0";
+            this.ticketsCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // EditTicketsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.ticketsCount);
             this.Controls.Add(this.addButton);
             this.Controls.Add(this.label3);
             this.Name = "EditTicketsControl";
@@ -74,5 +88,6 @@
 
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label ticketsCount;
     }
 }

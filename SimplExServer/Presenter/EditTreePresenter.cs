@@ -27,7 +27,7 @@ namespace SimplExServer.Presenter
                 builder = e.TicketBuilder.AddQuestionGroup(CopiedQuestionGroupBuilder.GetDuplicate());
             else
                 builder = e.QuestionGroupBuilder.AddQuestionGroup(CopiedQuestionGroupBuilder.GetDuplicate());
-            sender.RefreshTickets();
+            sender.RefreshObject(e.TicketBuilder as object ?? e.QuestionGroupBuilder as object);
             sender.SelectObject(builder);
         }
 
@@ -40,14 +40,14 @@ namespace SimplExServer.Presenter
                 CopiedQuestionGroupBuilder.ParentQuestionGroupBuilder?.RemoveQuestionGroup(e.QuestionBuilder);
                 CopiedQuestionGroupBuilder.ParentTicketBuilder?.RemoveQuestionGroup(e.QuestionBuilder);
             }
-            sender.RefreshTickets();
+            sender.RefreshObject(builder);
             sender.SelectObject(builder);
         }
 
         private void ViewQuestionPasted(IEditTreeView sender, QuestionPastedArgs e)
         {
             QuestionBuilder builder = e.QuestionGroupBuilder.AddQuestion(CopiedQuestionBuilder.GetDuplicate());
-            sender.RefreshTickets();
+            sender.RefreshObject(builder.ParentQuestionGroupBuilder);
             sender.SelectObject(builder);
         }
         private void ViewQuestionCopied(IEditTreeView sender, QuestionCopiedArgs e)
@@ -56,7 +56,7 @@ namespace SimplExServer.Presenter
             CopiedQuestionBuilder = e.QuestionBuilder;
             if (e.IsCut)
                 CopiedQuestionBuilder.ParentQuestionGroupBuilder.RemoveQuestion(e.QuestionBuilder);
-            sender.RefreshTickets();
+            sender.RefreshObject(builder);
             sender.SelectObject(builder);
         }
 
@@ -72,7 +72,6 @@ namespace SimplExServer.Presenter
             }
             sender.SearchResult = result.ToArray();
         }
-
         private void StructureChanged(IEditTreeView sender, StructChangedArgs e)
         {
             if (e.NewParentGroup != null)
