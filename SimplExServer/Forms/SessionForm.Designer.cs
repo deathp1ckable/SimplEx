@@ -31,8 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SessionForm));
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.headerPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.header = new System.Windows.Forms.Label();
+            this.headerPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -54,20 +55,32 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.headerPanel);
-            this.splitContainer.Size = new System.Drawing.Size(833, 559);
-            this.splitContainer.SplitterDistance = 292;
+            this.splitContainer.Size = new System.Drawing.Size(1175, 657);
+            this.splitContainer.SplitterDistance = 331;
             this.splitContainer.SplitterWidth = 3;
             this.splitContainer.TabIndex = 0;
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(31)))), ((int)(((byte)(47)))));
+            this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.header);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(290, 557);
+            this.panel1.Size = new System.Drawing.Size(329, 655);
             this.panel1.TabIndex = 0;
+            // 
+            // header
+            // 
+            this.header.AutoSize = true;
+            this.header.Font = new System.Drawing.Font("Calibri", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.header.ForeColor = System.Drawing.SystemColors.Control;
+            this.header.Location = new System.Drawing.Point(11, 8);
+            this.header.Name = "header";
+            this.header.Size = new System.Drawing.Size(287, 45);
+            this.header.TabIndex = 10;
+            this.header.Text = "Сессия экзамена";
             // 
             // headerPanel
             // 
@@ -78,25 +91,25 @@
             this.headerPanel.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
             this.headerPanel.Location = new System.Drawing.Point(3, 3);
             this.headerPanel.Name = "headerPanel";
-            this.headerPanel.Size = new System.Drawing.Size(530, 40);
+            this.headerPanel.Size = new System.Drawing.Size(833, 40);
             this.headerPanel.TabIndex = 1;
             // 
-            // header
+            // label2
             // 
-            this.header.AutoSize = true;
-            this.header.Font = new System.Drawing.Font("Calibri", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.header.ForeColor = System.Drawing.SystemColors.Control;
-            this.header.Location = new System.Drawing.Point(11, 8);
-            this.header.Name = "header";
-            this.header.Size = new System.Drawing.Size(140, 45);
-            this.header.TabIndex = 10;
-            this.header.Text = "SimplEx";
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Calibri", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.ForeColor = System.Drawing.SystemColors.Control;
+            this.label2.Location = new System.Drawing.Point(13, 53);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(137, 36);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Студенты:";
             // 
             // SessionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(833, 559);
+            this.ClientSize = new System.Drawing.Size(1175, 657);
             this.Controls.Add(this.splitContainer);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SessionForm";
@@ -117,5 +130,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.FlowLayoutPanel headerPanel;
         private System.Windows.Forms.Label header;
+        private System.Windows.Forms.Label label2;
     }
 }

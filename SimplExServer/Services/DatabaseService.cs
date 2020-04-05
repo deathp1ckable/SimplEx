@@ -7,8 +7,8 @@ namespace SimplExServer.Services
     class DatabaseService
     {
         private static DatabaseService instance;
-        private ExamDatabaseWorker examDatabaseWorker;
-        public ExamDatabaseWorker ExamDatabaseWorker
+        private ExamDatabaseService examDatabaseWorker;
+        public ExamDatabaseService ExamDatabaseWorker
         {
             get
             {
@@ -43,7 +43,7 @@ namespace SimplExServer.Services
             Password = password;
             if (examDatabaseWorker != null)
                 examDatabaseWorker.Dispose();
-            examDatabaseWorker = new ExamDatabaseWorker();
+            examDatabaseWorker = new ExamDatabaseService();
             try
             {
                 examDatabaseWorker.Connect(host, port, username, password);

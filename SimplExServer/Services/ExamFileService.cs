@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SimplExServer.Services
 {
-    static class ExamFileWorker
+    static class ExamFileService
     {
         private static readonly JsonSerializerSettings settings = new JsonSerializerSettings()
         {

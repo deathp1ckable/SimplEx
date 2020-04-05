@@ -58,13 +58,12 @@
             // 
             // subHeaderPanel
             // 
-            this.subHeaderPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.subHeaderPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.subHeaderPanel.Controls.Add(this.headerPanel);
-            this.subHeaderPanel.Location = new System.Drawing.Point(-1, -1);
+            this.subHeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.subHeaderPanel.Location = new System.Drawing.Point(0, 0);
             this.subHeaderPanel.Name = "subHeaderPanel";
-            this.subHeaderPanel.Size = new System.Drawing.Size(1193, 50);
+            this.subHeaderPanel.Size = new System.Drawing.Size(1175, 50);
             this.subHeaderPanel.TabIndex = 1;
             this.subHeaderPanel.Tag = "0";
             // 
@@ -80,7 +79,7 @@
             this.headerPanel.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
             this.headerPanel.Location = new System.Drawing.Point(4, 4);
             this.headerPanel.Name = "headerPanel";
-            this.headerPanel.Size = new System.Drawing.Size(1166, 40);
+            this.headerPanel.Size = new System.Drawing.Size(1165, 40);
             this.headerPanel.TabIndex = 0;
             // 
             // propertiesButton

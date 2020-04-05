@@ -18,7 +18,7 @@ namespace SimplExServer.Services
         }
         public Exam GetExam()
         {
-            ExamDatabaseWorker databaseWorker = databaseService.ExamDatabaseWorker;        
+            ExamDatabaseService databaseWorker = databaseService.ExamDatabaseWorker;        
             try
             {
                 if (id == null)
@@ -34,7 +34,7 @@ namespace SimplExServer.Services
         }
         public bool Save(Exam exam)
         {
-            ExamDatabaseWorker databaseWorker = databaseService.ExamDatabaseWorker;
+            ExamDatabaseService databaseWorker = databaseService.ExamDatabaseWorker;
             try
             {
                 if (databaseWorker != null)
@@ -56,7 +56,7 @@ namespace SimplExServer.Services
         }
         public bool Delete()
         {
-            ExamDatabaseWorker databaseWorker = databaseService.ExamDatabaseWorker;
+            ExamDatabaseService databaseWorker = databaseService.ExamDatabaseWorker;
             try
             {
                 if (id == null)

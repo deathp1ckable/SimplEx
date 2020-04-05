@@ -20,7 +20,7 @@ namespace SimplExServer.Services
             Exam exam;
             try
             {
-                exam = ExamFileWorker.OpenExam(filePath, password);
+                exam = ExamFileService.OpenExam(filePath, password);
             }
             catch
             {
@@ -32,7 +32,7 @@ namespace SimplExServer.Services
         {
             try
             {
-                ExamFileWorker.SaveExam(exam, filePath);
+                ExamFileService.SaveExam(exam, filePath);
                 return true;
             }
             catch

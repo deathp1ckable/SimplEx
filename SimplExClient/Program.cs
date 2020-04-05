@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using SimplExClient.Common;
+using SimplExClient.View;
+using SimplExClient.Presenter;
+using System;
 using System.Windows.Forms;
 
 namespace SimplExClient
@@ -16,7 +16,13 @@ namespace SimplExClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            ApplicationContext context = new ApplicationContext();
+            ApplicationController controller = (ApplicationController)new ApplicationController(new UnityAdapter())
+                .RegisterView<ILoadingView, LoadingForm>()
+                .RegisterView<ILogInView, LogInForm>()
+                .RegisterIntstance(context);
+            controller.Run<LoadingPresenter, object>(null);
+            Application.Run(context);
         }
     }
 }

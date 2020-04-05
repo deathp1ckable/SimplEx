@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace SimplExServer.Services.DatabaseHandling
 {
-    class ExamDatabaseWorker : IDisposable
+    class ExamDatabaseService : IDisposable
     {
         private readonly DatabaseController databaseController = new DatabaseController(new SimplExDBMap());
         public bool IsOpened { get; private set; }

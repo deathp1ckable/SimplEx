@@ -52,8 +52,8 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.2.0\lib\net45\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -182,7 +182,7 @@
     <Compile Include="Presenter\StartSessionArgument.cs" />
     <Compile Include="Presenter\StartSessionPresenter.cs" />
     <Compile Include="Services\DatabaseExamSaver.cs" />
-    <Compile Include="Services\DatabaseHandling\ExamDatabaseWorker.cs" />
+    <Compile Include="Services\DatabaseHandling\ExamDatabaseService.cs" />
     <Compile Include="Services\DatabaseService.cs" />
     <Compile Include="Services\DatabaseHandling\Maps\AnswerMap.cs" />
     <Compile Include="Services\DatabaseHandling\Maps\ExamMap.cs" />
@@ -251,11 +251,12 @@
     <Compile Include="Presenter\IEditMarkSystemPresenter.cs" />
     <Compile Include="Presenter\EditMarkSystemPresenter.cs" />
     <Compile Include="Presenter\IntegrablePresenter.cs" />
-    <Compile Include="Services\ExamFileWorker.cs" />
+    <Compile Include="Services\ExamFileService.cs" />
     <Compile Include="Services\ExamsListService.cs" />
     <Compile Include="Services\FileExamSaver.cs" />
     <Compile Include="Services\IExamSaver.cs" />
     <Compile Include="Services\InvalidPasswordException.cs" />
+    <Compile Include="Services\SessionService.cs" />
     <Compile Include="View\DetachedEventArgs.cs" />
     <Compile Include="View\IEditFiveStepMarkSystemView.cs" />
     <Compile Include="View\IEditMarkSystemView.cs" />
@@ -398,9 +399,6 @@
     <None Include="Config\App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\search.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\logoAnimation.gif" />
   </ItemGroup>
   <ItemGroup>
@@ -419,6 +417,10 @@
     <ProjectReference Include="..\SimplExDb\SimplExDb.csproj">
       <Project>{299BBA35-82C7-42EA-AAE6-E57F1968C77F}</Project>
       <Name>SimplExDb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimplExNetworking\SimplExNetworking.csproj">
+      <Project>{c2162aca-b53d-429b-a30c-6f4777a21762}</Project>
+      <Name>SimplExNetworking</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
