@@ -1,6 +1,5 @@
-﻿using SimplExServer.Builders;
-using SimplExServer.Model;
-using SimplExServer.Services;
+﻿using SimplExModel.Model;
+using SimplExServer.Service;
 using System;
 using System.Collections.Generic;
 namespace SimplExServer.View
@@ -18,6 +17,7 @@ namespace SimplExServer.View
 
         IPasswordEnterView PasswordEnterView { get; set; }
 
+        event ViewActionHandler<IImportView> ViewShown;
         event ViewActionHandler<IImportView> Imported;
         event ViewActionHandler<IImportView> Searched;
         event ViewActionHandler<IImportView> ViewClosed;

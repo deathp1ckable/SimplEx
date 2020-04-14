@@ -88,7 +88,7 @@
             this.propertiesButton.Enabled = false;
             this.propertiesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.propertiesButton.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.propertiesButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.propertiesButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.propertiesButton.Location = new System.Drawing.Point(3, 3);
             this.propertiesButton.Name = "propertiesButton";
             this.propertiesButton.Size = new System.Drawing.Size(200, 34);

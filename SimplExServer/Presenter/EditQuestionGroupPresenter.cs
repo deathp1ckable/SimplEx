@@ -1,7 +1,7 @@
 ﻿using SimplExServer.Builders;
 using SimplExServer.Common;
-using SimplExServer.Model;
-using SimplExServer.Model.Inherited;
+using SimplExModel.Model;
+using SimplExModel.Model.Inherited;
 using SimplExServer.View;
 using System;
 
@@ -11,6 +11,7 @@ namespace SimplExServer.Presenter
     {
         private QuestionGroupBuilder currentQuestionGroupBuider;
         private bool isSaved = true;
+        private bool isHiding;
         public EditQuestionGroupPresenter(IEditQuestionGroupView view, IApplicationController applicationController) : base(view, applicationController)
         {
             view.Changed += ViewChanged;
@@ -42,7 +43,8 @@ namespace SimplExServer.Presenter
             {
                 currentQuestionGroupBuider.QuestionGroupName = sender.GroupName;
                 Argument.EditTreeView.RefreshObject(currentQuestionGroupBuider);
-                Argument.EditTreeView.SelectObject(currentQuestionGroupBuider);
+                if (!isHiding)
+                    Argument.EditTreeView.SelectObject(currentQuestionGroupBuider);
             }
         }
 
@@ -62,13 +64,21 @@ namespace SimplExServer.Presenter
                 Argument.EditTreeView.SelectObject(builder);
             }
         }
-
         private void ViewHiden(IEditQuestionGroupView sender)
         {
-            if (!isSaved)
-                sender.AskForSaving();
-            currentQuestionGroupBuider = null;
-            isSaved = true;
+            if (!isHiding)
+            {
+                if (!isSaved)
+                {
+                    isHiding = true;
+                    View.Show();
+                    sender.AskForSaving();
+                    View.Hide();
+                    isHiding = false;
+                }
+                currentQuestionGroupBuider = null;
+                isSaved = true;
+            }
         }
 
         private void ViewChanged(IEditQuestionGroupView sender) => isSaved = false;
@@ -93,14 +103,17 @@ namespace SimplExServer.Presenter
         }
         private void ViewShown(IEditQuestionGroupView sender)
         {
-            currentQuestionGroupBuider = Argument.EditTreeView.CurrentObject as QuestionGroupBuilder;
-            if (currentQuestionGroupBuider != null)
+            if (!isHiding)
             {
-                sender.GroupName = currentQuestionGroupBuider.QuestionGroupName;
-                sender.QuestionsCount = currentQuestionGroupBuider.GetQuestionBuilders().Length;
-                sender.GroupsCount = currentQuestionGroupBuider.GetQuestionGroupBuilders().Length;
+                currentQuestionGroupBuider = Argument.EditTreeView.CurrentObject as QuestionGroupBuilder;
+                if (currentQuestionGroupBuider != null)
+                {
+                    sender.GroupName = currentQuestionGroupBuider.QuestionGroupName;
+                    sender.QuestionsCount = currentQuestionGroupBuider.GetQuestionBuilders().Length;
+                    sender.GroupsCount = currentQuestionGroupBuider.GetQuestionGroupBuilders().Length;
+                }
+                isSaved = true;
             }
-            isSaved = true;
         }
     }
 }

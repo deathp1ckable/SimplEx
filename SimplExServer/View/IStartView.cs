@@ -1,5 +1,5 @@
-﻿using SimplExServer.Model;
-using SimplExServer.Services;
+﻿using SimplExModel.Model;
+using SimplExServer.Service;
 using System;
 using System.Collections.Generic;
 

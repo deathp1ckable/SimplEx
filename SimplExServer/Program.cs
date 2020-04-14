@@ -1,8 +1,6 @@
-﻿using SimplExServer.Builders;
-using SimplExServer.Common;
+﻿using SimplExServer.Common;
 using SimplExServer.Controls;
 using SimplExServer.Forms;
-using SimplExServer.Model;
 using SimplExServer.Presenter;
 using SimplExServer.View;
 using System;
@@ -10,18 +8,18 @@ using System.Windows.Forms;
 
 namespace SimplExServer
 {
-    static class Program
+    public static class Program
     {
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
         [STAThread]
-        static void Main()
+        public static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ApplicationContext context = new ApplicationContext();
-            ApplicationController controller = (ApplicationController)new ApplicationController(new AutofacAdapter())
+            ApplicationController controller = (ApplicationController)new ApplicationController(new UnityAdapter())
                 .RegisterView<IEditPropertiesView, EditExamControl>()
                 .RegisterView<IEditMainView, EditorForm>()
                 .RegisterView<IEditTreeView, EditTreeControl>()
@@ -42,6 +40,10 @@ namespace SimplExServer
                 .RegisterView<ILoadingContextView, LoadingContextForm>()
                 .RegisterView<IImportView, ImportForm>()
                 .RegisterView<IStartSessionView, StartSessionForm>()
+                .RegisterView<ISessionView, SessionForm>()
+                .RegisterView<ISessionInformationView, SessionInformationControl>()
+                .RegisterView<IConnectionStatusView, ConnectionStatusControl>()
+                .RegisterView<IChatView, ChatControl>()
                 .RegisterIntstance(context);
             controller.Run<LoadingPresenter, object>(null);
             Application.Run(context);

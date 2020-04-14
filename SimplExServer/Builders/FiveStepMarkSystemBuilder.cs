@@ -1,5 +1,5 @@
-﻿using SimplExServer.Model;
-using SimplExServer.Model.Inherited;
+﻿using SimplExModel.Model;
+using SimplExModel.Model.Inherited;
 using System;
 
 namespace SimplExServer.Builders

@@ -49,11 +49,11 @@
             this.label10 = new System.Windows.Forms.Label();
             this.descriptionBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.patroBox = new System.Windows.Forms.TextBox();
+            this.creatorPatronymicBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.surnameBox = new System.Windows.Forms.TextBox();
+            this.creatorSurnameBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.aNameBox = new System.Windows.Forms.TextBox();
+            this.creatorNameBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.disciplineBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -66,7 +66,7 @@
             this.disciplineToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.aNameToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.aSurnameToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.aPatronimycToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.aPatronymicToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.passwordToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.repeatToolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.secondsUD)).BeginInit();
@@ -314,6 +314,7 @@
             this.descriptionBox.Location = new System.Drawing.Point(154, 82);
             this.descriptionBox.Multiline = true;
             this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.descriptionBox.Size = new System.Drawing.Size(566, 40);
             this.descriptionBox.TabIndex = 43;
             this.descriptionBox.TextChanged += new System.EventHandler(this.PropsChanged);
@@ -329,17 +330,17 @@
             this.label9.Text = "Описание:";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // patroBox
+            // creatorPatronymicBox
             // 
-            this.patroBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.creatorPatronymicBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.patroBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.patroBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.patroBox.Location = new System.Drawing.Point(154, 198);
-            this.patroBox.Name = "patroBox";
-            this.patroBox.Size = new System.Drawing.Size(566, 21);
-            this.patroBox.TabIndex = 41;
-            this.patroBox.TextChanged += new System.EventHandler(this.PropsChanged);
+            this.creatorPatronymicBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.creatorPatronymicBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.creatorPatronymicBox.Location = new System.Drawing.Point(154, 198);
+            this.creatorPatronymicBox.Name = "creatorPatronymicBox";
+            this.creatorPatronymicBox.Size = new System.Drawing.Size(566, 21);
+            this.creatorPatronymicBox.TabIndex = 41;
+            this.creatorPatronymicBox.TextChanged += new System.EventHandler(this.PropsChanged);
             // 
             // label8
             // 
@@ -352,17 +353,17 @@
             this.label8.Text = "Отчество Автора:";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // surnameBox
+            // creatorSurnameBox
             // 
-            this.surnameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.creatorSurnameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.surnameBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.surnameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.surnameBox.Location = new System.Drawing.Point(154, 171);
-            this.surnameBox.Name = "surnameBox";
-            this.surnameBox.Size = new System.Drawing.Size(566, 21);
-            this.surnameBox.TabIndex = 39;
-            this.surnameBox.TextChanged += new System.EventHandler(this.PropsChanged);
+            this.creatorSurnameBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.creatorSurnameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.creatorSurnameBox.Location = new System.Drawing.Point(154, 171);
+            this.creatorSurnameBox.Name = "creatorSurnameBox";
+            this.creatorSurnameBox.Size = new System.Drawing.Size(566, 21);
+            this.creatorSurnameBox.TabIndex = 39;
+            this.creatorSurnameBox.TextChanged += new System.EventHandler(this.PropsChanged);
             // 
             // label7
             // 
@@ -375,17 +376,17 @@
             this.label7.Text = "Фамилия Автора:";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // aNameBox
+            // creatorNameBox
             // 
-            this.aNameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.creatorNameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.aNameBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.aNameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.aNameBox.Location = new System.Drawing.Point(154, 144);
-            this.aNameBox.Name = "aNameBox";
-            this.aNameBox.Size = new System.Drawing.Size(566, 21);
-            this.aNameBox.TabIndex = 37;
-            this.aNameBox.TextChanged += new System.EventHandler(this.PropsChanged);
+            this.creatorNameBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.creatorNameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.creatorNameBox.Location = new System.Drawing.Point(154, 144);
+            this.creatorNameBox.Name = "creatorNameBox";
+            this.creatorNameBox.Size = new System.Drawing.Size(566, 21);
+            this.creatorNameBox.TabIndex = 37;
+            this.creatorNameBox.TextChanged += new System.EventHandler(this.PropsChanged);
             // 
             // label6
             // 
@@ -500,10 +501,10 @@
             this.aSurnameToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             this.aSurnameToolTip.ToolTipTitle = "Неверная фамилия автора";
             // 
-            // aPatronimycToolTip
+            // aPatronymicToolTip
             // 
-            this.aPatronimycToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
-            this.aPatronimycToolTip.ToolTipTitle = "Неверное отчество автора";
+            this.aPatronymicToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
+            this.aPatronymicToolTip.ToolTipTitle = "Неверное отчество автора";
             // 
             // passwordToolTip
             // 
@@ -515,7 +516,7 @@
             this.repeatToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             this.repeatToolTip.ToolTipTitle = "Неверное подтверждение пароля";
             // 
-            // EditPropertiesControl
+            // EditExamControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -543,18 +544,18 @@
             this.Controls.Add(this.label10);
             this.Controls.Add(this.descriptionBox);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.patroBox);
+            this.Controls.Add(this.creatorPatronymicBox);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.surnameBox);
+            this.Controls.Add(this.creatorSurnameBox);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.aNameBox);
+            this.Controls.Add(this.creatorNameBox);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.disciplineBox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.nameBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Name = "EditPropertiesControl";
+            this.Name = "EditExamControl";
             this.Size = new System.Drawing.Size(725, 449);
             ((System.ComponentModel.ISupportInitialize)(this.secondsUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minuteUD)).EndInit();
@@ -587,11 +588,11 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox descriptionBox;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox patroBox;
+        private System.Windows.Forms.TextBox creatorPatronymicBox;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox surnameBox;
+        private System.Windows.Forms.TextBox creatorSurnameBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox aNameBox;
+        private System.Windows.Forms.TextBox creatorNameBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox disciplineBox;
         private System.Windows.Forms.Label label5;
@@ -604,7 +605,7 @@
         private System.Windows.Forms.ToolTip disciplineToolTip;
         private System.Windows.Forms.ToolTip aNameToolTip;
         private System.Windows.Forms.ToolTip aSurnameToolTip;
-        private System.Windows.Forms.ToolTip aPatronimycToolTip;
+        private System.Windows.Forms.ToolTip aPatronymicToolTip;
         private System.Windows.Forms.ToolTip passwordToolTip;
         private System.Windows.Forms.ToolTip repeatToolTip;
     }

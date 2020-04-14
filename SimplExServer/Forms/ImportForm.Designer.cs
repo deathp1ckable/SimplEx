@@ -257,9 +257,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel4.BackColor = System.Drawing.SystemColors.HighlightText;
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel4.Location = new System.Drawing.Point(2, 3);
+            this.panel4.Location = new System.Drawing.Point(3, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(568, 509);
+            this.panel4.Size = new System.Drawing.Size(566, 509);
             this.panel4.TabIndex = 40;
             // 
             // label5
@@ -283,7 +283,7 @@
             this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel6.Location = new System.Drawing.Point(3, 3);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(572, 500);
+            this.panel6.Size = new System.Drawing.Size(566, 509);
             this.panel6.TabIndex = 42;
             // 
             // infoText
@@ -303,7 +303,7 @@
             this.nameText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nameText.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameText.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.nameText.Location = new System.Drawing.Point(246, 16);
+            this.nameText.Location = new System.Drawing.Point(243, 16);
             this.nameText.Name = "nameText";
             this.nameText.Size = new System.Drawing.Size(326, 26);
             this.nameText.TabIndex = 37;
@@ -334,7 +334,7 @@
             this.panel1.Controls.Add(this.searchBox);
             this.panel1.Location = new System.Drawing.Point(3, 48);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(570, 490);
+            this.panel1.Size = new System.Drawing.Size(566, 490);
             this.panel1.TabIndex = 36;
             // 
             // skipButtonButton
@@ -346,7 +346,7 @@
             this.skipButtonButton.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.skipButtonButton.Location = new System.Drawing.Point(3, 460);
             this.skipButtonButton.Name = "skipButtonButton";
-            this.skipButtonButton.Size = new System.Drawing.Size(562, 25);
+            this.skipButtonButton.Size = new System.Drawing.Size(558, 25);
             this.skipButtonButton.TabIndex = 85;
             this.skipButtonButton.Text = "Отмена";
             this.skipButtonButton.UseVisualStyleBackColor = false;
@@ -359,7 +359,7 @@
             this.cancelButton.Enabled = false;
             this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cancelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cancelButton.Location = new System.Drawing.Point(471, 370);
+            this.cancelButton.Location = new System.Drawing.Point(467, 370);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(20, 28);
             this.cancelButton.TabIndex = 35;
@@ -378,7 +378,7 @@
             this.questionsList.ItemHeight = 19;
             this.questionsList.Location = new System.Drawing.Point(3, 3);
             this.questionsList.Name = "questionsList";
-            this.questionsList.Size = new System.Drawing.Size(562, 361);
+            this.questionsList.Size = new System.Drawing.Size(558, 361);
             this.questionsList.TabIndex = 32;
             this.questionsList.SelectedIndexChanged += new System.EventHandler(this.QuestionsListSelectedIndexChanged);
             // 
@@ -386,10 +386,9 @@
             // 
             this.searchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.searchButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.searchButton.Enabled = false;
             this.searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.searchButton.Location = new System.Drawing.Point(495, 370);
+            this.searchButton.Location = new System.Drawing.Point(491, 370);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(70, 28);
             this.searchButton.TabIndex = 34;
@@ -407,7 +406,7 @@
             this.importButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.importButton.Location = new System.Drawing.Point(3, 404);
             this.importButton.Name = "importButton";
-            this.importButton.Size = new System.Drawing.Size(562, 50);
+            this.importButton.Size = new System.Drawing.Size(558, 50);
             this.importButton.TabIndex = 30;
             this.importButton.Text = "Имортировать вопрос";
             this.importButton.UseVisualStyleBackColor = false;
@@ -422,7 +421,7 @@
             this.searchBox.FormattingEnabled = true;
             this.searchBox.Location = new System.Drawing.Point(3, 370);
             this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(462, 28);
+            this.searchBox.Size = new System.Drawing.Size(458, 28);
             this.searchBox.TabIndex = 33;
             // 
             // questionContentToolTip
@@ -445,8 +444,9 @@
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(894, 543);
             this.Controls.Add(this.splitContainer);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(820, 490);
             this.Name = "ImportForm";
             this.Text = "Импорт вопроса";

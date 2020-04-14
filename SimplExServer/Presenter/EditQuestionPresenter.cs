@@ -7,7 +7,8 @@ namespace SimplExServer.Presenter
 {
     class EditQuestionPresenter : IntegrablePresenter<EditContentArgumnet, IEditQuestionView>
     {
-        private QuestionBuilder currentQuestionBuilder;
+        private QuestionBuilder currentQuestionBuilder; 
+        private bool isHiding;
         public EditQuestionPresenter(IEditQuestionView view, IApplicationController applicationController) : base(view, applicationController)
         {
             view.Shown += ViewShown;
@@ -34,23 +35,33 @@ namespace SimplExServer.Presenter
         private void ViewThemeChanged(IEditQuestionView sender) => currentQuestionBuilder.ThemeBuilder = sender.Theme;
         private void ViewHiden(IEditQuestionView sender)
         {
-            currentQuestionBuilder = null;
-            HideViews();
+            if (!isHiding)
+            {
+                isHiding = true;
+                View.Show();
+                currentQuestionBuilder = null;
+                HideViews();
+                View.Hide();
+                isHiding = false;
+            }
         }
 
         private void ViewShown(IEditQuestionView sender)
         {
-            currentQuestionBuilder = Argument.EditTreeView.CurrentObject as QuestionBuilder;
-            if (currentQuestionBuilder != null)
+            if (!isHiding)
             {
-                sender.Themes = Argument.ExamBuilder.ThemeBuilders.ToArray();
-                sender.Theme = currentQuestionBuilder.ThemeBuilder;
-                sender.QuestionType = currentQuestionBuilder.GetType();
-                sender.QuestionNumber = currentQuestionBuilder.QuestionNumber + 1;
-                HideViews();
-                if (currentQuestionBuilder is OneAnswerQuestionBuilder)
+                currentQuestionBuilder = Argument.EditTreeView.CurrentObject as QuestionBuilder;
+                if (currentQuestionBuilder != null)
                 {
-                    View.EditOneAnswerQuestionView.Show();
+                    sender.Themes = Argument.ExamBuilder.ThemeBuilders.ToArray();
+                    sender.Theme = currentQuestionBuilder.ThemeBuilder;
+                    sender.QuestionType = currentQuestionBuilder.GetType();
+                    sender.QuestionNumber = currentQuestionBuilder.QuestionNumber + 1;
+                    HideViews();
+                    if (currentQuestionBuilder is OneAnswerQuestionBuilder)
+                    {
+                        View.EditOneAnswerQuestionView.Show();
+                    }
                 }
             }
         }

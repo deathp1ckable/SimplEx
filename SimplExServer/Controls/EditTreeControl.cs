@@ -72,7 +72,7 @@ namespace SimplExServer.Controls
                         else if (value[i] is QuestionGroupBuilder questionGroupBuilder)
                             tree.Nodes["Groups"].Nodes.Add($"Группа '{questionGroupBuilder.QuestionGroupName}'").Tag = questionGroupBuilder;
                         else if (value[i] is QuestionBuilder questionBuilder)
-                            tree.Nodes["Questions"].Nodes.Add($"Вопрос №{questionBuilder.QuestionNumber}").Tag = questionBuilder;
+                            tree.Nodes["Questions"].Nodes.Add($"Вопрос №{1 + questionBuilder.QuestionNumber}").Tag = questionBuilder;
                     }
                 else throw new InvalidOperationException("Cannot set search results when the search was not done.");
             }
@@ -119,6 +119,8 @@ namespace SimplExServer.Controls
 
         public void SelectObject(object obj)
         {
+            if (ReferenceEquals(tree.SelectedNode.Tag, obj))
+                return;
             if (obj == null)
                 tree.SelectedNode = tree.Nodes["Themes"];
             tree.SelectedNode = tree.GetAllNodes().Where(a => ReferenceEquals(a.Tag, obj)).FirstOrDefault();
@@ -138,7 +140,7 @@ namespace SimplExServer.Controls
         }
         public void RefreshTickets()
         {
-            TicketBuilders = ticketBuilders; 
+            TicketBuilders = ticketBuilders;
             Refreshed?.Invoke(this);
         }
         public void RefreshThemes()
@@ -421,7 +423,7 @@ namespace SimplExServer.Controls
         private void UpButtonClick(object sender, EventArgs e)
         {
             TreeNode prevNode = tree.SelectedNode.PrevNode;
-            TreeNode selectedNode =tree.SelectedNode;
+            TreeNode selectedNode = tree.SelectedNode;
             TreeNode clonedSelectedNode = (TreeNode)tree.SelectedNode.Clone();
             selectedNode.Replace((TreeNode)prevNode.Clone());
             prevNode.Replace(clonedSelectedNode);

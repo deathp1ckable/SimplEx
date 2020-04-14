@@ -1,5 +1,5 @@
-﻿using SimplExServer.Model;
-using SimplExServer.Services;
+﻿using SimplExModel.Model;
+using SimplExServer.Service;
 using SimplExServer.View;
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ namespace SimplExServer.Forms
             get => questions; set
             {
                 questions = value;
-                if (questions == null || questions.Count == 0)
+                if (questions == null || questions.Count == 0 && !searchButton.Enabled)
                 {
                     hider.Visible = true;
                     searchButton.Enabled = false;
@@ -67,6 +67,7 @@ namespace SimplExServer.Forms
         public bool IsListLoading { get => loaderListPanel.Visible; set => loaderListPanel.Visible = value; }
         public string DbInfoText { get => dbInfoLabel.Text; set => dbInfoLabel.Text = value; }
 
+        public event ViewActionHandler<IImportView> ViewShown;
         public event ViewActionHandler<IImportView> Imported;
         public event ViewActionHandler<IImportView> Searched;
         public event ViewActionHandler<IImportView> ViewClosed;
@@ -82,6 +83,7 @@ namespace SimplExServer.Forms
         }
         public new void Show()
         {
+            ViewShown?.Invoke(this);
             ShowDialog();
         }
         private void PasswordEnterViewCanceled(IPasswordEnterView sender)

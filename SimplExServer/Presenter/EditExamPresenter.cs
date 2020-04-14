@@ -21,10 +21,11 @@ namespace SimplExServer.Presenter
             View.Password = Argument.Password;
             View.CreatorName = Argument.CreatorName;
             View.CreatorSurname = Argument.CreatorSurname;
-            View.CreatorPatronimyc = Argument.CreatorPatronimyc;
+            View.CreatorPatronymic = Argument.CreatorPatronymic;
             View.ExaminationTime = Argument.ExaminationTime;
             View.FirstNumber = Argument.FirstNumber;
             View.Description = Argument.Description;
+            View.RepeatPassword = Argument.Password;
             View.IsSaved = true;
         }
         private void PropertiesChanged(IEditPropertiesView sender)
@@ -33,32 +34,32 @@ namespace SimplExServer.Presenter
         }
         private void SaveProperties(IEditPropertiesView sender)
         {
-            if (sender.ExamName.Length <= 0)
+            if (!string.IsNullOrEmpty(sender.ExamName.Trim()))
             {
                 sender.MessageWrongExamName("Введите название теста.");
                 return;
             }
-            if (sender.Discipline.Length <= 0)
+            if (!string.IsNullOrEmpty(sender.Discipline.Trim()))
             {
                 sender.MessageWrongDiscipline("Введите дисциплину.");
                 return;
             }
-            if (sender.CreatorName.Length <= 0)
+            if (!string.IsNullOrEmpty(sender.CreatorName.Trim()))
             {
                 sender.MessageWrongCreatorName("Введите имя автора.");
                 return;
             }
-            if (sender.CreatorSurname.Length <= 0)
+            if (!string.IsNullOrEmpty(sender.CreatorSurname.Trim()))
             {
                 sender.MessageWrongCreatorSurname("Введите фамилию автора.");
                 return;
             }
-            if (sender.CreatorPatronimyc.Length <= 0)
+            if (!string.IsNullOrEmpty(sender.CreatorPatronymic.Trim()))
             {
-                sender.MessageWrongCreatorPatronimyc("Введите отчество автора.");
+                sender.MessageWrongCreatorPatronymic("Введите отчество автора.");
                 return;
             }
-            if (sender.Password != null)
+            if (!string.IsNullOrEmpty(sender.Password.Trim()))
             {
                 if (!passwordRegex.IsMatch(sender.Password))
                 {
@@ -76,7 +77,7 @@ namespace SimplExServer.Presenter
             Argument.Password = sender.Password;
             Argument.CreatorName = sender.CreatorName;
             Argument.CreatorSurname = sender.CreatorSurname;
-            Argument.CreatorPatronimyc = sender.CreatorPatronimyc;
+            Argument.CreatorPatronymic = sender.CreatorPatronymic;
             Argument.ExaminationTime = sender.ExaminationTime;
             Argument.FirstNumber = sender.FirstNumber;
             Argument.Description = sender.Description;
@@ -91,33 +92,33 @@ namespace SimplExServer.Presenter
             sender.Password = Argument.Password;
             sender.CreatorName = Argument.CreatorName;
             sender.CreatorSurname = Argument.CreatorSurname;
-            sender.CreatorPatronimyc = Argument.CreatorPatronimyc;
+            sender.CreatorPatronymic = Argument.CreatorPatronymic;
             sender.ExaminationTime = Argument.ExaminationTime;
             sender.FirstNumber = Argument.FirstNumber;
             sender.Description = Argument.Description;
-            if (sender.ExamName.Length <= 0)
+            if (!string.IsNullOrEmpty(sender.ExamName.Trim()))
             {
                 sender.MessageWrongExamName("Введите название теста.");
                 return;
             }
-            if (sender.Discipline.Length <= 0)
+            if (!string.IsNullOrEmpty(sender.Discipline.Trim()))
             {
                 sender.MessageWrongDiscipline("Введите дисциплину.");
                 return;
             }
-            if (sender.CreatorName.Length <= 0)
+            if (!string.IsNullOrEmpty(sender.CreatorName.Trim()))
             {
                 sender.MessageWrongCreatorName("Введите имя автора.");
                 return;
             }
-            if (sender.CreatorSurname.Length <= 0)
+            if (!string.IsNullOrEmpty(sender.CreatorSurname.Trim()))
             {
                 sender.MessageWrongCreatorSurname("Введите фамилию автора.");
                 return;
             }
-            if (sender.CreatorPatronimyc.Length <= 0)
+            if (!string.IsNullOrEmpty(sender.CreatorPatronymic.Trim()))
             {
-                sender.MessageWrongCreatorPatronimyc("Введите отчество автора.");
+                sender.MessageWrongCreatorPatronymic("Введите отчество автора.");
                 return;
             }
             if (sender.Password != null)

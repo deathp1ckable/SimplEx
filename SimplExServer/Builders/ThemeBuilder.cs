@@ -1,4 +1,4 @@
-﻿using SimplExServer.Model;
+﻿using SimplExModel.Model;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +12,7 @@ namespace SimplExServer.Builders
         {
             ParentExamBuilder = examBuilder;
             if (ParentExamBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(examBuilder));
             Load(instance);
         }
         public override void Reset()

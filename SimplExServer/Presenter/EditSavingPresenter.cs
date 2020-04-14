@@ -1,7 +1,7 @@
 ﻿using SimplExServer.Builders;
 using SimplExServer.Common;
-using SimplExServer.Model;
-using SimplExServer.Services;
+using SimplExModel.Model;
+using SimplExServer.Service;
 using SimplExServer.View;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,6 +11,7 @@ namespace SimplExServer.Presenter
 {
     class EditSavingPresenter : IntegrablePresenter<EditArgumnet, IEditSavingView>
     {
+        private readonly List<QuestionBuilder> questionBuilders = new List<QuestionBuilder>();
         public EditSavingPresenter(IEditSavingView view, IApplicationController applicationController) : base(view, applicationController)
         {
             view.Shown += ViewShown;
@@ -32,8 +33,8 @@ namespace SimplExServer.Presenter
             Exam exam = GetCheckedExam();
             if (exam == null)
                 return;
-            IExamSaver examSaver = new DatabaseExamSaver(null, databaseService, exam.Name);
-            if (await ApplicationController.Run<LoadingContextPresnter<bool>, Task<bool>>(Task.Run(() => examSaver.Save(exam))).GetTask())
+            IExamSaver examSaver = new DatabaseExamSaver(null, exam.Name);
+            if (await ApplicationController.Run<LoadingContextPresenter<bool>, Task<bool>>(Task.Run(() => examSaver.Save(exam))).GetTask())
             {
                 Argument.ExamSaver = examSaver;
                 examsState.Add(examSaver);
@@ -53,10 +54,9 @@ namespace SimplExServer.Presenter
             Exam exam = GetCheckedExam();
             if (exam == null)
                 return;
-            if (await ApplicationController.Run<LoadingContextPresnter<bool>, Task<bool>>(Task.Run(() => Argument.ExamSaver.Save(exam))).GetTask())
+            if (await ApplicationController.Run<LoadingContextPresenter<bool>, Task<bool>>(Task.Run(() => Argument.ExamSaver.Save(exam))).GetTask())
             {
                 IList<string> temp = View.Warnings;
-                Argument.ExamSaver.SaverName = exam.Name;
                 temp.Add("Сохранено!");
                 sender.Warnings = temp;
             }
@@ -85,7 +85,7 @@ namespace SimplExServer.Presenter
             if (loaded == null)
                 loaded = new FileExamSaver(e.FilePath, exam.Password, exam.Name);
             Argument.ExamSaver = loaded;
-            if (await ApplicationController.Run<LoadingContextPresnter<bool>, Task<bool>>(Task.Run(() => Argument.ExamSaver.Save(exam))).GetTask())
+            if (await ApplicationController.Run<LoadingContextPresenter<bool>, Task<bool>>(Task.Run(() => Argument.ExamSaver.Save(exam))).GetTask())
             {
                 examsList.Add(loaded);
                 IList<string> temp = View.Warnings;
@@ -118,8 +118,19 @@ namespace SimplExServer.Presenter
             }
             if (Argument.ExamBuilder.Password == null)
                 Argument.ExamBuilder.Password = string.Empty;
-            QuestionBuilder[] questionBuilders = Argument.ExamBuilder.GetQuestionBuilders();
-            for (int i = 0; i < questionBuilders.Length; i++)
+            questionBuilders.Clear();
+            for (int i = 0; i < Argument.ExamBuilder.TicketBuilders.Count; i++)
+            {
+                QuestionBuilder[] questionBuilders = Argument.ExamBuilder.TicketBuilders[i].GetQuestionBuilders();
+                if (questionBuilders.Length == 0)
+                {
+                    View.Warnings = warnings;
+                    View.ShowError($"Билет '{Argument.ExamBuilder.TicketBuilders[i].TicketName}' не содержал вопросов. Сохранение не произошло.");
+                    return null;
+                }
+                this.questionBuilders.AddRange(questionBuilders);
+            }
+            for (int i = 0; i < questionBuilders.Count; i++)
             {
                 if (questionBuilders[i].ThemeBuilder == null)
                 {

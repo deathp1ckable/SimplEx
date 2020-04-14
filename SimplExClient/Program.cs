@@ -3,6 +3,8 @@ using SimplExClient.View;
 using SimplExClient.Presenter;
 using System;
 using System.Windows.Forms;
+using SimplExClient.Forms;
+using SimplExClient.Controls;
 
 namespace SimplExClient
 {
@@ -20,9 +22,15 @@ namespace SimplExClient
             ApplicationController controller = (ApplicationController)new ApplicationController(new UnityAdapter())
                 .RegisterView<ILoadingView, LoadingForm>()
                 .RegisterView<ILogInView, LogInForm>()
+                .RegisterView<IMainView, MainForm>()
+                .RegisterView<ILoadingContextView, LoadingContextForm>()
+                .RegisterView<ISessionInformationView, SessionInformationControl>()
+                .RegisterView<IResultView, ResultForm>()
+                .RegisterView<IChatView, ChatControl>()
                 .RegisterIntstance(context);
             controller.Run<LoadingPresenter, object>(null);
             Application.Run(context);
         }
     }
+    public delegate void Action();
 }

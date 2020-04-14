@@ -8,7 +8,8 @@ namespace SimplExServer.Presenter
     class EditOneAnswerQuestionPresenter : IntegrablePresenter<EditContentArgumnet, IEditOneAnswerQuestionView>
     {
         private OneAnswerQuestionBuilder currentOneAnswerQuestionBuilder;
-        private bool isSaved = true;
+        private bool isSaved = true; 
+        private bool isHiding;
         public EditOneAnswerQuestionPresenter(IEditOneAnswerQuestionView view, IApplicationController applicationController) : base(view, applicationController)
         {
             view.Shown += ViewShown;
@@ -28,30 +29,45 @@ namespace SimplExServer.Presenter
                 currentOneAnswerQuestionBuilder.Answers = sender.Answers.ToList();
                 currentOneAnswerQuestionBuilder.Letters = sender.Letters;
                 currentOneAnswerQuestionBuilder.RightAnswerIndex = sender.RightAnswerIndex;
+                Argument.EditTreeView.RefreshObject(currentOneAnswerQuestionBuilder);
+                if (!isHiding)
+                    Argument.EditTreeView.SelectObject(currentOneAnswerQuestionBuilder);
             }
         }
 
         private void ViewChanged(IEditOneAnswerQuestionView sender) => isSaved = false;
         private void ViewHiden(IEditOneAnswerQuestionView sender)
         {
-            if (!isSaved)
-                sender.AskForSaving();
-            currentOneAnswerQuestionBuilder = null;
-            isSaved = true;
+            if (!isHiding)
+            {
+                if (!isSaved)
+                {
+                    isHiding = true;
+                    View.Show();
+                    sender.AskForSaving();
+                    View.Hide();
+                    isHiding = false;
+                }
+                currentOneAnswerQuestionBuilder = null;
+                isSaved = true;
+            }
         }
         private void ViewShown(IEditOneAnswerQuestionView sender)
         {
-            currentOneAnswerQuestionBuilder = Argument.EditTreeView.CurrentObject as OneAnswerQuestionBuilder;
-            if (currentOneAnswerQuestionBuilder != null)
+            if (!isHiding)
             {
-                sender.QuestionText = currentOneAnswerQuestionBuilder.Text;
-                sender.Points = currentOneAnswerQuestionBuilder.Points;
-                sender.Devider = currentOneAnswerQuestionBuilder.Devider;
-                sender.Answers = currentOneAnswerQuestionBuilder.Answers;
-                sender.Letters = currentOneAnswerQuestionBuilder.Letters;
-                sender.RightAnswerIndex = currentOneAnswerQuestionBuilder.RightAnswerIndex;
+                currentOneAnswerQuestionBuilder = Argument.EditTreeView.CurrentObject as OneAnswerQuestionBuilder;
+                if (currentOneAnswerQuestionBuilder != null)
+                {
+                    sender.QuestionText = currentOneAnswerQuestionBuilder.Text;
+                    sender.Points = currentOneAnswerQuestionBuilder.Points;
+                    sender.Devider = currentOneAnswerQuestionBuilder.Devider;
+                    sender.Answers = currentOneAnswerQuestionBuilder.Answers;
+                    sender.Letters = currentOneAnswerQuestionBuilder.Letters;
+                    sender.RightAnswerIndex = currentOneAnswerQuestionBuilder.RightAnswerIndex;
+                }
+                isSaved = true;
             }
-            isSaved = true;
         }
     }
 }

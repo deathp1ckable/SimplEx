@@ -1,5 +1,4 @@
-﻿using SimplExServer.Model;
-using System.Reflection;
+﻿using SimplExModel.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,14 +23,14 @@ namespace SimplExServer.Builders
             SortedQuestionBuilders = new ReadOnlyCollection<QuestionBuilder>(sortedQuestionBuilders);
             ParentExamBuilder = examBuilder;
             if (ParentExamBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(examBuilder));
             Load(instance);
         }
 
         public QuestionGroupBuilder AddQuestionGroup(string name)
         {
             if (name == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(name));
             QuestionGroup questionGroup = new QuestionGroup() { QuestionGroupName = name };
             QuestionGroupBuilder result = new QuestionGroupBuilder(questionGroup, this);
             questionGroupBuilders.Add(result);
@@ -40,7 +39,7 @@ namespace SimplExServer.Builders
         public QuestionGroupBuilder AddQuestionGroup(QuestionGroup questionGroup)
         {
             if (questionGroup == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(questionGroup));
             QuestionGroupBuilder result = new QuestionGroupBuilder((QuestionGroup)questionGroup.Clone(), this);
             questionGroupBuilders.Add(result);
             RegisterQuestionGroup(result);
@@ -49,7 +48,7 @@ namespace SimplExServer.Builders
         public QuestionGroupBuilder AddQuestionGroup(QuestionGroupBuilder questionGroupBuilder)
         {
             if (questionGroupBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(questionGroupBuilder));
             if (GetQuestionGroupBuilders().Contains(questionGroupBuilder))
                 throw new Exception("This builder was already assigned to the parent builder.");
             questionGroupBuilders.Add(questionGroupBuilder);
@@ -61,7 +60,7 @@ namespace SimplExServer.Builders
         public bool RemoveQuestionGroup(QuestionGroupBuilder questionGroupBuilder)
         {
             if (questionGroupBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(questionGroupBuilder));
             bool result = questionGroupBuilders.Remove(questionGroupBuilder);
             if (result)
                 UnregisterQuestionGroup(questionGroupBuilder);
@@ -73,7 +72,7 @@ namespace SimplExServer.Builders
             if (!GetQuestionBuilders().Contains(toRegister))
                 throw new ArgumentException();
             if (toRegister == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(toRegister));
             if (sortedQuestionBuilders.Contains(toRegister))
                 return;
             sortedQuestionBuilders.Add(toRegister);
@@ -84,7 +83,7 @@ namespace SimplExServer.Builders
             if (!GetQuestionGroupBuilders().Contains(toRegister))
                 throw new ArgumentException();
             if (toRegister == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(toRegister));
             QuestionBuilder[] questionBuilders = toRegister.GetQuestionBuilders();
             for (int i = 0; i < questionBuilders.Length; i++)
                 if (!sortedQuestionBuilders.Contains(questionBuilders[i]))
@@ -104,8 +103,10 @@ namespace SimplExServer.Builders
         }
         public void SwapNumeration(QuestionBuilder questionA, QuestionBuilder questionB)
         {
-            if (questionA == null || questionB == null)
-                throw new ArgumentNullException();
+            if (questionA == null )
+                throw new ArgumentNullException(nameof(questionA));
+            if(questionB == null)
+                throw new ArgumentNullException(nameof(questionB));
             int questionIndexA = sortedQuestionBuilders.IndexOf(questionA);
             int questionIndexB = sortedQuestionBuilders.IndexOf(questionB);
             if (questionIndexA < 0 || questionIndexB < 0)

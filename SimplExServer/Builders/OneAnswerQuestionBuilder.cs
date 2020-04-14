@@ -1,5 +1,5 @@
-﻿using SimplExServer.Model;
-using SimplExServer.Model.Inherited;
+﻿using SimplExModel.Model;
+using SimplExModel.Model.Inherited;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,8 +36,8 @@ namespace SimplExServer.Builders
             result.QuestionContent.Devider = Devider;
             result.Points = Points;
             if (Answers.Count != 0)
-                result.RightAnswer = new Answer() { Content = Answers[rightAnswerIndex] };
-            else result.RightAnswer = null;
+                result.Answer = new Answer() { Content = Answers[rightAnswerIndex] };
+            else result.Answer = null;
             return result;
         }
 
@@ -55,8 +55,8 @@ namespace SimplExServer.Builders
             Answers = new List<string>(Instance.QuestionContent.Answers);
             Letters = Instance.QuestionContent.Letters;
             Devider = Instance.QuestionContent.Devider;
-            if (Instance.RightAnswer != null)
-                rightAnswerIndex = Answers.IndexOf(Instance.RightAnswer.Content);
+            if (Instance.Answer != null)
+                rightAnswerIndex = Answers.IndexOf(Instance.Answer.Content);
         }
         public override Question GetBuildedInstance()
         {
@@ -68,7 +68,7 @@ namespace SimplExServer.Builders
             Instance.Points = Points;
             Instance.QuestionContent.Letters = Letters;
             if (Answers.Count > 0)
-                Instance.RightAnswer = new Answer() { Content = Answers[rightAnswerIndex] };
+                Instance.Answer = new Answer() { Content = Answers[rightAnswerIndex] };
             return Instance;
         }
         public override string ToString()

@@ -2,6 +2,7 @@
 using SimplExNetworking.Internal;
 using SimplExNetworking.UniqueIdentifiers;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -50,7 +51,7 @@ namespace SimplExNetworking.Networking
                     maxConnections = value;
                     SendSettings();
                 }
-                else throw new ArgumentException("Attemting to set max connection count to less value then cont of existing connections.");
+                else throw new ArgumentException("Attemting to set max connection count to less value then count of existing connections.");
             }
         }
         public string Password { get; set; } = string.Empty;
@@ -109,12 +110,12 @@ namespace SimplExNetworking.Networking
                     keepAlive.IsBackground = true;
                     keepAlive.Start();
 
-                    OnServerInitialized?.Invoke(this, new EventArgs());
+                    ThreadPool.QueueUserWorkItem((a) => OnServerInitialized?.Invoke(this, EventArgs.Empty));
                 }
                 catch (Exception ex)
                 {
                     IsInitialized = false;
-                    OnFailedToInitializeServer?.Invoke(this, new ReasonEventArgs(ex.Message));
+                    ThreadPool.QueueUserWorkItem((a) => OnFailedToInitializeServer?.Invoke(this, new ReasonEventArgs(ex.Message)));
                 }
             }
             else throw new InvalidOperationException("Attempting to initialized already initilized NetworkServer");
@@ -145,7 +146,7 @@ namespace SimplExNetworking.Networking
             for (int i = 0; i < tmp.Length; i++)
                 if (broadcastingType == BroadcastMode.All)
                     if (tmp[i] == null)
-                        OnMessageRecieved?.Invoke(this, new MessageRecievedEventArgs(0, message));
+                        ThreadPool.QueueUserWorkItem((a) => OnMessageRecieved?.Invoke(this, new MessageRecievedEventArgs(0, message)));
                     else
                         SendMessage(tmp[i].uniqueID.Id, message);
                 else if (tmp[i] != null)
@@ -166,7 +167,7 @@ namespace SimplExNetworking.Networking
                 keepAlive.Abort();
                 accepter.Abort();
                 reciever.Abort();
-                OnServerStopped?.Invoke(this, new EventArgs());
+                ThreadPool.QueueUserWorkItem((a) => OnServerStopped?.Invoke(this, EventArgs.Empty));
             }
             else throw new InvalidOperationException("Attempting to stop uninitilized NetworkServer");
         }
@@ -176,7 +177,7 @@ namespace SimplExNetworking.Networking
             try
             {
                 while (IsInitialized)
-                    connectedClients.Add(new Client(listener.AcceptTcpClient(), host.CreateUniqueID(), KeepAliveDelay));
+                    connectedClients.Add(new Client(listener.AcceptTcpClient(), host.CreateUniqueID()));
             }
             catch (SocketException ex) when (ex.ErrorCode == 10004)
             {
@@ -269,9 +270,10 @@ namespace SimplExNetworking.Networking
             switch (package.packageType)
             {
                 case PackageType.Message:
-                    if (package.targetID == 0)
-                        OnMessageRecieved?.Invoke(this, new MessageRecievedEventArgs(package.senderID, package.content));
-                    else SendPackage(package);
+                    if (connectedClients[package.senderID].keepAliveTimer == null)
+                        if (package.targetID == 0)
+                            ThreadPool.QueueUserWorkItem((a) => OnMessageRecieved?.Invoke(this, new MessageRecievedEventArgs(package.senderID, package.content)));
+                        else SendPackage(package);
                     break;
                 case PackageType.Connect:
                     if (!connectedClients[package.senderID].isDisposed)
@@ -304,14 +306,16 @@ namespace SimplExNetworking.Networking
                             recieverPackage.packageType = PackageType.AddClient;
                             recieverPackage.content = BitConverter.GetBytes(package.senderID);
                             BroadcastPackage(recieverPackage);
-                            OnClientConnected?.Invoke(this, new IdEventArgs(package.senderID));
+                            ThreadPool.QueueUserWorkItem((a) => OnClientConnected?.Invoke(this, new IdEventArgs(package.senderID)));
                         }
                     break;
                 case PackageType.Disconnect:
-                    DisconnectClient(package.senderID, false, Encoding.Unicode.GetString(package.content));
+                    if (connectedClients[package.senderID].keepAliveTimer == null)
+                        DisconnectClient(package.senderID, false, Encoding.Unicode.GetString(package.content));
                     break;
                 case PackageType.UpdateEcho:
-                    connectedClients[package.senderID].isAlive = true;
+                    if (connectedClients[package.senderID].keepAliveTimer == null)
+                        connectedClients[package.senderID].isAlive = true;
                     break;
             }
         }
@@ -321,10 +325,12 @@ namespace SimplExNetworking.Networking
             {
                 try
                 {
-                    byte[] buff = SerializationHelper.ProtoSerialize(package);
-                    byte[] length = BitConverter.GetBytes((long)buff.Length);
-                    connectedClients[package.targetID].client.GetStream().Write(length, 0, length.Length);
-                    connectedClients[package.targetID].client.GetStream().Write(buff, 0, buff.Length);
+                    byte[] data = SerializationHelper.ProtoSerialize(package);
+                    byte[] length = BitConverter.GetBytes(data.Length);
+                    byte[] result = new byte[data.Length + length.Length];
+                    Array.Copy(length, result, length.Length);
+                    Array.Copy(data, 0, result, length.Length, data.Length);
+                    connectedClients[package.targetID].client.GetStream().Write(result, 0, result.Length);
                 }
                 catch (SocketException ex)
                 {
@@ -378,7 +384,7 @@ namespace SimplExNetworking.Networking
                     if (connectedClients.ContainsKey(clientID))
                     {
                         if (connectedClients[clientID].keepAliveTimer == null)
-                            OnClientDisconnected?.Invoke(this, new ConnectionEventArgs(clientID, reason));
+                            ThreadPool.QueueUserWorkItem((a) => OnClientDisconnected?.Invoke(this, new ConnectionEventArgs(clientID, reason)));
                         connectedClients[clientID].Dispose();
                         connectedClients.Remove(clientID);
                         disconnectPackage.packageType = PackageType.RemoveClient;

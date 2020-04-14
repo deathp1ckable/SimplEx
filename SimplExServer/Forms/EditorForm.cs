@@ -9,7 +9,6 @@ namespace SimplExServer
     public partial class EditorForm : Form, IEditMainView
     {
         object currentObject;
-        private ApplicationContext context;
         private Button disabledButton;
         private int questionCount;
         private DateTime lastChangeDate;
@@ -217,13 +216,11 @@ namespace SimplExServer
             InitializeComponent();
             unsavedPropertiesTip.SetToolTip(propertiesButton, "Некоторые параметры следует сохранить.");
             unsavedMarkSystemToolTip.SetToolTip(markSystemButton, "Некоторые параметры следует сохранить.");
-            this.context = context;
             disabledButton = propertiesButton;
             headerPanel.BackColor = Color.FromArgb(171, 31, 47);
         }
         public new void Show()
         {
-            //   context.MainForm = this;
             ShowDialog();
         }
         private void EditTreeViewGoToProperties(IEditTreeView sender)
@@ -255,8 +252,10 @@ namespace SimplExServer
         private void TabStopClick(object sender, EventArgs e)
         {
             Button senderButton = (Button)sender;
-            senderButton.BackColor = SystemColors.ControlLight;
+
             disabledButton.BackColor = Color.FromArgb(171, 31, 47);
+            senderButton.BackColor = SystemColors.ControlLight;
+
             disabledButton.Enabled = true;
             senderButton.Enabled = false;
             disabledButton = senderButton;
@@ -281,7 +280,7 @@ namespace SimplExServer
         }
         private void OpenContentPanel()
         {
-            HideAllProperties();
+            HideAllProperties(); 
             if (EditTreeView.CurrentObject == null)
             {
                 if (EditTreeView.CurrentSection == Section.Themes)

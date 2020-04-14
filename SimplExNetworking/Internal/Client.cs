@@ -1,5 +1,6 @@
 ﻿using SimplExNetworking.UniqueIdentifiers;
 using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Timers;
 namespace SimplExNetworking.Internal
@@ -12,7 +13,7 @@ namespace SimplExNetworking.Internal
         public TcpClient client;
         public UniqueId uniqueID;
         public Timer keepAliveTimer;
-        public Client(TcpClient client, UniqueId id, int keepAliveDelay)
+        public Client(TcpClient client, UniqueId id)
         {
             this.client = client;
             uniqueID = id;
@@ -20,7 +21,7 @@ namespace SimplExNetworking.Internal
             isAlive = true;
             isDisposed = false;
 
-            keepAliveTimer = new Timer(keepAliveDelay);
+            keepAliveTimer = new Timer(5000);
             keepAliveTimer.Elapsed += ConfirmChecker;
             keepAliveTimer.Start();
         }
@@ -35,29 +36,43 @@ namespace SimplExNetworking.Internal
             keepAliveTimer?.Dispose();
             keepAliveTimer = null;
         }
-        private byte[] lengthBuffer = new byte[8];
-        private byte[] buffer = null;
+        private readonly List<byte> buffer = new List<byte>();
+        private readonly byte[] lengthBuffer = new byte[4];
         private Package recievedPackage = null;
 
         private bool isLengthReaded;
-        private long messageLength;
+        private int messageLength;
         public Package RecievePackage()
         {
             if (!isDisposed)
             {
                 recievedPackage = null;
-                if (!isLengthReaded && client.Available >= 8)
+                if (!isLengthReaded && client.Available >= 4)
                 {
                     client.GetStream().Read(lengthBuffer, 0, lengthBuffer.Length);
-                    messageLength = BitConverter.ToInt64(lengthBuffer, 0);
-                    buffer = new byte[messageLength];
+                    messageLength = BitConverter.ToInt32(lengthBuffer, 0);
+                    buffer.Clear();
                     isLengthReaded = true;
+                    isAlive = true;
                 }
-                if (isLengthReaded && client.Available >= messageLength)
+                if (isLengthReaded)
                 {
-                    client.GetStream().Read(buffer, 0, buffer.Length);
-                    recievedPackage = SerializationHelper.ProtoDeserialize<Package>(buffer);
-                    isLengthReaded = false;
+                    if (client.Available > 0)
+                    {
+                        byte[] tempBuffer;
+                        if (buffer.Count + client.Available >= messageLength)
+                            tempBuffer = new byte[messageLength - buffer.Count];
+                        else
+                            tempBuffer = new byte[client.Available];
+                        client.GetStream().Read(tempBuffer, 0, tempBuffer.Length);
+                        buffer.AddRange(tempBuffer); 
+                        isAlive = true;
+                    }
+                    if (buffer.Count == messageLength)
+                    {
+                        recievedPackage = SerializationHelper.ProtoDeserialize<Package>(buffer.ToArray());
+                        isLengthReaded = false;
+                    }
                 }
                 if (recievedPackage != null)
                     recievedPackage.senderID = uniqueID.Id;

@@ -1,6 +1,6 @@
-﻿using SimplExServer.Model;
+﻿using SimplExModel.Model;
 using SimplExServer.View;
-using SimplExServer.Model.Inherited;
+using SimplExModel.Model.Inherited;
 using System;
 using System.Windows.Forms;
 namespace SimplExServer.Controls

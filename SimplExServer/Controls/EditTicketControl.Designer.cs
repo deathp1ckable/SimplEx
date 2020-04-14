@@ -137,10 +137,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.questionsList.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.questionsList.FormattingEnabled = true;
+            this.questionsList.IntegralHeight = false;
             this.questionsList.ItemHeight = 19;
             this.questionsList.Location = new System.Drawing.Point(4, 135);
             this.questionsList.Name = "questionsList";
-            this.questionsList.Size = new System.Drawing.Size(712, 213);
+            this.questionsList.Size = new System.Drawing.Size(712, 215);
             this.questionsList.TabIndex = 80;
             this.questionsList.SelectedIndexChanged += new System.EventHandler(this.QuestionsListSelectedIndexChanged);
             // 

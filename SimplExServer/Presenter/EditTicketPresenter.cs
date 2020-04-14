@@ -10,6 +10,7 @@ namespace SimplExServer.Presenter
     {
         private TicketBuilder currentTicketBuilder;
         private bool isSaved = true;
+        private bool isHiding;
         public EditTicketPresenter(IEditTicketView view, IApplicationController applicationController) : base(view, applicationController)
         {
             view.Shown += ViewShown;
@@ -36,16 +37,26 @@ namespace SimplExServer.Presenter
                 currentTicketBuilder.TicketName = sender.TicketName;
                 currentTicketBuilder.SetNumeration(sender.Questions.ToArray());
                 sender.Questions = new List<QuestionBuilder>(currentTicketBuilder.SortedQuestionBuilders);
-                Argument.EditTreeView.SelectObject(currentTicketBuilder);
                 Argument.EditTreeView.RefreshObject(currentTicketBuilder);
+                if (!isHiding)
+                    Argument.EditTreeView.SelectObject(currentTicketBuilder);
             }
         }
         private void ViewHiden(IEditTicketView sender)
         {
-            if (!isSaved)
-                sender.AskForSaving();
-            currentTicketBuilder = null;
-            isSaved = true;
+            if (!isHiding)
+            {
+                if (!isSaved)
+                {
+                    isHiding = true;
+                    View.Show();
+                    sender.AskForSaving();
+                    View.Hide();
+                    isHiding = false;
+                }
+                currentTicketBuilder = null;
+                isSaved = true;
+            }
         }
         private void ViewThemeDeleted(IEditTicketView sender)
         {
@@ -61,15 +72,18 @@ namespace SimplExServer.Presenter
         }
         private void ViewShown(IEditTicketView sender)
         {
-            currentTicketBuilder = Argument.EditTreeView.CurrentObject as TicketBuilder;
-            if (currentTicketBuilder != null)
+            if (!isHiding)
             {
-                sender.TicketName = currentTicketBuilder.TicketName;
-                sender.Questions = new List<QuestionBuilder>(currentTicketBuilder.SortedQuestionBuilders);
-                sender.QuestionsCount = currentTicketBuilder.SortedQuestionBuilders.Count;
-                sender.GroupsCount = currentTicketBuilder.GetQuestionGroupBuilders().Length;
+                currentTicketBuilder = Argument.EditTreeView.CurrentObject as TicketBuilder;
+                if (currentTicketBuilder != null)
+                {
+                    sender.TicketName = currentTicketBuilder.TicketName;
+                    sender.Questions = new List<QuestionBuilder>(currentTicketBuilder.SortedQuestionBuilders);
+                    sender.QuestionsCount = currentTicketBuilder.SortedQuestionBuilders.Count;
+                    sender.GroupsCount = currentTicketBuilder.GetQuestionGroupBuilders().Length;
+                }
+                isSaved = true;
             }
-            isSaved = true;
         }
     }
 }

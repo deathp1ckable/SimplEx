@@ -9,9 +9,9 @@ namespace SimplExServer.Controls
     {
         public string ExamName { get => nameBox.Text; set => nameBox.Text = value; }
         public string Discipline { get => disciplineBox.Text; set => disciplineBox.Text = value; }
-        public string CreatorName { get => aNameBox.Text; set => aNameBox.Text = value; }
-        public string CreatorSurname { get => surnameBox.Text; set => surnameBox.Text = value; }
-        public string CreatorPatronimyc { get => patroBox.Text; set => patroBox.Text = value; }
+        public string CreatorName { get => creatorNameBox.Text; set => creatorNameBox.Text = value; }
+        public string CreatorSurname { get => creatorSurnameBox.Text; set => creatorSurnameBox.Text = value; }
+        public string CreatorPatronymic { get => creatorPatronymicBox.Text; set => creatorPatronymicBox.Text = value; }
         public int FirstNumber { get => (int)firstNumberUD.Value; set => firstNumberUD.Value = value; }
         public string Description { get => descriptionBox.Text; set => descriptionBox.Text = value; }
         public string Password
@@ -24,7 +24,7 @@ namespace SimplExServer.Controls
             }
             set
             {
-                if (value != null)
+                if (value != null && value.Length != 0)
                 {
                     passwordBox.Text = value;
                     passwordCheck.Checked = true;
@@ -49,15 +49,15 @@ namespace SimplExServer.Controls
             {
                 if (value == 0)
                 {
-                    passwordCheck.Checked = false;
+                    timeRestrictCheck.Checked = false;
                     TimeRestrictCheckCheckedChanged(timeRestrictCheck, null);
                     return;
                 }
-                DateTime dateTime = new DateTime();
-                dateTime = dateTime.AddSeconds(value);
-                hourUD.Value = dateTime.Hour;
-                minuteUD.Value = dateTime.Minute;
-                secondsUD.Value = dateTime.Second;
+                timeRestrictCheck.Checked = true;
+                TimeSpan timeSpan = TimeSpan.FromSeconds(value);
+                hourUD.Value = timeSpan.Hours;
+                minuteUD.Value = timeSpan.Minutes;
+                secondsUD.Value = timeSpan.Seconds;
             }
         }
         public string RepeatPassword { get => repeatBox.Text; set => repeatBox.Text = value; }
@@ -68,16 +68,16 @@ namespace SimplExServer.Controls
             timeRestrictCheck.CheckedChanged += TimeRestrictCheckCheckedChanged;
             passwordCheck.CheckedChanged += PasswordCheckCheckedChanged;
         }
-
+  
         public event ViewActionHandler<IEditPropertiesView> ChangesSaved;
         public event ViewActionHandler<IEditPropertiesView> ChangesCanceled;
         public event ViewActionHandler<IEditPropertiesView> Changed;
 
         public void MessageWrongExamName(string reason) => nameToolTip.Show(reason, nameBox, 2000);
         public void MessageWrongDiscipline(string reason) => disciplineToolTip.Show(reason, disciplineBox, 2000);
-        public void MessageWrongCreatorName(string reason) => aNameToolTip.Show(reason, aNameBox, 2000);
-        public void MessageWrongCreatorSurname(string reason) => aSurnameToolTip.Show(reason, surnameBox, 2000);
-        public void MessageWrongCreatorPatronimyc(string reason) => aPatronimycToolTip.Show(reason, patroBox, 2000);
+        public void MessageWrongCreatorName(string reason) => aNameToolTip.Show(reason, creatorNameBox, 2000);
+        public void MessageWrongCreatorSurname(string reason) => aSurnameToolTip.Show(reason, creatorSurnameBox, 2000);
+        public void MessageWrongCreatorPatronymic(string reason) => aPatronymicToolTip.Show(reason, creatorPatronymicBox, 2000);
         public void MessageWrongPassword(string reason) => passwordToolTip.Show(reason, passwordBox, 2000);
         public void MessageWrongRepeat(string reason) => repeatToolTip.Show(reason, repeatBox, 2000);
         private void TimeRestrictCheckCheckedChanged(object sender, EventArgs e)

@@ -32,10 +32,46 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net20\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Remoting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NetworkData\ChatMessageData.cs" />
+    <Compile Include="NetworkData\ClientConnectionData.cs" />
+    <Compile Include="NetworkData\ClientResultData.cs" />
+    <Compile Include="NetworkData\ClientStatusData.cs" />
+    <Compile Include="NetworkData\DisconnectData.cs" />
+    <Compile Include="NetworkData\ReconnectionData.cs" />
+    <Compile Include="NetworkData\ServerConnectionData.cs" />
+    <Compile Include="NetworkData\ServerResponseData.cs" />
+    <Compile Include="NetworkData\ServerTimeOffsetData.cs" />
+    <Compile Include="Service\EncryptionService.cs" />
+    <Compile Include="Model\Answer.cs" />
+    <Compile Include="Model\Data\AnswerData.cs" />
+    <Compile Include="Model\Data\MarkSystemData.cs" />
+    <Compile Include="Model\Data\QuestionData.cs" />
+    <Compile Include="Model\Exam.cs" />
+    <Compile Include="Model\ExecutionResult.cs" />
+    <Compile Include="Model\ExecutorAnswer.cs" />
+    <Compile Include="Model\Inherited\FiveStepMarkSystem.cs" />
+    <Compile Include="Model\Inherited\OneAnswerQuestion.cs" />
+    <Compile Include="Model\MarkSystem.cs" />
+    <Compile Include="Model\Question.cs" />
+    <Compile Include="Model\QuestionGroup.cs" />
+    <Compile Include="Model\Theme.cs" />
+    <Compile Include="Model\Ticket.cs" />
+    <Compile Include="NetworkData\Package.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\DeepCloner.cs" />
+    <Compile Include="Service\ExamSerializationService.cs" />
+    <Compile Include="Service\InvalidPasswordException.cs" />
+    <Compile Include="NetworkData\ViolationData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,5 +1,5 @@
-﻿using SimplExServer.Model;
-using SimplExServer.Model.Inherited;
+﻿using SimplExModel.Model;
+using SimplExModel.Model.Inherited;
 using System;
 
 namespace SimplExServer.Builders
@@ -12,14 +12,14 @@ namespace SimplExServer.Builders
         protected MarkSystemBuilder(ExamBuilder examBuilder) 
         {
             if (examBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(examBuilder));
             ParentExamBuilder = examBuilder;
         }
 
         public static MarkSystemBuilder CreateBuilder(MarkSystem markSystem, ExamBuilder examBuilder)
         {
             if (markSystem == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(markSystem));
             if (markSystem is FiveStepMarkSystem fiveStepMarkSystem)
                 return new FiveStepMarkSystemBuilder(fiveStepMarkSystem, examBuilder);
             else

@@ -2,18 +2,21 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace SimplExServer.Forms
 {
     public partial class LoadingContextForm : Form, ILoadingContextView
     {
+        private bool isHiden;
         public LoadingContextForm()
         {
             InitializeComponent();
         }
         public new void Show()
         {
-            ShowDialog();
+            if (!isHiden)
+                ShowDialog();
+            else
+                Hide();
         }
         public void Invoke(Action action)
         {
@@ -25,8 +28,14 @@ namespace SimplExServer.Forms
         }
         public async void AwaitTask(Task task)
         {
+            isHiden = false;
             await task;
-            Close();
+            Hide();
+            isHiden = true;
+        }
+        private void LoadingContextFormFormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
         }
     }
 }

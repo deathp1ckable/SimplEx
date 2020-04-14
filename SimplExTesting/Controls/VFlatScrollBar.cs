@@ -24,7 +24,7 @@ namespace SimplExTesting
         private int value;
         private int maximum = 100;
         private int minimum = 0;
-        public int Value { get => value; set { this.value = value; ValueChanged?.Invoke(this, new EventArgs()); } }
+        public int Value { get => value; set { this.value = value; ValueChanged?.Invoke(this, EventArgs.Empty); } }
         private int largeChange = 10;
         public int LargeChange { get => largeChange; set { largeChange = value; ResizeRunner(); } }
         public int SmallChange { get; set; } = 1;

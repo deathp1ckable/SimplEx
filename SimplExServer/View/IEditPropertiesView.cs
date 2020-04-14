@@ -10,7 +10,7 @@ namespace SimplExServer.View
         string RepeatPassword { get; set; }
         string CreatorName { get; set; }
         string CreatorSurname { get; set; }
-        string CreatorPatronimyc { get; set; }
+        string CreatorPatronymic { get; set; }
         double ExaminationTime { get; set; }
         int FirstNumber { get; set; }
         string Description { get; set; }
@@ -20,7 +20,7 @@ namespace SimplExServer.View
         void MessageWrongDiscipline(string reason);
         void MessageWrongCreatorName(string reason);
         void MessageWrongCreatorSurname(string reason);
-        void MessageWrongCreatorPatronimyc(string reason);
+        void MessageWrongCreatorPatronymic(string reason);
         void MessageWrongPassword(string reason);
         void MessageWrongRepeat(string reason);
         event ViewActionHandler<IEditPropertiesView> ChangesSaved;

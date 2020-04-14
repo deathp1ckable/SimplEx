@@ -1,12 +1,5 @@
 ﻿using SimplExServer.View;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SimplExServer
@@ -15,13 +8,44 @@ namespace SimplExServer
     {
         public string GroupName { get => groupNameBox.Text; set => groupNameBox.Text = value; }
         public bool SaveResults { get => saveResultsCheck.Checked; set => saveResultsCheck.Checked = value; }
-        public bool MixAnswers { get => mixAnswersCheck.Checked; set => mixAnswersCheck.Checked = value; }
+        public bool Mixing { get => mixAnswersCheck.Checked; set => mixAnswersCheck.Checked = value; }
         public bool EnableChat { get => chatCheck.Checked; set => chatCheck.Checked = value; }
-        public bool WaitForReconnection { get => waitReconnectionCheck.Checked; set => waitReconnectionCheck.Checked = value; }
-        public int ReconnectionTime { get => (int)reconnectTimeBox.Value; set => reconnectTimeBox.Value = value; }
-        public bool TrackViolations { get => trackViolationsCheck.Checked; set => trackViolationsCheck.Checked = value; }
-        public int ViolationsLimit { get => (int)violationsLimitBox.Value; set => violationsLimitBox.Value = value; }
         public bool TrackStatusCheck { get => trackStatusCheck.Checked; set => trackStatusCheck.Checked = value; }
+
+        public string TeacherName { get => nameBox.Text; set => nameBox.Text = value; }
+        public string TeacherSurname { get => surnameBox.Text; set => surnameBox.Text = value; }
+        public string TeacherPatronymic { get => patronymicBox.Text; set => patronymicBox.Text = value; }
+
+        public int ReconnectionTime
+        {
+            get
+            {
+                if (waitReconnectionCheck.Checked)
+                    return (int)reconnectTimeBox.Value;
+                else return 0;
+            }
+            set
+            {
+                if (waitReconnectionCheck.Checked)
+                    reconnectTimeBox.Value = value;
+                else reconnectTimeBox.Value = 0;
+            }
+        }
+        public int ViolationsLimit
+        {
+            get
+            {
+                if (trackViolationsCheck.Checked)
+                    return (int)violationsLimitBox.Value;
+                return -1;
+            }
+            set
+            {
+                if (trackViolationsCheck.Checked)
+                    violationsLimitBox.Value = value;
+                else violationsLimitBox.Value = 0;
+            }
+        }
 
         public event ViewActionHandler<IStartSessionView> Started;
         public event ViewActionHandler<IStartSessionView> Canceled;
@@ -33,6 +57,15 @@ namespace SimplExServer
         {
             ShowDialog();
         }
+        public void Invoke(Action action)
+        {
+            try
+            {
+                base.Invoke(action);
+            }
+            catch { }
+        }
+        public void ShowError(string message) => MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         private void StartSessionButtonClick(object sender, EventArgs e)
         {
             Started?.Invoke(this);
@@ -69,9 +102,9 @@ namespace SimplExServer
             }
         }
 
-        private void GroupNameBoxTextChanged(object sender, EventArgs e)
+        private void NameTextChanged(object sender, EventArgs e)
         {
-            startSessionButton.Enabled = groupNameBox.Text.Length != 0;
+            startSessionButton.Enabled = !string.IsNullOrEmpty(nameBox.Text.Trim()) && !string.IsNullOrEmpty(surnameBox.Text.Trim()) && !string.IsNullOrEmpty(patronymicBox.Text.Trim()) && !string.IsNullOrEmpty(groupNameBox.Text.Trim());
         }
     }
 }

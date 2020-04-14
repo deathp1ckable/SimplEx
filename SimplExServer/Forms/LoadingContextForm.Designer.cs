@@ -53,7 +53,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LoadingContextForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "LoadingContextForm";
+            this.Text = "Загрузка...";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoadingContextFormFormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 

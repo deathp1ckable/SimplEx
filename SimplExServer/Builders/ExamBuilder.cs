@@ -1,4 +1,4 @@
-﻿using SimplExServer.Model;
+﻿using SimplExModel.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +16,7 @@ namespace SimplExServer.Builders
         public string Password { get; set; }
         public string CreatorName { get; set; }
         public string CreatorSurname { get; set; }
-        public string CreatorPatronimyc { get; set; }
+        public string CreatorPatronymic { get; set; }
         public double ExaminationTime { get; set; }
         public int FirstNumber { get; set; }
         public string Description { get; set; }
@@ -31,7 +31,7 @@ namespace SimplExServer.Builders
             {
                 markSystemBuilder = value;
                 if (markSystemBuilder == null)
-                    throw new ArgumentNullException();
+                    throw new ArgumentNullException(nameof(value));
             }
         }
 
@@ -48,7 +48,7 @@ namespace SimplExServer.Builders
         public ThemeBuilder AddTheme(string name)
         {
             if (name == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(name));
             Theme theme = new Theme() { ThemeName = name };
             ThemeBuilder result = new ThemeBuilder(theme, this);
             themeBuilders.Add(result);
@@ -57,7 +57,7 @@ namespace SimplExServer.Builders
         public ThemeBuilder AddTheme(Theme theme)
         {
             if (theme == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(theme));
             ThemeBuilder result = new ThemeBuilder((Theme)theme.Clone(), this);
             themeBuilders.Add(result);
             return result;
@@ -65,7 +65,7 @@ namespace SimplExServer.Builders
         public bool RemoveTheme(ThemeBuilder themeBuilder)
         {
             if (themeBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(themeBuilder));
             bool result = themeBuilders.Remove(themeBuilder);
             QuestionBuilder[] questions = GetQuestionBuilders();
             for (int i = 0; i < questions.Length; i++)
@@ -77,7 +77,7 @@ namespace SimplExServer.Builders
         public TicketBuilder AddTicket(string name)
         {
             if (name == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(name));
             Ticket ticket = new Ticket() { TicketName = name };
             TicketBuilder ticketBuilder = new TicketBuilder(ticket, this);
             ticketBuilders.Add(ticketBuilder);
@@ -86,7 +86,7 @@ namespace SimplExServer.Builders
         public TicketBuilder AddTicket(Ticket ticket)
         {
             if (ticket == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(ticket));
             TicketBuilder result = new TicketBuilder((Ticket)ticket.Clone(), this);
             ticketBuilders.Add(result);
             return result;
@@ -94,7 +94,7 @@ namespace SimplExServer.Builders
         public bool RemoveTicket(TicketBuilder ticketBuider)
         {
             if (ticketBuider == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(ticketBuider));
             return ticketBuilders.Remove(ticketBuider);
         }
 
@@ -126,7 +126,7 @@ namespace SimplExServer.Builders
 
             CreatorName = Instance.CreatorName;
             CreatorSurname = Instance.CreatorSurname;
-            CreatorPatronimyc = Instance.CreatorPatronimyc;
+            CreatorPatronymic = Instance.CreatorPatronymic;
             ExamName = Instance.Name;
             Discipline = Instance.Discipline;
             Description = Instance.Description;
@@ -145,7 +145,7 @@ namespace SimplExServer.Builders
                 LastChangeDate = DateTime.Now;
                 CreatorName = "Имя автора";
                 CreatorSurname = "Фамилия автора";
-                CreatorPatronimyc = "Отчество автора";
+                CreatorPatronymic = "Отчество автора";
                 ExamName = "Новый экзамен";
                 Discipline = "Без Дисциплины";
                 Description = "Без описания";
@@ -172,7 +172,7 @@ namespace SimplExServer.Builders
 
             Instance.CreatorName = CreatorName;
             Instance.CreatorSurname = CreatorSurname;
-            Instance.CreatorPatronimyc = CreatorPatronimyc;
+            Instance.CreatorPatronymic = CreatorPatronymic;
             Instance.Name = ExamName;
             Instance.Discipline = Discipline;
             Instance.Description = Description;

@@ -49,7 +49,7 @@
             this.resultsList = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
             this.printResultButton = new System.Windows.Forms.Button();
-            this.authorText = new System.Windows.Forms.Label();
+            this.creatorText = new System.Windows.Forms.Label();
             this.disciplineText = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -193,6 +193,7 @@
             this.examsList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.examsList.Font = new System.Drawing.Font("Calibri Light", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.examsList.FormattingEnabled = true;
+            this.examsList.IntegralHeight = false;
             this.examsList.ItemHeight = 29;
             this.examsList.Location = new System.Drawing.Point(5, 140);
             this.examsList.Name = "examsList";
@@ -273,7 +274,7 @@
             this.deleteButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.deleteButton.Location = new System.Drawing.Point(3, 593);
             this.deleteButton.Name = "deleteButton";
-            this.deleteButton.Size = new System.Drawing.Size(499, 30);
+            this.deleteButton.Size = new System.Drawing.Size(496, 30);
             this.deleteButton.TabIndex = 23;
             this.deleteButton.Text = "Удалить экзамен";
             this.deleteButton.UseVisualStyleBackColor = false;
@@ -289,7 +290,7 @@
             this.changeButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.changeButton.Location = new System.Drawing.Point(3, 557);
             this.changeButton.Name = "changeButton";
-            this.changeButton.Size = new System.Drawing.Size(499, 30);
+            this.changeButton.Size = new System.Drawing.Size(496, 30);
             this.changeButton.TabIndex = 24;
             this.changeButton.Text = "Изменить экзамен";
             this.changeButton.UseVisualStyleBackColor = false;
@@ -316,7 +317,7 @@
             this.startSessionButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.startSessionButton.Location = new System.Drawing.Point(3, 511);
             this.startSessionButton.Name = "startSessionButton";
-            this.startSessionButton.Size = new System.Drawing.Size(499, 40);
+            this.startSessionButton.Size = new System.Drawing.Size(496, 40);
             this.startSessionButton.TabIndex = 25;
             this.startSessionButton.Text = "Начать тестирование";
             this.startSessionButton.UseVisualStyleBackColor = false;
@@ -332,7 +333,7 @@
             this.resultsList.ItemHeight = 15;
             this.resultsList.Location = new System.Drawing.Point(3, 26);
             this.resultsList.Name = "resultsList";
-            this.resultsList.Size = new System.Drawing.Size(499, 94);
+            this.resultsList.Size = new System.Drawing.Size(496, 94);
             this.resultsList.TabIndex = 23;
             // 
             // label4
@@ -356,23 +357,23 @@
             this.printResultButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.printResultButton.Location = new System.Drawing.Point(3, 126);
             this.printResultButton.Name = "printResultButton";
-            this.printResultButton.Size = new System.Drawing.Size(499, 25);
+            this.printResultButton.Size = new System.Drawing.Size(496, 25);
             this.printResultButton.TabIndex = 27;
             this.printResultButton.Text = "Распечатаь результат выполнения";
             this.printResultButton.UseVisualStyleBackColor = false;
             this.printResultButton.Click += new System.EventHandler(this.PrintResultClick);
             // 
-            // authorText
+            // creatorText
             // 
-            this.authorText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.creatorText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.authorText.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.authorText.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.authorText.Location = new System.Drawing.Point(3, 0);
-            this.authorText.Name = "authorText";
-            this.authorText.Size = new System.Drawing.Size(490, 15);
-            this.authorText.TabIndex = 23;
-            this.authorText.Text = "Автор:";
+            this.creatorText.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.creatorText.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.creatorText.Location = new System.Drawing.Point(3, 0);
+            this.creatorText.Name = "creatorText";
+            this.creatorText.Size = new System.Drawing.Size(487, 15);
+            this.creatorText.TabIndex = 23;
+            this.creatorText.Text = "Автор:";
             // 
             // disciplineText
             // 
@@ -382,7 +383,7 @@
             this.disciplineText.ForeColor = System.Drawing.SystemColors.ControlText;
             this.disciplineText.Location = new System.Drawing.Point(3, 15);
             this.disciplineText.Name = "disciplineText";
-            this.disciplineText.Size = new System.Drawing.Size(490, 16);
+            this.disciplineText.Size = new System.Drawing.Size(487, 16);
             this.disciplineText.TabIndex = 28;
             this.disciplineText.Text = "Дисциплина:";
             // 
@@ -398,10 +399,10 @@
             this.panel1.Controls.Add(this.lastChangeText);
             this.panel1.Controls.Add(this.creationText);
             this.panel1.Controls.Add(this.disciplineText);
-            this.panel1.Controls.Add(this.authorText);
+            this.panel1.Controls.Add(this.creatorText);
             this.panel1.Location = new System.Drawing.Point(3, 313);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(499, 192);
+            this.panel1.Size = new System.Drawing.Size(496, 192);
             this.panel1.TabIndex = 29;
             // 
             // panel2
@@ -413,7 +414,7 @@
             this.panel2.Controls.Add(this.descriptionText);
             this.panel2.Location = new System.Drawing.Point(3, 110);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(491, 77);
+            this.panel2.Size = new System.Drawing.Size(488, 77);
             this.panel2.TabIndex = 34;
             // 
             // descriptionText
@@ -424,7 +425,7 @@
             this.descriptionText.ForeColor = System.Drawing.SystemColors.ControlText;
             this.descriptionText.Location = new System.Drawing.Point(-2, 3);
             this.descriptionText.Name = "descriptionText";
-            this.descriptionText.Size = new System.Drawing.Size(488, 68);
+            this.descriptionText.Size = new System.Drawing.Size(485, 68);
             this.descriptionText.TabIndex = 33;
             // 
             // descriptionLabel
@@ -435,7 +436,7 @@
             this.descriptionLabel.ForeColor = System.Drawing.SystemColors.ControlText;
             this.descriptionLabel.Location = new System.Drawing.Point(3, 95);
             this.descriptionLabel.Name = "descriptionLabel";
-            this.descriptionLabel.Size = new System.Drawing.Size(97, 15);
+            this.descriptionLabel.Size = new System.Drawing.Size(94, 15);
             this.descriptionLabel.TabIndex = 33;
             this.descriptionLabel.Text = "Описание:";
             // 
@@ -447,7 +448,7 @@
             this.executionTimeText.ForeColor = System.Drawing.SystemColors.ControlText;
             this.executionTimeText.Location = new System.Drawing.Point(3, 79);
             this.executionTimeText.Name = "executionTimeText";
-            this.executionTimeText.Size = new System.Drawing.Size(490, 16);
+            this.executionTimeText.Size = new System.Drawing.Size(487, 16);
             this.executionTimeText.TabIndex = 32;
             this.executionTimeText.Text = "Время выполнения:";
             // 
@@ -459,7 +460,7 @@
             this.firstNumberText.ForeColor = System.Drawing.SystemColors.ControlText;
             this.firstNumberText.Location = new System.Drawing.Point(3, 63);
             this.firstNumberText.Name = "firstNumberText";
-            this.firstNumberText.Size = new System.Drawing.Size(490, 16);
+            this.firstNumberText.Size = new System.Drawing.Size(487, 16);
             this.firstNumberText.TabIndex = 31;
             this.firstNumberText.Text = "Номер первого вопроса:";
             // 
@@ -471,7 +472,7 @@
             this.lastChangeText.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lastChangeText.Location = new System.Drawing.Point(3, 47);
             this.lastChangeText.Name = "lastChangeText";
-            this.lastChangeText.Size = new System.Drawing.Size(490, 16);
+            this.lastChangeText.Size = new System.Drawing.Size(487, 16);
             this.lastChangeText.TabIndex = 30;
             this.lastChangeText.Text = "Дата изменения:";
             // 
@@ -483,7 +484,7 @@
             this.creationText.ForeColor = System.Drawing.SystemColors.ControlText;
             this.creationText.Location = new System.Drawing.Point(3, 31);
             this.creationText.Name = "creationText";
-            this.creationText.Size = new System.Drawing.Size(490, 16);
+            this.creationText.Size = new System.Drawing.Size(487, 16);
             this.creationText.TabIndex = 29;
             this.creationText.Text = "Дата создания:";
             // 
@@ -508,7 +509,7 @@
             this.deleteResultButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.deleteResultButton.Location = new System.Drawing.Point(3, 157);
             this.deleteResultButton.Name = "deleteResultButton";
-            this.deleteResultButton.Size = new System.Drawing.Size(499, 25);
+            this.deleteResultButton.Size = new System.Drawing.Size(496, 25);
             this.deleteResultButton.TabIndex = 31;
             this.deleteResultButton.Text = "Удалить результат выполнения";
             this.deleteResultButton.UseVisualStyleBackColor = false;
@@ -524,7 +525,7 @@
             this.ticketsBox.FormattingEnabled = true;
             this.ticketsBox.Location = new System.Drawing.Point(70, 191);
             this.ticketsBox.Name = "ticketsBox";
-            this.ticketsBox.Size = new System.Drawing.Size(432, 31);
+            this.ticketsBox.Size = new System.Drawing.Size(429, 31);
             this.ticketsBox.TabIndex = 23;
             // 
             // label14
@@ -548,7 +549,7 @@
             this.printTaskButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.printTaskButton.Location = new System.Drawing.Point(3, 228);
             this.printTaskButton.Name = "printTaskButton";
-            this.printTaskButton.Size = new System.Drawing.Size(499, 25);
+            this.printTaskButton.Size = new System.Drawing.Size(496, 25);
             this.printTaskButton.TabIndex = 33;
             this.printTaskButton.Text = "Распечатать задания";
             this.printTaskButton.UseVisualStyleBackColor = false;
@@ -564,7 +565,7 @@
             this.printBlankButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.printBlankButton.Location = new System.Drawing.Point(3, 259);
             this.printBlankButton.Name = "printBlankButton";
-            this.printBlankButton.Size = new System.Drawing.Size(499, 25);
+            this.printBlankButton.Size = new System.Drawing.Size(496, 25);
             this.printBlankButton.TabIndex = 34;
             this.printBlankButton.Text = "Распечатать бланк";
             this.printBlankButton.UseVisualStyleBackColor = false;
@@ -575,7 +576,7 @@
             this.nameText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nameText.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameText.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.nameText.Location = new System.Drawing.Point(188, 19);
+            this.nameText.Location = new System.Drawing.Point(185, 16);
             this.nameText.Name = "nameText";
             this.nameText.Size = new System.Drawing.Size(326, 26);
             this.nameText.TabIndex = 35;
@@ -603,7 +604,7 @@
             this.panel3.Controls.Add(this.ticketsBox);
             this.panel3.Location = new System.Drawing.Point(3, 48);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(507, 628);
+            this.panel3.Size = new System.Drawing.Size(504, 628);
             this.panel3.TabIndex = 36;
             // 
             // hider
@@ -719,6 +720,7 @@
             this.Controls.Add(this.splitContainer);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(910, 510);
             this.Name = "StartForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -761,7 +763,7 @@
         private System.Windows.Forms.ListBox resultsList;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button printResultButton;
-        private System.Windows.Forms.Label authorText;
+        private System.Windows.Forms.Label creatorText;
         private System.Windows.Forms.Label disciplineText;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;

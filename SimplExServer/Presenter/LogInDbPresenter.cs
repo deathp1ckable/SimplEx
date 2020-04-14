@@ -1,5 +1,5 @@
 ﻿using SimplExServer.Common;
-using SimplExServer.Services;
+using SimplExServer.Service;
 using SimplExServer.View;
 using System.Threading.Tasks;
 
@@ -22,7 +22,11 @@ namespace SimplExServer.Presenter
         private async void ViewLoggedIn(ILogInDbView sender)
         {
             DatabaseService databaseService = DatabaseService.GetInstance();
-            await Task.Run(() => databaseService.Connect(sender.Host, sender.Port, sender.Username, sender.Password));
+            await ApplicationController.Run<LoadingContextPresenter<object>, Task<object>>(Task.Run(() =>
+            {
+                databaseService.Connect(sender.Host, sender.Port, sender.Username, sender.Password);
+                return new object();
+            })).GetTask();
             if (databaseService.ExamDatabaseWorker != null)
                 View.Close();
             else

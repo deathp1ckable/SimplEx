@@ -2,7 +2,7 @@
 using System;
 using System.Timers;
 using System.Windows.Forms;
-namespace SimplExClient
+namespace SimplExClient.Forms
 {
     public partial class LoadingForm : Form, ILoadingView
     {
@@ -33,5 +33,4 @@ namespace SimplExClient
         }
         private void MainFormFormClosed(object sender, FormClosedEventArgs e) => Close();
     }
-    public delegate void Action();
 }

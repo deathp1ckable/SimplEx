@@ -1,7 +1,6 @@
 ﻿using SimplExServer.Builders;
 using SimplExServer.Common;
 using SimplExServer.View;
-using System;
 using System.Linq;
 
 namespace SimplExServer.Presenter
@@ -10,6 +9,7 @@ namespace SimplExServer.Presenter
     {
         private ThemeBuilder currentThemeBuilder;
         private bool isSaved = true;
+        private bool isHiding;
         public EditThemePresenter(IEditThemeView view, IApplicationController applicationController) : base(view, applicationController)
         {
             view.Shown += ViewShown;
@@ -26,7 +26,8 @@ namespace SimplExServer.Presenter
             {
                 currentThemeBuilder.ThemeName = sender.ThemeName;
                 Argument.EditTreeView.RefreshObject(currentThemeBuilder);
-                Argument.EditTreeView.SelectObject(currentThemeBuilder);
+                if (!isHiding)
+                    Argument.EditTreeView.SelectObject(currentThemeBuilder);
             }
         }
         private void ViewThemeDeleted(IEditThemeView sender)
@@ -43,20 +44,32 @@ namespace SimplExServer.Presenter
         }
         private void ViewHiden(IEditThemeView sender)
         {
-            if (!isSaved)
-                sender.AskForSaving();
-            currentThemeBuilder = null;
-            isSaved = true;
+            if (!isHiding)
+            {
+                if (!isSaved)
+                {
+                    isHiding = true;
+                    View.Show();
+                    sender.AskForSaving();
+                    View.Hide();
+                    isHiding = false;
+                }
+                currentThemeBuilder = null;
+                isSaved = true;
+            }
         }
         private void ViewShown(IEditThemeView sender)
         {
-            currentThemeBuilder = Argument.EditTreeView.CurrentObject as ThemeBuilder;
-            if (currentThemeBuilder != null)
+            if (!isHiding)
             {
-                sender.ThemeName = currentThemeBuilder.ThemeName;
-                sender.QuestionsCount = currentThemeBuilder.ParentExamBuilder.GetQuestionBuilders().Where(a => ReferenceEquals(a.ThemeBuilder, currentThemeBuilder)).Count();
+                currentThemeBuilder = Argument.EditTreeView.CurrentObject as ThemeBuilder;
+                if (currentThemeBuilder != null)
+                {
+                    sender.ThemeName = currentThemeBuilder.ThemeName;
+                    sender.QuestionsCount = currentThemeBuilder.ParentExamBuilder.GetQuestionBuilders().Where(a => ReferenceEquals(a.ThemeBuilder, currentThemeBuilder)).Count();
+                }
+                isSaved = true;
             }
-            isSaved = true;
         }
     }
 }

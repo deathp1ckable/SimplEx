@@ -3,11 +3,11 @@ namespace SimplExNetworking.EventArguments
 {
     public class MessageRecievedEventArgs : EventArgs
     {
-        public uint Sender { get; set; }
+        public uint SenderId { get; set; }
         public byte[] Message { get; set; }
         public MessageRecievedEventArgs(uint sender, byte[] message)
         {
-            Sender = sender;
+            SenderId = sender;
             Message = message;
         }
     }

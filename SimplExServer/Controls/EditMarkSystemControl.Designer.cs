@@ -60,7 +60,7 @@
             this.label3.TabIndex = 34;
             this.label3.Text = "Общие настройки:";
             // 
-            // markSystemTypeList
+            // markSystemTypesList
             // 
             this.markSystemTypesList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -69,7 +69,7 @@
             this.markSystemTypesList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.markSystemTypesList.FormattingEnabled = true;
             this.markSystemTypesList.Location = new System.Drawing.Point(198, 26);
-            this.markSystemTypesList.Name = "markSystemTypeList";
+            this.markSystemTypesList.Name = "markSystemTypesList";
             this.markSystemTypesList.Size = new System.Drawing.Size(520, 23);
             this.markSystemTypesList.TabIndex = 36;
             this.markSystemTypesList.SelectedIndexChanged += new System.EventHandler(this.MarkSystemTypeListSelectedIndexChanged);
@@ -95,6 +95,7 @@
             this.descriptionBox.Location = new System.Drawing.Point(198, 57);
             this.descriptionBox.Multiline = true;
             this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.descriptionBox.Size = new System.Drawing.Size(520, 40);
             this.descriptionBox.TabIndex = 38;
             this.descriptionBox.TextChanged += new System.EventHandler(this.ChangedHandle);
@@ -145,7 +146,7 @@
             this.saveButton.UseVisualStyleBackColor = false;
             this.saveButton.Click += new System.EventHandler(this.SaveButtonClick);
             // 
-            // EditMarkSystemPropertiesControl
+            // EditMarkSystemControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -159,7 +160,7 @@
             this.Controls.Add(this.markSystemTypesList);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Name = "EditMarkSystemPropertiesControl";
+            this.Name = "EditMarkSystemControl";
             this.Size = new System.Drawing.Size(723, 447);
             this.ResumeLayout(false);
             this.PerformLayout();

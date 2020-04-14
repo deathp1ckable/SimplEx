@@ -9,7 +9,7 @@ namespace SimplExServer.Builders
         public virtual void Load(T instance)
         {
             if (instance == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(instance));
             Reset();
             Instance = instance;
         }

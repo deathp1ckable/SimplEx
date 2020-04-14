@@ -1,7 +1,7 @@
 ﻿using SimplExServer.Builders;
 using SimplExServer.Common;
-using SimplExServer.Model;
-using SimplExServer.Services;
+using SimplExModel.Model;
+using SimplExServer.Service;
 using SimplExServer.View;
 using System;
 using System.Threading.Tasks;
@@ -142,7 +142,11 @@ namespace SimplExServer.Presenter
                 if (exam == null)
                 {
                     sender.ShowError("Не удалось загрузить экзамен.\nОн был удален из списка.");
-                    examsList.Remove(sender.CurrentExamSaver);
+                    try
+                    {
+                        examsList.Remove(sender.CurrentExamSaver);
+                    }
+                    catch { }
                     currentExamSaver = null;
                     sender.IsExamLoading = false;
                     return;
@@ -158,8 +162,11 @@ namespace SimplExServer.Presenter
         private void ViewConnected(IStartView sender)
         {
             currentExamSaver = null;
-            View.DbInfoText = "Не удалось подключится к базе данных.";
             ApplicationController.Run<LogInDbPresenter, object>(null);
+            if (DatabaseService.GetInstance().ExamDatabaseWorker == null)
+                View.DbInfoText = "Не удалось подключится к базе данных.";
+            else
+                View.DbInfoText = "Подключение к базе данных установлено.";
         }
 
         private void ViewViewShown(IStartView sender)
@@ -168,6 +175,12 @@ namespace SimplExServer.Presenter
             currentExamSaver = null;
             sender.ExamSavers = ExamsListService.GetInstance().ExamSavers;
             sender.IsListLoading = false;
+            SessionService sessionService = SessionService.GetInstance();
+            if (sessionService.Session != null)
+            {
+                sessionService.Session.Abort();
+                sessionService.Session = null;
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using SimplExServer.Common;
-using SimplExServer.Model;
-using SimplExServer.Services;
+using SimplExModel.Model;
+using SimplExServer.Service;
 using SimplExServer.View;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ namespace SimplExServer.Presenter
         private IExamSaver currentExamSaver;
         public ImportPresenter(IImportView view, IApplicationController applicationController) : base(view, applicationController)
         {
+            view.ViewShown += ViewViewShown;  
             view.ConnectionAsked += ViewConnectionAsked;
             view.FileOpened += ViewFileOpened;
             view.Searched += ViewSearched;
@@ -22,6 +23,15 @@ namespace SimplExServer.Presenter
             DatabaseService databaseService = DatabaseService.GetInstance();
             databaseService.ConnctionEstablished += DatabaseServiceConnctionEstablished;
             databaseService.ConnctionLosted += DatabaseServiceConnctionLosted;
+        }
+
+        private void ViewViewShown(IImportView sender)
+        {
+            DatabaseService databaseService = DatabaseService.GetInstance();
+            if (databaseService.ExamDatabaseWorker == null)
+                sender.DbInfoText = "Не удалось подключится к базе данных.";
+            else
+                sender.DbInfoText = "Подключение к базе данных установлено.";
         }
 
         private void DatabaseServiceConnctionLosted(object sender, EventArgs e)

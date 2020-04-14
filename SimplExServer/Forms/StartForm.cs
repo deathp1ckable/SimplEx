@@ -1,10 +1,11 @@
-﻿using SimplExServer.Model;
-using SimplExServer.Services;
+﻿using SimplExModel.Model;
+using SimplExServer.Service;
 using SimplExServer.View;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace SimplExServer
@@ -49,13 +50,22 @@ namespace SimplExServer
                 }
                 hider.Visible = false;
                 nameText.Text = $"Экзамен '{exam.Name}'";
-                authorText.Text = $"Имя автора: {exam.CreatorSurname} {exam.CreatorName} {exam.CreatorPatronimyc}";
+                creatorText.Text = $"Имя автора: {exam.CreatorSurname} {exam.CreatorName} {exam.CreatorPatronymic}";
                 disciplineText.Text = $"Дисциплина: {exam.Discipline}";
                 descriptionText.Text = $"{exam.Description}";
                 creationText.Text = $"Дата создания: {exam.CreationDate}";
                 lastChangeText.Text = $"Дата изменнения: {exam.LastChangeDate}";
                 firstNumberText.Text = $"Номер первого вопроса: {exam.FirstNumber}";
-                executionTimeText.Text = $"Время выполнения: {exam.Time}";
+                if (exam.Time > 0)
+                {
+                    DateTime dateTime = new DateTime();
+                    dateTime = dateTime.AddSeconds(exam.Time);
+                    executionTimeText.Text = $"Время выполнения: {dateTime.Hour} часов, {dateTime.Minute} минут, {dateTime.Minute} секунд";
+                }
+                else
+                {
+                    executionTimeText.Text = $"Время выполнения: -- часов, -- минут, -- секунд";
+                }
                 ticketsBox.Items.Clear();
                 RefreshTickets();
                 RefreshResults();
@@ -111,8 +121,8 @@ namespace SimplExServer
         public new void Show()
         {
             context.MainForm = this;
-            ViewShown?.Invoke(this);
             base.Show();
+            ViewShown?.Invoke(this);
         }
         private void PasswordEnterViewEntered(IPasswordEnterView sender)
         {
@@ -190,8 +200,12 @@ namespace SimplExServer
         private void OpenFileDialogFileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             currentPath = Path.GetFullPath(openFileDialog.FileName);
-            passwordEnterView.Password = string.Empty;
-            passwordEnterView.Show();
+            if (!File.ReadAllText(currentPath, Encoding.Unicode).StartsWith("[Password Header]"))
+            {
+                passwordEnterView.Password = string.Empty;
+                passwordEnterView.Show();
+            }
+            else FileOpened.Invoke(this, new OpenExamEventArgs(currentPath, string.Empty));
         }
 
         private void CreateButtonClick(object sender, EventArgs e) => ExamCreated?.Invoke(this);
@@ -218,7 +232,7 @@ namespace SimplExServer
         public void RefreshResults()
         {
             for (int i = 0; i < exam.ExecutionResults.Count; i++)
-                ticketsBox.Items.Add($"Резльтат выполнения.{exam.ExecutionResults[i].ExecutorSurname} {exam.ExecutionResults[i].ExecutorName} {exam.ExecutionResults[i].ExecutorPatronimyc}.");
+                ticketsBox.Items.Add($"Резльтат выполнения.{exam.ExecutionResults[i].ExecutorSurname} {exam.ExecutionResults[i].ExecutorName} {exam.ExecutionResults[i].ExecutorPatronymic}.");
             if (exam.ExecutionResults.Count == 0)
             {
                 deleteResultButton.Enabled = false;

@@ -1,5 +1,5 @@
-﻿using SimplExServer.Model;
-using SimplExServer.Services;
+﻿using SimplExModel.Model;
+using SimplExServer.Service;
 
 namespace SimplExServer.Presenter
 {

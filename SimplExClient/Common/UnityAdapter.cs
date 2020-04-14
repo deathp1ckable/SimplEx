@@ -4,7 +4,7 @@ namespace SimplExClient.Common
 {
     class UnityAdapter : IIoCContainer
     {
-        UnityContainer unityContainer = new UnityContainer();
+        private UnityContainer unityContainer = new UnityContainer();
         public bool IsRegistered<TType>()
         {
             return unityContainer.IsRegistered<TType>();

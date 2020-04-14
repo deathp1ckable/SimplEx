@@ -1,4 +1,4 @@
-﻿using SimplExServer.Model;
+﻿using SimplExModel.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,14 +27,14 @@ namespace SimplExServer.Builders
         {
             ParentTicketBuilder = ticketBuilder;
             if (ParentTicketBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(ticketBuilder));
             Load(instance);
         }
         public QuestionGroupBuilder(QuestionGroup instance, QuestionGroupBuilder questionGroupBuilder) : this()
         {
             ParentQuestionGroupBuilder = questionGroupBuilder;
             if (ParentQuestionGroupBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(questionGroupBuilder));
             Load(instance);
         }
         public QuestionGroup GetDuplicate()
@@ -61,7 +61,7 @@ namespace SimplExServer.Builders
         public QuestionGroupBuilder AddQuestionGroup(string name)
         {
             if (name == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(name));
             QuestionGroup group = new QuestionGroup() { QuestionGroupName = name };
             QuestionGroupBuilder result = new QuestionGroupBuilder(group, this);
             questionGroupBuilders.Add(result);
@@ -70,7 +70,7 @@ namespace SimplExServer.Builders
         public QuestionGroupBuilder AddQuestionGroup(QuestionGroup questionGroup)
         {
             if (questionGroup == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(questionGroup));
             QuestionGroupBuilder result = new QuestionGroupBuilder((QuestionGroup)questionGroup.Clone(), this);
             questionGroupBuilders.Add(result);
             GetParentTicketBuilder().RegisterQuestionGroup(result);
@@ -79,7 +79,7 @@ namespace SimplExServer.Builders
         public QuestionGroupBuilder AddQuestionGroup(QuestionGroupBuilder questionGroupBuilder)
         {
             if (questionGroupBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(questionGroupBuilder));
             if (GetParentTicketBuilder().GetQuestionGroupBuilders().Contains(questionGroupBuilder))
                 throw new Exception("This builder was already assigned to the parent builder.");
             questionGroupBuilders.Add(questionGroupBuilder);
@@ -91,7 +91,7 @@ namespace SimplExServer.Builders
         public bool RemoveQuestionGroup(QuestionGroupBuilder questionGroupBuilder)
         {
             if (questionGroupBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(questionGroupBuilder));
             bool result = questionGroupBuilders.Remove(questionGroupBuilder);
             if (result)
                 GetParentTicketBuilder().UnregisterQuestionGroup(questionGroupBuilder);
@@ -101,7 +101,7 @@ namespace SimplExServer.Builders
         public QuestionBuilder AddQuestion(Question question)
         {
             if (question == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(question));
             QuestionBuilder result = QuestionBuilder.CreateBuilder((Question)question.Clone(), this);
             questionBuilders.Add(result);
             GetParentTicketBuilder().RegisterQuestion(result);
@@ -110,7 +110,7 @@ namespace SimplExServer.Builders
         public bool RemoveQuestion(QuestionBuilder questionBuilder)
         {
             if (questionBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(questionBuilder));
             bool result = questionBuilders.Remove(questionBuilder);
             if (result)
                 GetParentTicketBuilder().UnregisterQuestion(questionBuilder);
@@ -135,7 +135,7 @@ namespace SimplExServer.Builders
         public void SetParent(QuestionGroupBuilder questionGroupBuilder)
         {
             if (questionGroupBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(questionGroupBuilder));
             TicketBuilder ticketBuilder = GetParentTicketBuilder();
             if (questionGroupBuilder.GetParentTicketBuilder() != ticketBuilder)
                 throw new ArgumentException();
@@ -150,7 +150,7 @@ namespace SimplExServer.Builders
         public void SetParent(TicketBuilder ticketBuilder)
         {
             if (ticketBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(ticketBuilder));
             if (ticketBuilder != GetParentTicketBuilder())
                 throw new ArgumentException();
             if (ReferenceEquals(ParentTicketBuilder, ticketBuilder))

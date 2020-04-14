@@ -1,6 +1,6 @@
 ﻿using SimplExServer.Builders;
 using SimplExServer.Common;
-using SimplExServer.Services.DatabaseHandling;
+using SimplExServer.Service.DatabaseHandling;
 using SimplExServer.View;
 using System;
 using System.Collections.Generic;

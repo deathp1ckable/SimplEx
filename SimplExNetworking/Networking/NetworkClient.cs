@@ -74,11 +74,16 @@ namespace SimplExNetworking.Networking
 
                     connectPackage.content = Encoding.Unicode.GetBytes(Password);
                     SendPackage(connectPackage);
+
+                    keepAliveTimer.Stop();
+                    keepAliveTimer.Interval = 5000;
+                    keepAliveTimer.AutoReset = false;
+                    keepAliveTimer.Start();
                 }
                 catch (Exception ex)
                 {
                     ClientState = ClientState.Disconnected;
-                    OnFailedToConnect?.Invoke(this, new ReasonEventArgs(ex.Message));
+                    ThreadPool.QueueUserWorkItem((a) => OnFailedToConnect?.Invoke(this, new ReasonEventArgs(ex.Message)));
                 }
             else if (ClientState == ClientState.Connected) throw new InvalidOperationException("Attempting to connect already connected NetworkClient.");
             else throw new InvalidOperationException("Attempting to connect NetworkClient while connecting.");
@@ -109,30 +114,44 @@ namespace SimplExNetworking.Networking
         }
         public void Disconnect() => Disconnect(true);
 
-        private byte[] lengthBuffer = new byte[8];
-        private byte[] buffer = null;
+        private readonly List<byte> buffer = new List<byte>();
+        private readonly byte[] lengthBuffer = new byte[4];
         private Package recievedPackage = null;
         private bool isLengthReaded;
-        private long messageLength;
+        private int messageLength;
         private void PackageReciever()
         {
             try
             {
                 while (ClientState != ClientState.Disconnected)
                 {
-                    if (!isLengthReaded && client.Available >= 8)
+                    if (!isLengthReaded && client.Available >= 4)
                     {
                         client.GetStream().Read(lengthBuffer, 0, lengthBuffer.Length);
-                        messageLength = BitConverter.ToInt64(lengthBuffer, 0);
-                        buffer = new byte[messageLength];
+                        messageLength = BitConverter.ToInt32(lengthBuffer, 0);
+                        buffer.Clear();
                         isLengthReaded = true;
+                        isAlive = true;
                     }
-                    if (isLengthReaded && client.Available >= messageLength)
+                    if (isLengthReaded)
                     {
-                        client.GetStream().Read(buffer, 0, buffer.Length);
-                        recievedPackage = SerializationHelper.ProtoDeserialize<Package>(buffer);
-                        PackageHandler(recievedPackage);
-                        isLengthReaded = false;
+                        if (client.Available > 0)
+                        {
+                            byte[] tempBuffer;
+                            if (buffer.Count + client.Available >= messageLength)
+                                tempBuffer = new byte[messageLength - buffer.Count];
+                            else
+                                tempBuffer = new byte[client.Available];
+                            client.GetStream().Read(tempBuffer, 0, tempBuffer.Length);
+                            buffer.AddRange(tempBuffer);
+                            isAlive = true;
+                        }
+                        if (buffer.Count == messageLength)
+                        {
+                            recievedPackage = SerializationHelper.ProtoDeserialize<Package>(buffer.ToArray());
+                            PackageHandler(recievedPackage);
+                            isLengthReaded = false;
+                        }
                     }
                     Thread.Sleep(UpdateDelay);
                 }
@@ -159,11 +178,11 @@ namespace SimplExNetworking.Networking
             switch (package.packageType)
             {
                 case PackageType.Message:
-                    if (package.targetID == ClientId)
-                        OnMessageRecieved?.Invoke(this, new MessageRecievedEventArgs(package.senderID, package.content));
+                    if (package.targetID == ClientId && ClientState == ClientState.Connected)
+                        ThreadPool.QueueUserWorkItem((a) => OnMessageRecieved?.Invoke(this, new MessageRecievedEventArgs(package.senderID, package.content)));
                     break;
                 case PackageType.Confirm:
-                    if (package.senderID == 0)
+                    if (package.senderID == 0 && ClientState == ClientState.Confirmation)
                     {
                         ConfirmationInfo info = SerializationHelper.ProtoDeserialize<ConfirmationInfo>(package.content);
                         if (info.confirmed)
@@ -174,7 +193,7 @@ namespace SimplExNetworking.Networking
                             ServerUpdateDelay = info.serverInfo.serverUpdateDelay;
                             UpdateDelay = ServerUpdateDelay;
                             KeepAliveDelay = info.serverInfo.keepAliveDelay;
-                            OnConnectedToServer?.Invoke(this, new EventArgs());
+                            ThreadPool.QueueUserWorkItem((a) => OnConnectedToServer?.Invoke(this, EventArgs.Empty));
                             ClientState = ClientState.Connected;
 
                             isAlive = true;
@@ -186,32 +205,35 @@ namespace SimplExNetworking.Networking
                         }
                         else
                         {
-                            OnFailedToConnect?.Invoke(this, new ReasonEventArgs(info.additionalInfo));
+                            ThreadPool.QueueUserWorkItem((a) => OnFailedToConnect?.Invoke(this, new ReasonEventArgs(info.additionalInfo)));
                             ClientState = ClientState.Disconnected;
                         }
                     }
                     break;
                 case PackageType.AddClient:
-                    if (package.senderID == 0)
+                    if (package.senderID == 0 && ClientState == ClientState.Connected)
                     {
                         ID = BitConverter.ToUInt32(package.content, 0);
                         if (ID != ClientId)
                         {
                             connectedClients.Add(ID);
-                            OnClientConnected?.Invoke(this, new IdEventArgs(ID));
+                            ThreadPool.QueueUserWorkItem((a) => OnClientConnected?.Invoke(this, new IdEventArgs(ID)));
                         }
                     }
                     break;
                 case PackageType.RemoveClient:
-                    if (package.senderID == 0)
+                    if (package.senderID == 0 && ClientState == ClientState.Connected)
                     {
                         ID = BitConverter.ToUInt32(package.content, 0);
-                        connectedClients.Remove(ID);
-                        OnClientDisconnected?.Invoke(this, new IdEventArgs(ID));
+                        if (ID != ClientId)
+                        {
+                            connectedClients.Remove(ID);
+                            ThreadPool.QueueUserWorkItem((a) => OnClientDisconnected?.Invoke(this, new IdEventArgs(ID)));
+                        }
                     }
                     break;
                 case PackageType.Update:
-                    if (package.senderID == 0)
+                    if (package.senderID == 0 && ClientState == ClientState.Connected)
                     {
                         isAlive = true;
                         updatePackage.senderID = ClientId;
@@ -219,7 +241,7 @@ namespace SimplExNetworking.Networking
                     }
                     break;
                 case PackageType.SettingsChanged:
-                    if (package.senderID == 0)
+                    if (package.senderID == 0 && ClientState == ClientState.Connected)
                     {
                         ServerData serverInfo = SerializationHelper.ProtoDeserialize<ServerData>(package.content);
                         MaxConnections = serverInfo.maxConnections;
@@ -232,7 +254,7 @@ namespace SimplExNetworking.Networking
                         keepAliveTimer.AutoReset = true;
                         keepAliveTimer.Start();
 
-                        OnSettingsChanged?.Invoke(this, new EventArgs());
+                        ThreadPool.QueueUserWorkItem((a) => OnSettingsChanged?.Invoke(this, EventArgs.Empty));
                     }
                     break;
                 case PackageType.Disconnect:
@@ -241,16 +263,19 @@ namespace SimplExNetworking.Networking
                     break;
             }
         }
+        private readonly List<byte> bufferList = new List<byte>();
         private void SendPackage(Package package)
         {
             if (ClientState != ClientState.Disconnected)
             {
                 try
                 {
-                    byte[] buff = SerializationHelper.ProtoSerialize(package);
-                    byte[] length = BitConverter.GetBytes((long)buff.Length);
-                    client.GetStream().Write(length, 0, length.Length);
-                    client.GetStream().Write(buff, 0, buff.Length);
+                    byte[] data = SerializationHelper.ProtoSerialize(package);
+                    byte[] length = BitConverter.GetBytes(data.Length);
+                    byte[] result = new byte[data.Length + length.Length];
+                    Array.Copy(length, result, length.Length);
+                    Array.Copy(data, 0, result, length.Length, data.Length);
+                    client.GetStream().Write(result, 0, result.Length);
                 }
                 catch (SocketException ex)
                 {
@@ -274,7 +299,7 @@ namespace SimplExNetworking.Networking
                     client.Close();
                     keepAliveTimer.Stop();
                     ClientState = ClientState.Disconnected;
-                    OnDisconnectedFromServer?.Invoke(this, new ReasonEventArgs(reason));
+                    ThreadPool.QueueUserWorkItem((a) => OnDisconnectedFromServer?.Invoke(this, new ReasonEventArgs(reason)));
                     reciever.Abort();
                 }
             }
@@ -286,6 +311,11 @@ namespace SimplExNetworking.Networking
             {
                 if (!isAlive)
                     Disconnect(false, "Connection lost. Server is not responding.");
+                isAlive = false;
+            }
+            if (ClientState == ClientState.Confirmation)
+            {
+                Disconnect(false, "Connection was not aproved by server.");
                 isAlive = false;
             }
         }

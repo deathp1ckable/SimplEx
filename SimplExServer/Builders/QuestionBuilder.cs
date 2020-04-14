@@ -1,5 +1,5 @@
-﻿using SimplExServer.Model;
-using SimplExServer.Model.Inherited;
+﻿using SimplExModel.Model;
+using SimplExModel.Model.Inherited;
 using System;
 using System.Linq;
 
@@ -29,12 +29,12 @@ namespace SimplExServer.Builders
         {
             ParentQuestionGroupBuilder = questionGroupBuilder;
             if (ParentQuestionGroupBuilder == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(questionGroupBuilder));
         }
         public static QuestionBuilder CreateBuilder(Question instance, QuestionGroupBuilder questionGroupBuilder)
         {
             if (instance == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(instance));
             if (instance is OneAnswerQuestion oneAnswerQuestion)
                 return new OneAnswerQuestionBuilder(oneAnswerQuestion, questionGroupBuilder);
             else
