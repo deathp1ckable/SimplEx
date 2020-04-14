@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 namespace SimplExDb.Database
 {
-    public class DatabaseController : IDisposable
+    public sealed class DatabaseController : IDisposable
     {
         private readonly Dictionary<object, Row> loadedRows = new Dictionary<object, Row>();
         private readonly Queue<DataRow> updateRowQueue = new Queue<DataRow>();

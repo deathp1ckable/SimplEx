@@ -187,7 +187,7 @@ namespace SimplExClient.Service
                 ViolationData violationData = new ViolationData(content, (DateTime.Now - BeginingTime).Value.TotalSeconds);
                 violationsList.Add(violationData);
                 networkClient.SendMessage(0, GetMessage(new Package(PackageType.Violation, violationData)));
-                Violation.Invoke(this, EventArgs.Empty);
+                Violation?.Invoke(this, EventArgs.Empty);
             }
             catch
             {
@@ -279,7 +279,7 @@ namespace SimplExClient.Service
             {
                 FailedToConnect?.Invoke(this, EventArgs.Empty);
             }
-            else if (ClientStatus == ClientStatus.Executing)
+            else if (ClientStatus == ClientStatus.Executed)
                 throw new Exception();
         }
 

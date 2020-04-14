@@ -9,7 +9,6 @@ namespace SimplExServer.View
         string Message { get; set; }
         bool Broadcast { get; set; }
         bool EnableChat { get; set; }
-        bool IsActive { get; set; }
 
         void Invoke(Action action);
 

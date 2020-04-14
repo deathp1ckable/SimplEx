@@ -12,6 +12,9 @@ namespace SimplExClient.View
         IList<Theme> Themes { get; set; }
         ClientStatus ClientStatus { get; set; }
 
+        Question CurrentQuestion { get; }
+
+        int ExexutedQuestions { set; }
         ISessionInformationView SessionInformationView { get; set; }
         IChatView ChatView { get; set; }
 
@@ -21,6 +24,10 @@ namespace SimplExClient.View
 
         void ShowChatToolTip();
         void WarnAboutStart();
+
+        bool SelectNextQuestion();
+        bool SelectPrevQuestion();
+
         void ShowError(string message);
         void Invoke(Action action);
     }

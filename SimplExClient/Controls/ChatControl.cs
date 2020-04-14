@@ -41,14 +41,6 @@ namespace SimplExClient.Controls
                 chatBox.Text = value ? chatBox.Text : "Чат неактивен.";
             }
         }
-        public bool IsActive
-        {
-            get => messageLabel.Enabled;
-            set
-            {
-                chatLabel.Enabled = chatBox.Enabled = messageLabel.Enabled = textBox.Enabled = sendButton.Enabled = chatLabel.Enabled = value;
-            }
-        }
         public event ViewActionHandler<IChatView> Shown;
         public event ViewActionHandler<IChatView> Hiden;
         public event ViewActionHandler<IChatView> MessageSended;

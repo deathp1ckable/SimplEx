@@ -9,7 +9,7 @@ namespace SimplExServer
 {
     public partial class SessionForm : Form, ISessionView
     {
-        TimeSpan timeSpan;
+        private TimeSpan timeSpan;
         private SessionStatus sessionStatus;
         private bool closingByPresenter;
         private Button disabledButton;
@@ -36,23 +36,14 @@ namespace SimplExServer
                         break;
                     case SessionStatus.ExecutionInProgress:
                         sessionStatusLabel.Text = "Статус: Выполнение";
-                        startStopSessionButton.Text = "Остановить сессию";
                         break;
                     case SessionStatus.Finished:
                         sessionStatusLabel.Text = "Статус: Сессия окончена";
-                        Time = 1;
-                        startStopSessionButton.Enabled = false;
                         break;
                 }
             }
         }
-        public SessionClient CurrentSessionClient
-        {
-            get => currentSessionClient; set
-            {
-                clientsList.SelectedIndex = sessionClients.IndexOf(value);
-            }
-        }
+        public SessionClient CurrentSessionClient { get => currentSessionClient; set => clientsList.SelectedIndex = sessionClients.IndexOf(value); }
         public IList<SessionClient> SessionClients
         {
             get => sessionClients; set
@@ -121,7 +112,8 @@ namespace SimplExServer
 
         public event ViewActionHandler<ISessionView> ClientChanged;
         public event ViewActionHandler<ISessionView> SessionAborted;
-        public event ViewActionHandler<ISessionView> SessionStartedStoped;
+        public event ViewActionHandler<ISessionView> SessionStarted;
+        public event ViewActionHandler<ISessionView> SessionStoped;
 
         public SessionForm()
         {
@@ -140,9 +132,9 @@ namespace SimplExServer
             closingByPresenter = true;
             base.Close();
         }
-        public void ShowMessage(string message)
+        public void ShowMessage(string title, string message)
         {
-            MessageBox.Show(message);
+            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         public void Invoke(Action action)
         {
@@ -192,7 +184,10 @@ namespace SimplExServer
         private void ClientsListMouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (sessionClients.Count != 0)
+            {
                 ClientChanged?.Invoke(this);
+
+            }
         }
 
         private void ClientsListSelectedIndexChanged(object sender, EventArgs e)
@@ -238,9 +233,24 @@ namespace SimplExServer
 
         private void StartStopSessionButtonClick(object sender, EventArgs e)
         {
-            timeLabel.Text = $"Осталось времени: {timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
-            timer.Start();
-            SessionStartedStoped?.Invoke(this);
+            if (sessionStatus == SessionStatus.WaitingForConnections)
+            {
+                if (Time > 0)
+                {
+                    startStopSessionButton.Text = "Остановить сессию";
+                    timeLabel.Text = $"Осталось времени: {timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+                    timer.Start();
+                }
+                SessionStarted?.Invoke(this);
+            }
+            else
+            {
+                SessionStarted?.Invoke(this);
+                Time = 1;
+                timer.Stop();
+                Time = 0;
+                startStopSessionButton.Enabled = false;
+            }
         }
 
         private void TimerTick(object sender, EventArgs e)

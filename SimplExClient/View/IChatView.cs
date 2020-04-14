@@ -7,7 +7,6 @@ namespace SimplExClient.View
         IList<string> Messages { get; set; }
         string Message { get; set; }
         bool EnableChat { get; set; }
-        bool IsActive { get; set; }
 
         void Invoke(Action action);
 

@@ -27,12 +27,20 @@ namespace SimplExServer.Presenter
             View.TrackViolations = argument.Session.ViolationsLimit >= 0;
 
             Argument.Session.ConnectionDataUpdated += SessionConnectionDataUpdated;
-            Argument.Session.StatusUpdated += SessionStatusUpdated;
+            Argument.Session.ClientStatusUpdated += SessionStatusUpdated;
             Argument.Session.Reconnecting += SessionReconnecting;
             Argument.Session.Reconnected += SessionReconnected;
             Argument.Session.ResultRecieved += SessionResultRecieved;
-            Argument.Session.SessionStarted += SessionSessionStarted;
             Argument.Session.Violation += SessionViolation;
+            Argument.Session.SessionStatusUpdated += SessionSessionStatusUpdated;
+        }
+
+        private void SessionSessionStatusUpdated(object sender, System.EventArgs e)
+        {
+            View.Invoke(() =>
+            {
+                View.ClientStatus = currentSessionClient.ClientStatus;
+            });
         }
         private void ViewDisconnected(IConnectionStatusView sender)
         {
@@ -54,15 +62,6 @@ namespace SimplExServer.Presenter
                     View.AddViolation($"№{e.SessionClient.Violations.Count} [{Argument.Session.BeginingTime.Value.AddSeconds(currentSessionClient.Violations[e.SessionClient.Violations.Count - 1].TimeOffset)}] {currentSessionClient.Violations[e.SessionClient.Violations.Count - 1].Content}", e.SessionClient.Violations[e.SessionClient.Violations.Count - 1].TimeOffset);
                 if (isHiden || !ReferenceEquals(e.SessionClient, currentSessionClient))
                     Argument.SessionView.ShowClientToolTip(e.SessionClient, "Нарушение", "Состав нарушения доступен к просмотру.", true);
-            });
-        }
-
-        private void SessionSessionStarted(object sender, System.EventArgs e)
-        {
-            View.Invoke(() =>
-            {
-                if (currentSessionClient != null)
-                    View.ClientStatus = currentSessionClient.ClientStatus;
             });
         }
 

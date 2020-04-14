@@ -1,7 +1,6 @@
 ﻿using SimplExServer.Service;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace SimplExServer.View
 {
@@ -9,7 +8,9 @@ namespace SimplExServer.View
     {
         double Time { get; set; }
         string GroupName { set; }
+
         SessionStatus SessionStatus { set; }
+        
         SessionClient CurrentSessionClient { get; set; }
         IList<SessionClient> SessionClients { get; set; }
 
@@ -18,10 +19,12 @@ namespace SimplExServer.View
         IChatView ChatView { get; set; }
 
         void ShowClientToolTip(SessionClient sessionClient, string title, string caption, bool isWarning);
+        void ShowMessage(string title, string message);
+        void Invoke(Action action);
 
         event ViewActionHandler<ISessionView> SessionAborted;
         event ViewActionHandler<ISessionView> ClientChanged;
-        event ViewActionHandler<ISessionView> SessionStartedStoped;
-        void Invoke(Action action);
+        event ViewActionHandler<ISessionView> SessionStarted;
+        event ViewActionHandler<ISessionView> SessionStoped;
     }
 }

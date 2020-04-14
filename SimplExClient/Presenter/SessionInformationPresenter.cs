@@ -25,6 +25,8 @@ namespace SimplExClient.Presenter
         {
             View.ExecutedQuestions = Argument.Client.Answers.Count;
             View.CurrentQuestionNumber = Argument.Client.CurrentQuestionNumber;
+
+            RefreshViolations();
         }
 
         public override void Run(ClientArgument argument)
@@ -69,11 +71,7 @@ namespace SimplExClient.Presenter
         {
             View.Invoke(() =>
             {
-                violations.Clear();
-                for (int i = 0; i < Argument.Client.Violations.Count; i++)
-                    violations.Add($"[{Argument.Client.BeginingTime.Value.AddSeconds(Argument.Client.Violations[i].TimeOffset)}] " +
-                        $"{Argument.Client.Violations[i].Content}");
-                View.Violations = violations;
+                RefreshViolations();
             });
         }
 
@@ -83,6 +81,14 @@ namespace SimplExClient.Presenter
             {
                 View.ClientStatus = Argument.Client.ClientStatus;
             });
+        }
+        private void RefreshViolations()
+        {
+            violations.Clear();
+            for (int i = 0; i < Argument.Client.Violations.Count; i++)
+                violations.Add($"[{Argument.Client.BeginingTime.Value.AddSeconds(Argument.Client.Violations[i].TimeOffset)}] " +
+                    $"{Argument.Client.Violations[i].Content}");
+            View.Violations = violations;
         }
     }
 }

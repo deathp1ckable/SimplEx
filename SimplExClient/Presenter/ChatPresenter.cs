@@ -28,18 +28,9 @@ namespace SimplExClient.Presenter
             Argument.Client.MessageRecieved += SessionMessageRecieved;
             Argument.Client.Reconnecting += ClientReconnecting;
             Argument.Client.Reconnected += ClientReconnected;
-            Argument.Client.Disconnected += ClientDisconnected;
             View.EnableChat = argument.Client.EnableChat;
         }
 
-        private void ClientDisconnected(object sender, Service.DisconnectedEventArgs e)
-        {
-            View.Invoke(() =>
-            {
-                if (Argument.Client.ClientStatus == ClientStatus.Executed)
-                    View.IsActive = false;
-            });
-        }
         private void ClientReconnected(object sender, EventArgs e)
         {
             View.Invoke(() =>
@@ -52,7 +43,7 @@ namespace SimplExClient.Presenter
         {
             View.Invoke(() =>
             {
-                View.IsActive = false;
+                View.EnableChat = false;
             });
         }
 

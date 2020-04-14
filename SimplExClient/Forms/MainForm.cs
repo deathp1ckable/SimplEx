@@ -10,9 +10,10 @@ namespace SimplExClient.Forms
 {
     public partial class MainForm : Form, IMainView
     {
-        TimeSpan timeSpan;
-        private int qustionsCount;
+        private TimeSpan timeSpan;
         private bool closingByPresenter;
+
+        private SortedList<Question, TreeNode> questionNodes;
 
         private Button disabledButton;
         private IList<Theme> themes;
@@ -43,10 +44,9 @@ namespace SimplExClient.Forms
             set
             {
                 ticket = value;
-                qustionsCount = ticket.GetQuestions().Length;
                 tree.Nodes["Ticket"].Nodes.Clear();
                 tree.Nodes["Ticket"].Nodes.Add(LoadTicket(ticket));
-                executedLabel.Text = $"Выполнено вопросов: 0/{qustionsCount}";
+                executedLabel.Text = $"Выполнено вопросов: 0/{questionNodes.Count}";
             }
         }
         public string GroupName { get => groupLabel.Text; set => groupLabel.Text = "Группа: " + value; }
@@ -73,6 +73,9 @@ namespace SimplExClient.Forms
             }
         }
 
+        public Question CurrentQuestion { get => tree.SelectedNode?.Tag as Question; }
+
+        public int ExexutedQuestions { set => executedLabel.Text = $"Выполнено вопросов: {value}/{questionNodes.Count}"; }
         public ISessionInformationView SessionInformationView
         {
             get => sessionInformationView; set
@@ -103,6 +106,7 @@ namespace SimplExClient.Forms
         {
             InitializeComponent();
             disabledButton = sesionInfoButton;
+            questionNodes = new SortedList<Question, TreeNode>(new QuestionComparer());
         }
         public new void Show()
         {
@@ -124,6 +128,41 @@ namespace SimplExClient.Forms
         public void ShowError(string message)
         {
             MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        public bool SelectNextQuestion()
+        {
+            int index = questionNodes.IndexOfKey(CurrentQuestion);
+            if (index < 0)
+                return false;
+            else
+            {
+                index++;
+                if (index >= questionNodes.Count)
+                    return false;
+                else
+                {
+                    tree.SelectedNode = questionNodes.Values[index];
+                    return true;
+                }
+            }
+        }
+
+        public bool SelectPrevQuestion()
+        {
+            int index = questionNodes.IndexOfKey(CurrentQuestion);
+            if (index < 0)
+                return false;
+            else
+            {
+                index--;
+                if (index < 0)
+                    return false;
+                else
+                {
+                    tree.SelectedNode = questionNodes.Values[index];
+                    return true;
+                }
+            }
         }
         public void Invoke(Action action)
         {
@@ -201,6 +240,7 @@ namespace SimplExClient.Forms
         }
         private TreeNode LoadTicket(Ticket ticket)
         {
+            questionNodes.Clear();
             TreeNode result = new TreeNode($"Билет '{ticket.TicketName}'");
             result.Tag = ticket;
             for (int i = 0; i < ticket.QuestionGroups.Count; i++)
@@ -218,17 +258,22 @@ namespace SimplExClient.Forms
                 result.Nodes.Add(LoadQuestion(group.Questions[i]));
             return result;
         }
-        private TreeNode LoadQuestion(Question questionBuilder)
+        private TreeNode LoadQuestion(Question question)
         {
-            TreeNode result = new TreeNode($"Вопрос №{1 + questionBuilder.QuestionNumber}");
-            result.Tag = questionBuilder;
+            TreeNode result = new TreeNode($"Вопрос №{1 + question.QuestionNumber}");
+            result.Tag = question;
+            questionNodes.Add(question, result);
             return result;
         }
 
         public void WarnAboutStart()
         {
-            timeLabel.Text = $"Осталось времени: {timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
-            timer.Start();
+            if (Time > 0)
+            {
+                timeLabel.Text = $"Осталось времени: {timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+                timer.Start();
+            }
+            disconnectButton.Text = "Сдать работу";
             MessageBox.Show("Можете приступать к заданиям.", "Время выполнения началось", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -242,6 +287,30 @@ namespace SimplExClient.Forms
             }
             else
                 timeLabel.Text = $"Осталось времени: 00:00:00";
+        }
+
+        private void TreeMouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (tree.SelectedNode?.Tag is Question)
+                GoToExecution(this);
+        }
+
+        private void TreeAfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (tree.SelectedNode?.Tag is Question)
+                QuestionChanged(this);
+        }
+        class QuestionComparer : IComparer<Question>
+        {
+            public int Compare(Question x, Question y)
+            {
+                if (x.QuestionNumber > y.QuestionNumber)
+                    return 1;
+                else if (x.QuestionNumber < y.QuestionNumber)
+                    return -1;
+                else
+                    return 0;
+            }
         }
     }
 }

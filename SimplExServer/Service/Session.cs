@@ -33,12 +33,18 @@ namespace SimplExServer.Service
         private List<SessionClient> executedClients = new List<SessionClient>();
         private List<SessionClient> clientsList = new List<SessionClient>();
         private Dictionary<uint, SessionClient> clients = new Dictionary<uint, SessionClient>();
+        private SessionStatus sessionStatus = SessionStatus.NotStarted;
 
         public Exam Exam { get; private set; }
         public IExamSaver ExamSaver { get; private set; }
 
-        public SessionStatus SessionStatus { get; private set; } = SessionStatus.NotStarted;
-
+        public SessionStatus SessionStatus
+        {
+            get => sessionStatus; private set
+            {
+                sessionStatus = value;
+            }
+        }
         public string GroupName { get; private set; }
 
         public string TeacherName { get; private set; }
@@ -60,7 +66,7 @@ namespace SimplExServer.Service
         public event SessionClientEventHandler ClientDisconnected;
         public event SessionClientEventHandler ConnectionDataUpdated;
         public event SessionClientEventHandler MessageRecieved;
-        public event SessionClientEventHandler StatusUpdated;
+        public event SessionClientEventHandler ClientStatusUpdated;
         public event SessionClientEventHandler Reconnecting;
         public event SessionClientEventHandler Reconnected;
         public event SessionClientEventHandler Violation;
@@ -68,7 +74,7 @@ namespace SimplExServer.Service
 
         public event EventHandler InitializationFailed;
         public event EventHandler SessionInitialized;
-        public event EventHandler SessionStarted;
+        public event EventHandler SessionStatusUpdated;
         public event EventHandler Stopped;
 
         public Session(ServerConnectionData data, IExamSaver examSaver)
@@ -123,9 +129,11 @@ namespace SimplExServer.Service
                     sessionTimer.Start();
                 }
                 SessionStatus = SessionStatus.ExecutionInProgress;
-                SessionStarted?.Invoke(this, EventArgs.Empty);
             }
-            catch { }
+            catch
+            {
+                throw;
+            }
         }
         public void SendChatMessage(SessionClient sessionClient, string message)
         {
@@ -137,6 +145,7 @@ namespace SimplExServer.Service
             }
             catch
             {
+                throw;
             }
         }
         public void AddViolation(SessionClient sessionClient, string content)
@@ -292,7 +301,7 @@ namespace SimplExServer.Service
                     sessionClient = clients[e.SenderId];
                     sessionClient.UpdateClientStatusData(clientStatusData);
 
-                    StatusUpdated?.Invoke(this, new SessionClientEventArg(sessionClient));
+                    ClientStatusUpdated?.Invoke(this, new SessionClientEventArg(sessionClient));
                     break;
                 case PackageType.Violation:
                     ViolationData violationData = message.Message as ViolationData;

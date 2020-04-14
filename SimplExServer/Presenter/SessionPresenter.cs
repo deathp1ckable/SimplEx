@@ -11,16 +11,22 @@ namespace SimplExServer.Presenter
         public SessionPresenter(ISessionView view, IApplicationController applicationController) : base(view, applicationController)
         {
             view.SessionAborted += ViewAbortSession;
-            view.SessionStartedStoped += ViewSessionStartedStoped;
+            view.SessionStarted += ViewSessionStarted;
+            view.SessionStoped += ViewSessionStoped;
+        }
+
+        private void ViewSessionStoped(ISessionView sender)
+        {
+            Argument.Stop();
         }
         public override void Run(Session argument)
         {
             Argument = argument;
 
+            Argument.Stopped += ArgumentStopped;
             Argument.ClientConnected += ArgumentClientConnected;
             Argument.ClientDisconnected += ArgumentClientDisconnected;
             Argument.ConnectionDataUpdated += ArgumentConnectionDataUpdated;
-            Argument.Stopped += ArgumentStopped;
 
             View.SessionClients = new List<SessionClient>();
             View.SessionStatus = Argument.SessionStatus;
@@ -41,21 +47,18 @@ namespace SimplExServer.Presenter
             View.Invoke(() =>
             {
                 View.SessionStatus = Argument.SessionStatus;
+                View.ShowMessage("Сессия окончена", "Результаты выполнения доступны к просмотру.");
             });
             SessionService.GetInstance().Session = null;
         }
 
-        private void ViewSessionStartedStoped(ISessionView sender)
+        private void ViewSessionStarted(ISessionView sender)
         {
-            if (Argument.SessionStatus == SessionStatus.WaitingForConnections)
+            if (Argument.Clients.Count > 0)
             {
                 Argument.StartSession();
+                View.SessionStatus = Argument.SessionStatus;
             }
-            else if (Argument.SessionStatus == SessionStatus.ExecutionInProgress)
-            {
-                Argument.Stop(); 
-            }
-            View.SessionStatus = Argument.SessionStatus;
         }
 
         private void ViewAbortSession(ISessionView sender)
@@ -64,23 +67,23 @@ namespace SimplExServer.Presenter
             SessionService.GetInstance().Session = null;
             View.Close();
         }
+
         private void ArgumentConnectionDataUpdated(object sender, SessionClientEventArg e)
         {
-            View.Invoke(() =>
-            {
-                View.SessionClients = Argument.Clients.Union(Argument.ExecutedClients).ToList();
-            });
+            InvokeRefreshClients();
         }
 
         private void ArgumentClientDisconnected(object sender, SessionClientEventArg e)
         {
-            View.Invoke(() =>
-            {
-                View.SessionClients = Argument.Clients.Union(Argument.ExecutedClients).ToList();
-            });
+            InvokeRefreshClients();
         }
 
         private void ArgumentClientConnected(object sender, SessionClientEventArg e)
+        {
+            InvokeRefreshClients();
+        }
+
+        private void InvokeRefreshClients()
         {
             View.Invoke(() =>
             {

@@ -17,12 +17,6 @@ namespace SimplExServer.Presenter
             view.Hiden += ViewHiden;
             view.MessageSended += ViewMessageSended;
         }
-
-        private void ViewHiden(IChatView sender)
-        {
-            isHiden = true;
-        }
-
         public override void Run(SessionArgument argument)
         {
             Argument = argument;
@@ -38,8 +32,8 @@ namespace SimplExServer.Presenter
         {
             View.Invoke(() =>
             {
-                if (e.SessionClient.ClientStatus == ClientStatus.Executed)
-                    View.IsActive = true;
+                if (ReferenceEquals(e.SessionClient, currentSessionClient))
+                    View.EnableChat = false;
             });
         }
 
@@ -58,7 +52,7 @@ namespace SimplExServer.Presenter
             View.Invoke(() =>
             {
                 if (ReferenceEquals(e.SessionClient, currentSessionClient))
-                    View.IsActive = false;
+                    View.EnableChat = false;
             });
         }
 
@@ -98,9 +92,12 @@ namespace SimplExServer.Presenter
             currentSessionClient = Argument.SessionView.CurrentSessionClient;
             RefreshMessages();
             if (currentSessionClient.ClientStatus == ClientStatus.Reconnecting || currentSessionClient.ClientStatus == ClientStatus.Executed)
-                View.IsActive = false;
+                View.EnableChat = false;
         }
-
+        private void ViewHiden(IChatView sender)
+        {
+            isHiden = true;
+        }
         private void RefreshMessages()
         {
             View.Invoke(() =>

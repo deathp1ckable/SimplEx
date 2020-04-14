@@ -33,11 +33,13 @@ namespace SimplExClient.Presenter
         public override void Run(Client argument)
         {
             Argument = argument;
+
             Argument.Disconnected += ArgumentDisconnected;
             Argument.Reconnecting += ArgumentReconnecting;
             Argument.Reconnected += ArgumentReconnected;
             Argument.SessionStarted += ArgumentSessionStarted;
             Argument.StatusChanged += ArgumentStatusChanged;
+
             View.SessionInformationView = ApplicationController.Run<SessionInformationPresenter, ClientArgument>(new ClientArgument(Argument, View)).View;
             View.ChatView = ApplicationController.Run<ChatPresenter, ClientArgument>(new ClientArgument(Argument, View)).View;
 
