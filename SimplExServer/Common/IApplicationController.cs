@@ -1,5 +1,7 @@
 ﻿using SimplExServer.Presenter;
 using SimplExServer.View;
+using System.Threading.Tasks;
+
 namespace SimplExServer.Common
 {
     interface IApplicationController

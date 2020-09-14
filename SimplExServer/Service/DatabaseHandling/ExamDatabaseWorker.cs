@@ -9,6 +9,7 @@ namespace SimplExServer.Service.DatabaseHandling
 {
     class ExamDatabaseWorker : IDisposable
     {
+        private readonly BidirectionalDictionary<QuestionData, Question> questionDataDictionary = new BidirectionalDictionary<QuestionData, Question>();
         private readonly DatabaseController databaseController = new DatabaseController(new SimplExDBMap());
         public bool IsOpened { get; private set; }
         public int SaveExam(Exam exam)
@@ -27,13 +28,32 @@ namespace SimplExServer.Service.DatabaseHandling
             for (i = 0; i < exam.ExecutionResults.Count; i++)
             {
                 databaseController.Insert(exam.ExecutionResults[i], exam, exam.ExecutionResults[i].Ticket);
-                for (j = 0; j < exam.ExecutionResults[i].Answers.Count; i++)
-                    databaseController.Insert(exam.ExecutionResults[i].Answers[j], exam.ExecutionResults[i], exam.ExecutionResults[i].Answers[j].Question);
+                for (j = 0; j < exam.ExecutionResults[i].Answers.Count; j++)
+                    databaseController.Insert(exam.ExecutionResults[i].Answers[j], exam.ExecutionResults[i], questionDataDictionary[exam.ExecutionResults[i].Answers[j].Question]);
             }
             databaseController.Commit();
             return databaseController.GetIdentifier(exam).Value;
         }
-        public Exam OpenExam(int id)
+        public void SaveResult(int id, ExecutionResult executionResult)
+        {
+            int i, j;
+            Exam exam = databaseController.Select<Exam>("ExamID = " + id)[0];
+            exam.Tickets = new List<Ticket>(databaseController.SelectChild<Exam, Ticket>(exam));
+            for (i = 0; i < exam.Tickets.Count; i++)
+            {
+                exam.Tickets[i].QuestionGroups = new List<QuestionGroup>(databaseController.SelectChild<Ticket, QuestionGroup>(exam.Tickets[i]));
+                for (j = 0; j < exam.Tickets[i].QuestionGroups.Count; j++)
+                {
+                    exam.Tickets[i].QuestionGroups[j].ParentTicket = exam.Tickets[i];
+                    OpenQuestionGroup(exam.Tickets[i].QuestionGroups[j]);
+                }
+            }
+            databaseController.Insert(executionResult, exam, executionResult.Ticket);
+            for (i = 0; i < executionResult.Answers.Count; i++)
+                databaseController.Insert(executionResult.Answers[i], executionResult, questionDataDictionary[executionResult.Answers[i].Question]);
+            databaseController.Commit();
+        }
+        public Exam GetExam(int id)
         {
             Exam result = databaseController.Select<Exam>("ExamID = " + id)[0];
             result.MarkSystem = databaseController.SelectChild<Exam, MarkSystemData>(result)[0].CreateMarkSystem();
@@ -55,9 +75,29 @@ namespace SimplExServer.Service.DatabaseHandling
                 result.ExecutionResults[i].Ticket = databaseController.SelectParent<Ticket, ExecutionResult>(result.ExecutionResults[i])[0];
                 result.ExecutionResults[i].Answers = new List<ExecutorAnswer>(databaseController.SelectChild<ExecutionResult, ExecutorAnswer>(result.ExecutionResults[i]));
                 for (j = 0; j < result.ExecutionResults[i].Answers.Count; j++)
-                    result.ExecutionResults[i].Answers[j].Question = databaseController.SelectParent<Question, ExecutorAnswer>(result.ExecutionResults[i].Answers[j])[0];
+                    result.ExecutionResults[i].Answers[j].Question = questionDataDictionary[databaseController.SelectParent<QuestionData, ExecutorAnswer>(result.ExecutionResults[i].Answers[j])[0]];
             }
             return result;
+        }
+        public Question[] GetQuestions(int id)
+        {
+            Exam exam = databaseController.Select<Exam>("ExamID = " + id)[0];
+            exam.Tickets = new List<Ticket>(databaseController.SelectChild<Exam, Ticket>(exam));
+            exam.Themes = new List<Theme>(databaseController.SelectChild<Exam, Theme>(exam));
+            int i, j;
+            for (i = 0; i < exam.Tickets.Count; i++)
+            {
+                exam.Tickets[i].QuestionGroups = new List<QuestionGroup>(databaseController.SelectChild<Ticket, QuestionGroup>(exam.Tickets[i]));
+                for (j = 0; j < exam.Tickets[i].QuestionGroups.Count; j++)
+                {
+                    exam.Tickets[i].QuestionGroups[j].ParentTicket = exam.Tickets[i];
+                    OpenQuestionGroup(exam.Tickets[i].QuestionGroups[j]);
+                }
+            }
+            List<Question> result = new List<Question>();
+            for (i = 0; i < exam.Tickets.Count; i++)
+                result.AddRange(exam.Tickets[i].GetQuestions());
+            return result.ToArray();
         }
         public int UpdateExam(Exam oldExam, Exam newExam)
         {
@@ -68,6 +108,13 @@ namespace SimplExServer.Service.DatabaseHandling
             SaveExam(newExam);
             databaseController.Commit();
             return databaseController.GetIdentifier(newExam).Value;
+        }
+        public void DeleteResult(int id, ExecutionResult executionResult)
+        {
+            Exam exam = databaseController.Select<Exam>("ExamID = " + id)[0];
+            databaseController.SelectChild<Exam, ExecutionResult>(exam);
+            databaseController.Delete(executionResult);
+            databaseController.Commit();
         }
         public void DeleteExam(Exam exam)
         {
@@ -82,29 +129,12 @@ namespace SimplExServer.Service.DatabaseHandling
             databaseController.Delete(exam);
             databaseController.Commit();
         }
-        public Question[] GetQuestions(int id)
-        {
-            Exam loaded = databaseController.Select<Exam>("ExamID = " + id)[0];
-            loaded.MarkSystem = databaseController.SelectChild<Exam, MarkSystemData>(loaded)[0].CreateMarkSystem();
-            loaded.Themes = new List<Theme>(databaseController.SelectChild<Exam, Theme>(loaded));
-            loaded.Tickets = new List<Ticket>(databaseController.SelectChild<Exam, Ticket>(loaded));
-            int i, j;
-            for (i = 0; i < loaded.Tickets.Count; i++)
-            {
-                loaded.Tickets[i].QuestionGroups = new List<QuestionGroup>(databaseController.SelectChild<Ticket, QuestionGroup>(loaded.Tickets[i]));
-                for (j = 0; j < loaded.Tickets[i].QuestionGroups.Count; j++)
-                {
-                    loaded.Tickets[i].QuestionGroups[j].ParentTicket = loaded.Tickets[i];
-                    OpenQuestionGroup(loaded.Tickets[i].QuestionGroups[j]);
-                }
-            }
-            List<Question> result = new List<Question>();
-            for (i = 0; i < loaded.Tickets.Count; i++)
-                result.AddRange(loaded.Tickets[i].GetQuestions());
-            return result.ToArray();
-        }
         public Exam[] GetUnfilledExams() => databaseController.Select<Exam>();
-        public void Unload() => databaseController.Unload();
+        public void Unload()
+        {
+            databaseController.Unload();
+        }
+
         public int? GetIdentifier(Exam exam) => databaseController.GetIdentifier(exam);
         public bool IsConnected() => databaseController.IsConnected();
         public void Connect(string host, uint port, string user, string password)
@@ -124,8 +154,9 @@ namespace SimplExServer.Service.DatabaseHandling
             {
                 QuestionData questionData = new QuestionData(group.Questions[i]);
                 databaseController.Insert(questionData, group, group.Questions[i].Theme);
-                if (questionData.RightAnswer != null)
-                    databaseController.Insert(questionData.RightAnswer, questionData);
+                if (questionData.Answer != null)
+                    databaseController.Insert(questionData.Answer, questionData);
+                questionDataDictionary.TryAdd(questionData, group.Questions[i]);
             }
         }
         private void OpenQuestionGroup(QuestionGroup parentGroup)
@@ -144,9 +175,14 @@ namespace SimplExServer.Service.DatabaseHandling
                 parentGroup.Questions.Add(datas[i].CreateQuestion());
                 parentGroup.Questions[i].ParentQuestionGroup = parentGroup;
                 parentGroup.Questions[i].Theme = databaseController.SelectParent<Theme, QuestionData>(datas[i])[0];
+                datas[i].Theme = parentGroup.Questions[i].Theme;
+                questionDataDictionary.TryAdd(datas[i], parentGroup.Questions[i]);
                 Answer[] answers = databaseController.SelectChild<QuestionData, Answer>(datas[i]);
                 if (answers.Length == 1)
+                {
                     parentGroup.Questions[i].Answer = answers[0];
+                    datas[i].Answer = answers[0];
+                }
             }
         }
         public void Dispose() => databaseController.Dispose();

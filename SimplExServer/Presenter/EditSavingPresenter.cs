@@ -1,16 +1,17 @@
-﻿using SimplExServer.Builders;
+﻿using SimplExModel.Model;
+using SimplExServer.Builders;
 using SimplExServer.Common;
-using SimplExModel.Model;
 using SimplExServer.Service;
 using SimplExServer.View;
+using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimplExServer.Presenter
 {
     class EditSavingPresenter : IntegrablePresenter<EditArgumnet, IEditSavingView>
     {
+        private bool savingFailed;
         private readonly List<QuestionBuilder> questionBuilders = new List<QuestionBuilder>();
         public EditSavingPresenter(IEditSavingView view, IApplicationController applicationController) : base(view, applicationController)
         {
@@ -18,6 +19,72 @@ namespace SimplExServer.Presenter
             view.Saved += ViewSaved;
             view.SavedAs += ViewSavedAs;
             view.SavedDb += ViewSavedDb;
+            view.WatchTask += ViewWatchTask;
+            view.WatchKey += ViewWatchKey;
+            view.WatchBlank += ViewWatchBlank;
+        }
+
+        private async void ViewWatchBlank(IEditSavingView sender)
+        {
+            try
+            {
+                Exam exam = GetCheckedExam();
+                if (exam == null)
+                    return;
+                int ticketNumber = sender.CurrentTicket.Instance.TicketNumber;
+                Ticket ticket = GetTicket(exam, ticketNumber);
+                bool setRightAnswer = sender.SetRightAnswers;
+                await ApplicationController.Run<LoadingContextPresenter<object>, Task<object>>(Task.Run(() =>
+                {
+                    DocXService.GetInstance().ExamDocXWorker.OpenBlank(exam, ticket, setRightAnswer);
+                    return LoadingContextPresenter<object>.EmptyObject;
+                })).GetTask();
+            }
+            catch (Exception ex)
+            {
+                View.ShowError(ex.Message);
+            }
+        }
+
+        private async void ViewWatchKey(IEditSavingView sender)
+        {
+            try
+            {
+                Exam exam = GetCheckedExam();
+                if (exam == null)
+                    return;
+                int ticketNumber = sender.CurrentTicket.Instance.TicketNumber;
+                Ticket ticket = GetTicket(exam, ticketNumber);
+                await ApplicationController.Run<LoadingContextPresenter<object>, Task<object>>(Task.Run(() =>
+                {
+                    DocXService.GetInstance().ExamDocXWorker.OpenTask(exam, ticket, true);
+                    return LoadingContextPresenter<object>.EmptyObject;
+                })).GetTask();
+            }
+            catch (Exception ex)
+            {
+                View.ShowError(ex.Message);
+            }
+        }
+        private async void ViewWatchTask(IEditSavingView sender)
+        {
+            try
+            {
+                Exam exam = GetCheckedExam();
+                if (exam == null)
+                    return;
+                int ticketNumber = sender.CurrentTicket.Instance.TicketNumber;
+                Ticket ticket = GetTicket(exam, ticketNumber);
+                await ApplicationController.Run<LoadingContextPresenter<object>, Task<object>>(Task.Run(() =>
+                {
+                    DocXService.GetInstance().ExamDocXWorker.OpenTask(exam, ticket, false);
+                    return LoadingContextPresenter<object>.EmptyObject;
+                })).GetTask();
+            }
+            catch (Exception ex)
+            {
+                View.ShowError(ex.Message);
+            }
         }
         private async void ViewSavedDb(IEditSavingView sender)
         {
@@ -42,10 +109,11 @@ namespace SimplExServer.Presenter
                 temp.Add("Сохранено!");
                 sender.Warnings = temp;
                 sender.AllowSave = true;
+                savingFailed = false;
             }
             else
             {
-                sender.ShowError($"Непредвиденная ошибка сохранения.");
+                sender.ShowError($"Непредвиденная ошибка сохранения.{ Environment.NewLine }Ошибка: {examSaver.LastExceptionMessage}");
             }
         }
 
@@ -62,10 +130,12 @@ namespace SimplExServer.Presenter
             }
             else
             {
-                sender.ShowError($"Непредвиденная ошибка сохранения.");
+                sender.ShowError($"Непредвиденная ошибка сохранения.{ Environment.NewLine }Ошибка: {Argument.ExamSaver.LastExceptionMessage}");
                 sender.AllowSave = false;
+                savingFailed = true;
             }
         }
+
         private async void ViewSavedAs(IEditSavingView sender, SaveExamEventArgs e)
         {
             Exam exam = GetCheckedExam();
@@ -92,9 +162,10 @@ namespace SimplExServer.Presenter
                 temp.Add("Сохранено!");
                 sender.Warnings = temp;
                 sender.AllowSave = true;
+                savingFailed = false;
             }
             else
-                sender.ShowError($"Непредвиденная ошибка сохранения.");
+                sender.ShowError($"Непредвиденная ошибка сохранения.{ Environment.NewLine }Ошибка: {Argument.ExamSaver.LastExceptionMessage}");
         }
 
         private void ViewShown(IEditSavingView sender)
@@ -102,7 +173,7 @@ namespace SimplExServer.Presenter
             sender.TicketBuiders = Argument.ExamBuilder.TicketBuilders;
             if (sender.TicketBuiders.Count != 0)
                 sender.CurrentTicket = sender.TicketBuiders[0];
-            if (Argument.ExamSaver == null)
+            if (Argument.ExamSaver == null || savingFailed)
                 sender.AllowSave = false;
             else sender.AllowSave = true;
         }
@@ -141,6 +212,24 @@ namespace SimplExServer.Presenter
             View.Warnings = warnings;
             Exam exam = Argument.ExamBuilder.GetBuildedInstance();
             return exam;
+        }
+        private static Ticket GetTicket(Exam exam, int ticketNumber)
+        {
+            Ticket ticket = null;
+            if (exam.Tickets.Count <= ticketNumber)
+                throw new Exception();
+            else if (exam.Tickets[ticketNumber].TicketNumber == ticketNumber)
+                ticket = exam.Tickets[ticketNumber];
+            else
+                for (int i = 0; i < exam.Tickets.Count; i++)
+                    if (exam.Tickets[i].TicketNumber == ticketNumber)
+                    {
+                        ticket = exam.Tickets[i];
+                        break;
+                    }
+            if (ticket is null)
+                throw new Exception();
+            return ticket;
         }
     }
 }

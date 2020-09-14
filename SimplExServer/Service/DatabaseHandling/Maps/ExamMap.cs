@@ -17,7 +17,7 @@ namespace SimplExServer.Service.DatabaseHandling.Maps
             Map("CreationDate", () => (DateTime)Instance.CreationDate, (a) => Instance.CreationDate = a);
             Map("LastChangeDate", () => (DateTime)Instance.LastChangeDate, (a) => Instance.LastChangeDate = a);
             Map("Time", () => Instance.Time, (a) => Instance.Time = a);
-            Map("FirstNumber", () => Instance.FirstNumber, (a) => Instance.FirstNumber = a);
+            Map("FirstNumber", () => Instance.FirstQuestionNumber, (a) => Instance.FirstQuestionNumber = a);
             Map("Description", () => Instance.Description, (a) => Instance.Description = a);
             Table("exams");
         }

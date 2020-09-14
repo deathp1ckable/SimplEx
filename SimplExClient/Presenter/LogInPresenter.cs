@@ -13,13 +13,28 @@ namespace SimplExClient.Presenter
         public LogInPresenter(ILogInView view, IApplicationController applicationController) : base(view, applicationController)
         {
             view.Connected += ViewConnected;
+            view.ViewShown += ViewShown;
             loadingContextView = ApplicationController.Run<LoadingContextPresenter, object>(null).View;
+        }
+
+        private void ViewShown(ILogInView sender)
+        {
+            ClientService clientService = ClientService.GetInstance();
+            if (clientService.Client != null)
+            {
+                clientService.Client.Abort();
+                clientService.Client = null;
+            }
         }
 
         private void ViewConnected(ILogInView sender)
         {
             sender.AllowConnect = false;
-            Client sessionClient = new Client(new ClientConnectionData(sender.ViewName, sender.Surname, sender.Patronymic, 0), "127.0.0.1");
+            Client sessionClient = new Client(new ClientConnectionData(
+                sender.ViewName.Trim(), 
+                sender.Surname.Trim(),
+                sender.Patronymic.Trim(), 0), 
+                "127.0.0.1");
             sessionClient.Connected += SessionClientOnConnected;
             sessionClient.FailedToConnect += SessionClientOnFailedToConnect;
             ThreadPool.QueueUserWorkItem((a) => sessionClient.Connect());
@@ -47,6 +62,7 @@ namespace SimplExClient.Presenter
                 Client sessionClient = sender as Client;
                 sessionClient.Connected -= SessionClientOnConnected;
                 sessionClient.FailedToConnect -= SessionClientOnFailedToConnect;
+                ClientService.GetInstance().Client = sender as Client;
                 View.Hide();
                 ApplicationController.Run<MainPresenter, Client>(sender as Client);
                 View.Show();

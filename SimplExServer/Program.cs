@@ -2,6 +2,7 @@
 using SimplExServer.Controls;
 using SimplExServer.Forms;
 using SimplExServer.Presenter;
+using SimplExServer.Service;
 using SimplExServer.View;
 using System;
 using System.Windows.Forms;
@@ -16,6 +17,7 @@ namespace SimplExServer
         [STAThread]
         public static void Main()
         {
+            DocXService.SetExamDocXWorker(new PlotkinaExamDocXWorker());
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ApplicationContext context = new ApplicationContext();

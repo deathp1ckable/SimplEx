@@ -2,7 +2,6 @@
 using SimplExNetworking.Internal;
 using SimplExNetworking.UniqueIdentifiers;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -19,7 +18,6 @@ namespace SimplExNetworking.Networking
         private UniqueId serverID;
 
         private Thread accepter;
-        private Thread reciever;
         private Thread keepAlive;
 
         private int keepAliveDelay = 1000;
@@ -102,10 +100,6 @@ namespace SimplExNetworking.Networking
                     accepter.IsBackground = true;
                     accepter.Start();
 
-                    reciever = new Thread(PackageReciever);
-                    reciever.IsBackground = true;
-                    reciever.Start();
-
                     keepAlive = new Thread(KeepAlive);
                     keepAlive.IsBackground = true;
                     keepAlive.Start();
@@ -120,7 +114,7 @@ namespace SimplExNetworking.Networking
             }
             else throw new InvalidOperationException("Attempting to initialized already initilized NetworkServer");
         }
-        public void CheckForIncomingData() => PackageReciever();
+        public void CheckForIncomingData(uint clientID) => PackageReciever(connectedClients[clientID]);
         public void DisconnectClient(uint clientId)
         {
             if (connectedClients.ContainsKey(clientId))
@@ -163,10 +157,9 @@ namespace SimplExNetworking.Networking
                         DisconnectClient(tmp[i].uniqueID.Id, true, "Server stopped.");
                 listener.Stop();
                 serverID.Dispose();
-                IsInitialized = false;
                 keepAlive.Abort();
                 accepter.Abort();
-                reciever.Abort();
+                IsInitialized = false;
                 ThreadPool.QueueUserWorkItem((a) => OnServerStopped?.Invoke(this, EventArgs.Empty));
             }
             else throw new InvalidOperationException("Attempting to stop uninitilized NetworkServer");
@@ -177,7 +170,11 @@ namespace SimplExNetworking.Networking
             try
             {
                 while (IsInitialized)
-                    connectedClients.Add(new Client(listener.AcceptTcpClient(), host.CreateUniqueID()));
+                {
+                    Thread thread = new Thread(PackageReciever);
+                    Client client = new Client(listener.AcceptTcpClient(), host.CreateUniqueID(), thread);
+                    connectedClients.Add(client);
+                }
             }
             catch (SocketException ex) when (ex.ErrorCode == 10004)
             {
@@ -193,25 +190,16 @@ namespace SimplExNetworking.Networking
                 Accepter();
             }
         }
-        private void PackageReciever()
+        private void PackageReciever(object clientObject)
         {
-            Client current = null;
-            Client[] tmp;
+            Client client = clientObject as Client;
             Package package;
             try
             {
                 while (IsInitialized)
                 {
-                    tmp = connectedClients.Values.ToArray();
-                    for (int i = 0; i < tmp.Length; i++)
-                    {
-                        current = tmp[i];
-                        if (tmp[i] != null)
-                        {
-                            package = tmp[i].RecievePackage();
-                            if (package != null) PackageHandler(package);
-                        }
-                    }
+                    package = client.RecievePackage();
+                    if (package != null) PackageHandler(package);
                     Thread.Sleep(UpdateDelay);
                 }
             }
@@ -221,13 +209,13 @@ namespace SimplExNetworking.Networking
             }
             catch (SocketException ex)
             {
-                if (current != null)
-                    DisconnectClient(current.uniqueID.Id, false, "Connection lost: " + ex.Message);
+                if (client != null)
+                    DisconnectClient(client.uniqueID.Id, false, "Connection lost: " + ex.Message);
             }
             catch (Exception ex)
             {
                 File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " SERVER PACKAGE RECIEVER ERROR: " + ex.Message + Environment.NewLine);
-                PackageReciever();
+                PackageReciever(clientObject);
             }
         }
         private Package updatePackage = new Package(PackageType.Update, null, 0, 0);
@@ -325,12 +313,7 @@ namespace SimplExNetworking.Networking
             {
                 try
                 {
-                    byte[] data = SerializationHelper.ProtoSerialize(package);
-                    byte[] length = BitConverter.GetBytes(data.Length);
-                    byte[] result = new byte[data.Length + length.Length];
-                    Array.Copy(length, result, length.Length);
-                    Array.Copy(data, 0, result, length.Length, data.Length);
-                    connectedClients[package.targetID].client.GetStream().Write(result, 0, result.Length);
+                    connectedClients[package.targetID].SendPackage(package);
                 }
                 catch (SocketException ex)
                 {

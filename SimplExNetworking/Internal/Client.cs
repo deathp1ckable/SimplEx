@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Threading;
 using System.Timers;
 namespace SimplExNetworking.Internal
 {
@@ -12,16 +13,20 @@ namespace SimplExNetworking.Internal
 
         public TcpClient client;
         public UniqueId uniqueID;
-        public Timer keepAliveTimer;
-        public Client(TcpClient client, UniqueId id)
+        public System.Timers.Timer keepAliveTimer;
+
+        public Thread reciever;
+        public Client(TcpClient client, UniqueId id, Thread reciever)
         {
+            this.reciever = reciever;
             this.client = client;
             uniqueID = id;
 
             isAlive = true;
             isDisposed = false;
 
-            keepAliveTimer = new Timer(5000);
+            reciever.Start(this);
+            keepAliveTimer = new System.Timers.Timer(5000);
             keepAliveTimer.Elapsed += ConfirmChecker;
             keepAliveTimer.Start();
         }
@@ -35,6 +40,20 @@ namespace SimplExNetworking.Internal
         {
             keepAliveTimer?.Dispose();
             keepAliveTimer = null;
+        }
+        private object locker = new object();
+        public void SendPackage(Package package)
+        {
+            lock (locker)
+            {
+                byte[] data = SerializationHelper.ProtoSerialize(package);
+                byte[] length = BitConverter.GetBytes(data.Length);
+                byte[] result = new byte[data.Length + length.Length];
+                Array.Copy(length, result, length.Length);
+                Array.Copy(data, 0, result, length.Length, data.Length);
+                client.GetStream().Write(result, 0, result.Length);
+
+            }
         }
         private readonly List<byte> buffer = new List<byte>();
         private readonly byte[] lengthBuffer = new byte[4];
@@ -65,7 +84,7 @@ namespace SimplExNetworking.Internal
                         else
                             tempBuffer = new byte[client.Available];
                         client.GetStream().Read(tempBuffer, 0, tempBuffer.Length);
-                        buffer.AddRange(tempBuffer); 
+                        buffer.AddRange(tempBuffer);
                         isAlive = true;
                     }
                     if (buffer.Count == messageLength)
@@ -84,6 +103,7 @@ namespace SimplExNetworking.Internal
         {
             if (!isDisposed)
             {
+                reciever.Abort();
                 keepAliveTimer?.Dispose();
                 isDisposed = true;
                 isAlive = false;

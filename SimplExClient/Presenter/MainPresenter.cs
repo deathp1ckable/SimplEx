@@ -12,22 +12,35 @@ namespace SimplExClient.Presenter
         public MainPresenter(IMainView view, IApplicationController applicationController) : base(view, applicationController)
         {
             view.Disconnected += ViewDisconnected;
+            view.ViewLeaved += ViewViewLeaved;
             loadingContextView = ApplicationController.Run<LoadingContextPresenter, object>(null).View;
+        }
+
+        private void ViewViewLeaved(IMainView sender)
+        {
+            if (Argument.ViolationsLimit >= 0 && Argument.ClientStatus == ClientStatus.Executing)
+            {
+                Argument.AddViolation("Клиент покинул форму выполнения.");
+            }
         }
 
         private void ViewDisconnected(IMainView sender)
         {
+            ClientService.GetInstance().Client = null;
+            ClientStatus temp = Argument.ClientStatus;
             Argument.Disconnect();
-            if (Argument.ClientStatus == ClientStatus.Connected)
+            if (temp == ClientStatus.Connected)
+            {
                 View.Invoke(() =>
-                 {
-                     loadingContextView.Hide();
-                     bool executed = Argument.ClientStatus == ClientStatus.Executed;
-                     ResultArgument resultArgument = new ResultArgument("Клиент отключился.", executed ? Argument.Poins.ToString() : "-", executed ? Argument.Mark.ToString() : "-");
-                     View.Hide();
-                     ApplicationController.Run<ResultPresenter, ResultArgument>(resultArgument);
-                     View.Close();
-                 });
+                {
+                    loadingContextView.Hide();
+                    bool executed = Argument.ClientStatus == ClientStatus.Executed;
+                    ResultArgument resultArgument = new ResultArgument("Клиент отключился.", executed ? Argument.Points.ToString() : "-", executed ? Argument.Mark.ToString() : "-");
+                    View.Hide();
+                    ApplicationController.Run<ResultPresenter, ResultArgument>(resultArgument);
+                    View.Close();
+                });
+            }
         }
 
         public override void Run(Client argument)
@@ -40,9 +53,13 @@ namespace SimplExClient.Presenter
             Argument.SessionStarted += ArgumentSessionStarted;
             Argument.StatusChanged += ArgumentStatusChanged;
 
-            View.SessionInformationView = ApplicationController.Run<SessionInformationPresenter, ClientArgument>(new ClientArgument(Argument, View)).View;
-            View.ChatView = ApplicationController.Run<ChatPresenter, ClientArgument>(new ClientArgument(Argument, View)).View;
+            ClientArgument clientArgument = new ClientArgument(Argument, View);
 
+            View.SessionInformationView = ApplicationController.Run<SessionInformationPresenter, ClientArgument>(clientArgument).View;
+            View.QuestionView = ApplicationController.Run<QuestionPresenter, ClientArgument>(clientArgument).View;
+            View.ChatView = ApplicationController.Run<ChatPresenter, ClientArgument>(clientArgument).View;
+
+            View.FirstQuestionNumber = Argument.Exam.FirstQuestionNumber;
             View.Time = Argument.Exam.Time;
             View.Themes = Argument.Exam.Themes;
             View.GroupName = Argument.GroupName;
@@ -73,11 +90,12 @@ namespace SimplExClient.Presenter
 
         private void ArgumentDisconnected(object sender, DisconnectedEventArgs e)
         {
+            ClientService.GetInstance().Client = null;
             View.Invoke(() =>
             {
                 loadingContextView.Hide();
                 bool executed = Argument.ClientStatus == ClientStatus.Executed;
-                ResultArgument resultArgument = new ResultArgument(e.Reason, executed ? Argument.Poins.ToString() : "-", executed ? Argument.Mark.ToString() : "-");
+                ResultArgument resultArgument = new ResultArgument(e.Reason, executed ? Argument.Points.ToString() : "Нет значения", executed ? Argument.Mark.ToString() : "Нет значения");
                 View.Hide();
                 ApplicationController.Run<ResultPresenter, ResultArgument>(resultArgument);
                 View.Close();

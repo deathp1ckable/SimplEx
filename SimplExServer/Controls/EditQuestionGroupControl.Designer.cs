@@ -102,6 +102,7 @@
             this.groupBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox.Location = new System.Drawing.Point(139, 31);
+            this.groupBox.MaxLength = 100;
             this.groupBox.Name = "groupBox";
             this.groupBox.Size = new System.Drawing.Size(579, 21);
             this.groupBox.TabIndex = 83;

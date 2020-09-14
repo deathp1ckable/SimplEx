@@ -104,7 +104,7 @@ namespace SimplExServer.Presenter
             {
                 messages.Clear();
                 for (int i = 0; i < currentSessionClient.ChatMessages.Count; i++)
-                    messages.Add($"[{Argument.Session.BeginingTime.Value.AddSeconds(currentSessionClient.ChatMessages[i].TimeOffset)}] " +
+                    messages.Add($"[{Argument.Session.InitializeTime.Value.AddSeconds(currentSessionClient.ChatMessages[i].TimeOffset)}] " +
                         $"{currentSessionClient.ChatMessages[i].SenderName}: " +
                         $"{currentSessionClient.ChatMessages[i].Content}");
                 View.Messages = messages;

@@ -15,6 +15,13 @@ namespace SimplExClient.View
         string CreatorPatronymic { set; }
         double ExaminationTime { set; }
         int FirstQuestionNumber { set; }
+
+        double MinPoints { set; }
+        double MaxPoints { set; }
+
+        double MinMark { set; }
+        double MaxMark { set; }
+
         Type MarkSystemType { set; }
         string MarkSystemDescription { set; }
 
@@ -27,7 +34,6 @@ namespace SimplExClient.View
         int ViolationsLimit { set; }
         bool EnableChat { set; }
         bool Mixing { set; }
-        bool SaveResults { set; }
         bool TrackStatus { set; }
 
         IList<Ticket> Tickets { set; }

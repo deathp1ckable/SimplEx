@@ -12,7 +12,7 @@ namespace SimplExServer.Presenter
         private IExamSaver currentExamSaver;
         public ImportPresenter(IImportView view, IApplicationController applicationController) : base(view, applicationController)
         {
-            view.ViewShown += ViewViewShown;  
+            view.ViewShown += ViewViewShown;
             view.ConnectionAsked += ViewConnectionAsked;
             view.FileOpened += ViewFileOpened;
             view.Searched += ViewSearched;
@@ -76,10 +76,10 @@ namespace SimplExServer.Presenter
                 sender.IsExamLoading = true;
                 ExamsListService examsList = ExamsListService.GetInstance();
                 IExamSaver saver = sender.CurrentExamSaver;
-                Exam exam = await Task.Run(() => saver.GetExam());
-                if (exam == null)
+                IList<Question> questions = await Task.Run(() => saver.GetQuestions());
+                if (questions == null)
                 {
-                    sender.ShowError("Не удалось загрузить экзамен.\nОн был удален из списка.");
+                    sender.ShowError($"Не удалось загрузить экзамен.\nОн был удален из списка.{ Environment.NewLine }Ошибка: { saver.LastExceptionMessage }");
                     examsList.Remove(sender.CurrentExamSaver);
                     currentExamSaver = null;
                     sender.IsExamLoading = false;
@@ -88,9 +88,6 @@ namespace SimplExServer.Presenter
                 else
                 {
                     currentExamSaver = sender.CurrentExamSaver;
-                    List<Question> questions = new List<Question>();
-                    for (int i = 0; i < exam.Tickets.Count; i++)
-                        questions.AddRange(exam.Tickets[i].GetQuestions());
                     sender.Questions = questions;
                     sender.IsExamLoading = false;
                 }
@@ -144,7 +141,7 @@ namespace SimplExServer.Presenter
             }
             else
             {
-                sender.ShowError("Не удалось открыть экзамен.");
+                sender.ShowError($"Не удалось открыть экзамен.{ Environment.NewLine }Ошибка: { loaded.LastExceptionMessage }");
             }
         }
         private void LoadExamsList(IImportView view)

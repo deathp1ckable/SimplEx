@@ -6,6 +6,9 @@
         string Points { set; }
         string Mark { set; }
 
+        void Exit();
+
         event ViewActionHandler<IResultView> Continued;
+        event ViewActionHandler<IResultView> Exited;
     }
 }

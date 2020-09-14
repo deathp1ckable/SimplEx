@@ -40,7 +40,7 @@ namespace SimplExServer.Controls
                 for (int i = 0; i < questionTypes.Count; i++)
                 {
                     if (questionTypes[i] == typeof(OneAnswerQuestionBuilder))
-                        questionTypesList.Items.Add("Обычная тестовый вопрос");
+                        questionTypesList.Items.Add("Обычный тестовый вопрос");
                 }
                 if (tempType != null)
                     QuestionType = tempType;

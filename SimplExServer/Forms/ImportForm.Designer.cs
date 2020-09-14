@@ -303,7 +303,7 @@
             this.nameText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nameText.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameText.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.nameText.Location = new System.Drawing.Point(243, 16);
+            this.nameText.Location = new System.Drawing.Point(250, 16);
             this.nameText.Name = "nameText";
             this.nameText.Size = new System.Drawing.Size(326, 26);
             this.nameText.TabIndex = 37;
@@ -423,6 +423,7 @@
             this.searchBox.Name = "searchBox";
             this.searchBox.Size = new System.Drawing.Size(458, 28);
             this.searchBox.TabIndex = 33;
+            this.searchBox.TextChanged += new System.EventHandler(this.SearchBoxTextChanged);
             // 
             // questionContentToolTip
             // 

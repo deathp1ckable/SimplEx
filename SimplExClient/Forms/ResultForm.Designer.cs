@@ -41,8 +41,9 @@
             this.markBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.connectButton = new System.Windows.Forms.Button();
+            this.continueButton = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.exitButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.panel2.SuspendLayout();
@@ -183,22 +184,22 @@
             this.label4.TabIndex = 114;
             this.label4.Text = "Баллы:";
             // 
-            // connectButton
+            // continueButton
             // 
-            this.connectButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.continueButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.connectButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(31)))), ((int)(((byte)(47)))));
-            this.connectButton.FlatAppearance.BorderSize = 0;
-            this.connectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.connectButton.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.connectButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.connectButton.Location = new System.Drawing.Point(3, 283);
-            this.connectButton.Name = "connectButton";
-            this.connectButton.Size = new System.Drawing.Size(633, 30);
-            this.connectButton.TabIndex = 119;
-            this.connectButton.Text = "Продолжить";
-            this.connectButton.UseVisualStyleBackColor = false;
-            this.connectButton.Click += new System.EventHandler(this.ConnectButtonClick);
+            this.continueButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(31)))), ((int)(((byte)(47)))));
+            this.continueButton.FlatAppearance.BorderSize = 0;
+            this.continueButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.continueButton.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.continueButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.continueButton.Location = new System.Drawing.Point(3, 283);
+            this.continueButton.Name = "continueButton";
+            this.continueButton.Size = new System.Drawing.Size(633, 30);
+            this.continueButton.TabIndex = 119;
+            this.continueButton.Text = "Продолжить";
+            this.continueButton.UseVisualStyleBackColor = false;
+            this.continueButton.Click += new System.EventHandler(this.ContinueButtonButtonClick);
             // 
             // panel2
             // 
@@ -216,13 +217,30 @@
             this.panel2.Size = new System.Drawing.Size(633, 100);
             this.panel2.TabIndex = 121;
             // 
+            // exitButton
+            // 
+            this.exitButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.exitButton.BackColor = System.Drawing.SystemColors.Control;
+            this.exitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.exitButton.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.exitButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.exitButton.Location = new System.Drawing.Point(3, 319);
+            this.exitButton.Name = "exitButton";
+            this.exitButton.Size = new System.Drawing.Size(633, 24);
+            this.exitButton.TabIndex = 122;
+            this.exitButton.Text = "Выйти из SimplEx";
+            this.exitButton.UseVisualStyleBackColor = false;
+            this.exitButton.Click += new System.EventHandler(this.ExitButtonClick);
+            // 
             // ResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(639, 319);
+            this.ClientSize = new System.Drawing.Size(639, 350);
+            this.Controls.Add(this.exitButton);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.connectButton);
+            this.Controls.Add(this.continueButton);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -254,7 +272,8 @@
         private System.Windows.Forms.TextBox markBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button connectButton;
+        private System.Windows.Forms.Button continueButton;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button exitButton;
     }
 }

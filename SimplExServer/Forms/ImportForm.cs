@@ -168,5 +168,10 @@ namespace SimplExServer.Forms
             }
             catch { }
         }
+
+        private void SearchBoxTextChanged(object sender, EventArgs e)
+        {
+            searchButton.Enabled = !string.IsNullOrEmpty(searchBox.Text.Trim());
+        }
     }
 }

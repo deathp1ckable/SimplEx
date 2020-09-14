@@ -8,6 +8,7 @@ using SimplExNetworking.Networking;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -24,6 +25,7 @@ namespace SimplExServer.Service
             TypeNameHandling = TypeNameHandling.Objects,
             Formatting = Formatting.Indented
         };
+
         private ServerConnectionData serverConnectionData;
         private byte[] serverConnectionDataBuffer;
         private System.Timers.Timer sessionTimer;
@@ -43,6 +45,7 @@ namespace SimplExServer.Service
             get => sessionStatus; private set
             {
                 sessionStatus = value;
+                SessionStatusUpdated?.Invoke(this, EventArgs.Empty);
             }
         }
         public string GroupName { get; private set; }
@@ -57,7 +60,8 @@ namespace SimplExServer.Service
         public int ViolationsLimit { get; private set; }
         public double ReconnectionTime { get; private set; }
 
-        public DateTime? BeginingTime { get; private set; }
+        public DateTime? InitializeTime { get; private set; }
+        public DateTime? StartSessionTime { get; private set; }
 
         public ReadOnlyCollection<SessionClient> Clients { get; private set; }
         public ReadOnlyCollection<SessionClient> ExecutedClients { get; private set; }
@@ -98,17 +102,27 @@ namespace SimplExServer.Service
 
         public void Initialize()
         {
+            int i, j;
+            Exam temp = (Exam)serverConnectionData.Exam.Clone();
+            for (i = 0; i < temp.Tickets.Count; i++)
+            {
+                Question[] questions = temp.Tickets[i].GetQuestions();
+                for (j = 0; j < questions.Length; j++)
+                    questions[j].Answer = null;
+            }
+            serverConnectionData = new ServerConnectionData(temp, GroupName, TeacherName, TeacherSurname, TeacherPatronymic, EnableChat, TrackStatus, Mixing, ViolationsLimit, ReconnectionTime);
+
             networkServer.OnMessageRecieved += NetworkServerOnMessageRecieved;
             networkServer.OnClientDisconnected += NetworkServerOnClientDisconnected;
             networkServer.OnServerInitialized += NetworkServerOnServerInitialized;
             networkServer.OnFailedToInitializeServer += NetworkServerOnFailedToInitializeServer;
 
             SessionStatus = SessionStatus.WaitingForConnections;
-            BeginingTime = DateTime.Now;
+            InitializeTime = DateTime.Now;
 
             ExamSerializationService serializationService = ExamSerializationService.GetInstance();
             serverConnectionDataBuffer = GetMessage(new Package(PackageType.ServerConnectionData, serverConnectionData));
-            networkServer.InitializeServer(34034, 1000, 100, 1000);
+            networkServer.InitializeServer(34034, 1000, 100,5000);
         }
 
         public void StartSession()
@@ -120,55 +134,57 @@ namespace SimplExServer.Service
             try
             {
                 networkServer.BroadcastMessage(BroadcastMode.Others, GetMessage(new Package(PackageType.ServerStartSession, null)));
-                for (int i = 0; i < clientsList.Count; i++)
-                    clientsList[i].ClientStatus = ClientStatus.Executing;
-                if (Exam.Time > 0)
-                {
-                    sessionTimer = new System.Timers.Timer(Exam.Time * 1000);
-                    sessionTimer.Elapsed += SessionTimerElapsed;
-                    sessionTimer.Start();
-                }
-                SessionStatus = SessionStatus.ExecutionInProgress;
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " START SESSION ERROR: " + ex.Message + Environment.NewLine);
             }
+            for (int i = 0; i < clientsList.Count; i++)
+                clientsList[i].ClientStatus = ClientStatus.Executing;
+            if (Exam.Time > 0)
+            {
+                sessionTimer = new System.Timers.Timer(Exam.Time * 1000);
+                sessionTimer.Elapsed += SessionTimerElapsed;
+                sessionTimer.Start();
+            }
+            StartSessionTime = DateTime.Now;
+            SessionStatus = SessionStatus.ExecutionInProgress;
         }
         public void SendChatMessage(SessionClient sessionClient, string message)
         {
             try
             {
-                ChatMessageData chatMessageData = new ChatMessageData($"{TeacherSurname} {TeacherName} {TeacherSurname}", message, (DateTime.Now - BeginingTime).Value.TotalSeconds);
+                ChatMessageData chatMessageData = new ChatMessageData($"{TeacherSurname} {TeacherName} {TeacherSurname}", message, (DateTime.Now - InitializeTime).Value.TotalSeconds);
                 networkServer.SendMessage(sessionClient.NetworkId, GetMessage(new Package(PackageType.Chat, chatMessageData)));
                 sessionClient.AddChatMessageData(chatMessageData);
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " SEND CHAT MESSAGE ERROR: " + ex.Message + Environment.NewLine);
             }
         }
         public void AddViolation(SessionClient sessionClient, string content)
         {
-            if (SessionStatus != SessionStatus.WaitingForConnections)
+            if (SessionStatus == SessionStatus.WaitingForConnections)
                 throw new Exception();
             if (ViolationsLimit < 0)
                 throw new Exception();
             try
             {
-                ViolationData violationData = new ViolationData(content, (DateTime.Now - BeginingTime).Value.TotalSeconds);
-                sessionClient.AddViolationData(violationData);
+                ViolationData violationData = new ViolationData(content, (DateTime.Now - InitializeTime).Value.TotalSeconds);
                 networkServer.SendMessage(sessionClient.NetworkId, GetMessage(new Package(PackageType.Violation, violationData)));
-                if (sessionClient.Violations.Count > ViolationsLimit)
-                {
-                    DisconnectClient(sessionClient, "Превышен лимит нарушений.");
-                    sessionClient.ClientStatus = ClientStatus.Disconnected;
-                }
+                sessionClient.AddViolationData(violationData);
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " ADD VIOLATION ERROR: " + ex.Message + Environment.NewLine);
             }
+            if (sessionClient.Violations.Count > ViolationsLimit)
+            {
+                DisconnectClient(sessionClient, "Превышен лимит нарушений.");
+                sessionClient.ClientStatus = ClientStatus.Disconnected;
+            }
+            Violation?.Invoke(this, new SessionClientEventArg(sessionClient));
         }
         public void DisconnectClient(SessionClient sessionClient, string reason)
         {
@@ -176,18 +192,32 @@ namespace SimplExServer.Service
                 throw new Exception();
             try
             {
-                networkServer.SendMessage(sessionClient.NetworkId, GetMessage(new Package(PackageType.Disconnect, new DisconnectData(reason))));
-                if (SessionStatus == SessionStatus.WaitingForConnections)
+                if (sessionClient.ClientStatus == ClientStatus.Disconnected)
+                    return;
+                else if (sessionClient.ClientStatus == ClientStatus.Connected)
                 {
+                    networkServer.SendMessage(sessionClient.NetworkId, GetMessage(new Package(PackageType.Disconnect, new DisconnectData(reason))));
                     clients.Remove(sessionClient.NetworkId);
                     clientsList.Remove(sessionClient);
                     Thread.Sleep(networkServer.UpdateDelay);
                     networkServer.DisconnectClient(sessionClient.NetworkId);
                 }
+                else if (sessionClient.ClientStatus == ClientStatus.Executing)
+                {
+                    networkServer.SendMessage(sessionClient.NetworkId, GetMessage(new Package(PackageType.Disconnect, new DisconnectData(reason))));
+                }
+                else if (sessionClient.ClientStatus == ClientStatus.Reconnecting)
+                {
+                    sessionClient.StopReconnectionTime();
+                    sessionClient.ClientStatus = ClientStatus.Disconnected;
+                    sessionClient.ReconnectionTimerElapsed -= SessionClientReconnectionTimerElapsed;
+                    clientsList.Remove(sessionClient);
+                    clients.Remove(sessionClient.NetworkId);
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " DISCONNECT ERROR: " + ex.Message + Environment.NewLine);
             }
         }
         public void Stop()
@@ -197,30 +227,35 @@ namespace SimplExServer.Service
             if (SessionStatus == SessionStatus.WaitingForConnections)
                 SessionStatus = SessionStatus.Finished;
         }
-        public void SaveResults()
+        public bool SaveResults()
         {
             if (ExamSaver != null)
-                ExamSaver.Save(Exam);
+            {
+                for (int i = 0; i < executedClients.Count; i++)
+                    if (!ExamSaver.SaveResult(executedClients[i].ExecutionResult))
+                        return false;
+                return true;
+            }
             else throw new Exception();
         }
         public void Abort()
         {
             try
             {
-                int i;
                 networkServer.StopServer();
-                for (i = 0; i < clientsList.Count; i++)
-                    clientsList[i].ClientStatus = ClientStatus.Disconnected;
-                for (i = 0; i < executedClients.Count; i++)
-                    executedClients[i].ClientStatus = ClientStatus.Disconnected;
-                clients.Clear();
-                clientsList.Clear();
-                executedClients.Clear();
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " ABORT ERROR: " + ex.Message + Environment.NewLine);
             }
+            int i;
+            for (i = 0; i < clientsList.Count; i++)
+                clientsList[i].ClientStatus = ClientStatus.Disconnected;
+            for (i = 0; i < executedClients.Count; i++)
+                executedClients[i].ClientStatus = ClientStatus.Disconnected;
+            clients.Clear();
+            clientsList.Clear();
+            executedClients.Clear();
         }
 
         private void NetworkServerOnClientDisconnected(object sender, ConnectionEventArgs e)
@@ -262,8 +297,10 @@ namespace SimplExServer.Service
                         {
                             networkServer.DisconnectClient(e.SenderId);
                         }
-                        catch
-                        { }
+                        catch (Exception ex)
+                        {
+                            File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " CLIENT CONNECTION DATA ERROR: " + ex.Message + Environment.NewLine);
+                        }
                         return;
                     }
                     ClientConnectionData clientInformation = message.Message as ClientConnectionData;
@@ -277,7 +314,7 @@ namespace SimplExServer.Service
                     }
                     else
                     {
-                        double timeOffset = (DateTime.Now - BeginingTime).Value.TotalSeconds;
+                        double timeOffset = (DateTime.Now - InitializeTime).Value.TotalSeconds;
                         sessionClient = new SessionClient(e.SenderId, clientInformation);
                         clients.Add(e.SenderId, sessionClient);
                         clientsList.Add(sessionClient);
@@ -285,11 +322,10 @@ namespace SimplExServer.Service
                         {
                             networkServer.SendMessage(e.SenderId, serverConnectionDataBuffer);
                             networkServer.SendMessage(e.SenderId, GetMessage(new Package(PackageType.ServerTimeOffset, new ServerTimeOffsetData(timeOffset))));
-
                         }
-                        catch
+                        catch (Exception ex)
                         {
-                            throw;
+                            File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " CLIENT CONNECTION DATA ERROR: " + ex.Message + Environment.NewLine);
                         }
                         sessionClient.ClientStatus = ClientStatus.Connected;
 
@@ -297,6 +333,7 @@ namespace SimplExServer.Service
                         break;
                     }
                 case PackageType.ClientStatus:
+                    string s = Encoding.Unicode.GetString(e.Message);
                     ClientStatusData clientStatusData = message.Message as ClientStatusData;
                     sessionClient = clients[e.SenderId];
                     sessionClient.UpdateClientStatusData(clientStatusData);
@@ -345,9 +382,9 @@ namespace SimplExServer.Service
                         else
                             networkServer.SendMessage(e.SenderId, GetMessage(new Package(PackageType.ServerReconnectionRejected, null)));
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        throw;
+                        File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " RECONNECTION ERROR: " + ex.Message + Environment.NewLine);
                     }
                     break;
                 case PackageType.ClientResult:
@@ -359,12 +396,12 @@ namespace SimplExServer.Service
                     executionResult.ExecutorName = sessionClient.Name;
                     executionResult.ExecutorSurname = sessionClient.Surname;
                     executionResult.ExecutorPatronymic = sessionClient.Patronymic;
-                    executionResult.ExecutionDate = BeginingTime;
-                    executionResult.ExecutionTime = (DateTime.Now - BeginingTime).Value.TotalSeconds;
+                    executionResult.ExecutionDate = InitializeTime;
+                    executionResult.ExecutionTime = (DateTime.Now - StartSessionTime).Value.TotalSeconds;
                     executionResult.Ticket = ticket;
                     double points = 0;
                     Question[] questions = ticket.GetQuestions();
-                    for (int i = 0; i < clientResultData.AnswerDatas.Length; i++)
+                    for (int i = 0; i < clientResultData.AnswerDatas.Count; i++)
                     {
                         Answer answer = clientResultData.AnswerDatas[i].CreateAnswer(Exam);
                         points += answer.Question.CheckAnswer(answer);
@@ -381,9 +418,9 @@ namespace SimplExServer.Service
                     {
                         networkServer.SendMessage(e.SenderId, GetMessage(new Package(PackageType.ServerResponse, new ServerResponseData(points, executionResult.Mark))));
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        throw;
+                        File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " CLIENT RESULT ERROR: " + ex.Message + Environment.NewLine);
                     }
                     sessionClient.ClientStatus = ClientStatus.Executed;
 
@@ -423,9 +460,9 @@ namespace SimplExServer.Service
                     if (networkServer.IsInitialized)
                         networkServer.StopServer();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw;
+                    File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " CHECK SESSION STATUS ERROR: " + ex.Message + Environment.NewLine);
                 }
                 Stopped?.Invoke(this, EventArgs.Empty);
             }

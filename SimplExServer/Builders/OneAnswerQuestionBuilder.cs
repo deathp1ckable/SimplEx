@@ -67,6 +67,7 @@ namespace SimplExServer.Builders
             Instance.QuestionContent.Answers = Answers;
             Instance.Points = Points;
             Instance.QuestionContent.Letters = Letters;
+            Instance.QuestionContent.Devider = Devider;
             if (Answers.Count > 0)
                 Instance.Answer = new Answer() { Content = Answers[rightAnswerIndex] };
             return Instance;

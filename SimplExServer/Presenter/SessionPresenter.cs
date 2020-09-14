@@ -3,6 +3,8 @@ using SimplExServer.Service;
 using SimplExServer.View;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using System.Threading.Tasks;
 
 namespace SimplExServer.Presenter
 {
@@ -42,11 +44,21 @@ namespace SimplExServer.Presenter
             View.Show();
         }
 
-        private void ArgumentStopped(object sender, System.EventArgs e)
+        private void ArgumentStopped(object sender, EventArgs e)
         {
-            View.Invoke(() =>
+            View.Invoke(async () =>
             {
                 View.SessionStatus = Argument.SessionStatus;
+                if (Argument.ExamSaver is null)
+                    return;
+                if (!await ApplicationController.Run<LoadingContextPresenter<bool>, Task<bool>>(Task.Run(() =>
+                 {
+                     bool result = Argument.SaveResults();
+                     return result;
+                 })).GetTask())
+                {
+                    View.ShowError($"Не удалось сохранить результаты.{ Environment.NewLine }Ошибка: { Argument.ExamSaver.LastExceptionMessage }");
+                }
                 View.ShowMessage("Сессия окончена", "Результаты выполнения доступны к просмотру.");
             });
             SessionService.GetInstance().Session = null;

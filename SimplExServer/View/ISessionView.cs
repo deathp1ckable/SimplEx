@@ -20,6 +20,7 @@ namespace SimplExServer.View
 
         void ShowClientToolTip(SessionClient sessionClient, string title, string caption, bool isWarning);
         void ShowMessage(string title, string message);
+        void ShowError(string message);
         void Invoke(Action action);
 
         event ViewActionHandler<ISessionView> SessionAborted;

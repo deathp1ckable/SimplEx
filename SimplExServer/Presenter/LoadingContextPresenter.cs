@@ -6,6 +6,7 @@ namespace SimplExServer.Presenter
 {
     class LoadingContextPresenter<TResult> : Presenter<Task<TResult>, ILoadingContextView>
     {
+        public static object EmptyObject = new object();
         public LoadingContextPresenter(ILoadingContextView view, IApplicationController applicationController) : base(view, applicationController) { }
         public override void Run(Task<TResult> argument)
         {

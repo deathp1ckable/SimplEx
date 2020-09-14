@@ -9,7 +9,7 @@ namespace SimplExModel.Model.Data
         public double Points { get; set; }
         public string Content { get; set; } = string.Empty;
         public string QuestionTypeName { get; set; } = string.Empty;
-        public Answer RightAnswer { get; set; }
+        public Answer Answer { get; set; }
         public Theme Theme { get; set; }
         public QuestionGroup ParentQuestionGroup { get; set; }
         public QuestionData()
@@ -20,7 +20,7 @@ namespace SimplExModel.Model.Data
             Points = question.Points;
             Content = question.Content;
             QuestionTypeName = question.GetType().ToString();
-            RightAnswer = question.Answer;
+            Answer = question.Answer;
             Theme = question.Theme;
             ParentQuestionGroup = question.ParentQuestionGroup;
         }
@@ -32,7 +32,7 @@ namespace SimplExModel.Model.Data
             result.ParentQuestionGroup = ParentQuestionGroup;
             result.Content = Content;
             result.Theme = Theme;
-            result.Answer = RightAnswer;
+            result.Answer = Answer;
             return result;
         }
     }

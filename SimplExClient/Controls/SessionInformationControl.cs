@@ -74,7 +74,6 @@ namespace SimplExClient.Controls
         }
         public bool EnableChat { set => chatCheck.Checked = value; }
         public bool Mixing { set => mixingCheck.Checked = value; }
-        public bool SaveResults { set => saveResultsCheck.Checked = value; }
         public bool TrackStatus { set => trackStatusCheck.Checked = value; }
 
         public string ConnectionName { get => connectionNameBox.Text; set => connectionNameBox.Text = value; }
@@ -108,7 +107,7 @@ namespace SimplExClient.Controls
             }
         }
 
-        public int CurrentQuestionNumber { set => currentQuestionBox.Text = value.ToString(); }
+        public int CurrentQuestionNumber { set => currentQuestionBox.Text = "№" + value.ToString(); }
         public int ExecutedQuestions { set => executedQuestionBox.Text = value.ToString(); }
         public IList<string> Violations
         {
@@ -132,6 +131,11 @@ namespace SimplExClient.Controls
                     ticketsList.Items.Add($"Билет '{tickets[i].TicketName}'");
             }
         }
+
+        public double MinPoints { set => minPointsBox.Text = value.ToString("F2"); }
+        public double MaxPoints { set => maxPointsBox.Text = value.ToString("F2"); }
+        public double MinMark { set => minMarkBox.Text = value.ToString("F2"); }
+        public double MaxMark { set => maxMarkBox.Text = value.ToString("F2"); }
 
         public event ViewActionHandler<ISessionInformationView> ClientDataChanged;
         public event ViewActionHandler<ISessionInformationView> Shown;

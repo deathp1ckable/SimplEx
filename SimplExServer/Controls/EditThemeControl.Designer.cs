@@ -67,6 +67,7 @@
             this.themeBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.themeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.themeBox.Location = new System.Drawing.Point(56, 31);
+            this.themeBox.MaxLength = 100;
             this.themeBox.Name = "themeBox";
             this.themeBox.Size = new System.Drawing.Size(664, 21);
             this.themeBox.TabIndex = 66;

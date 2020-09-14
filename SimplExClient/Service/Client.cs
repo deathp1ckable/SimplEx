@@ -8,6 +8,7 @@ using SimplExNetworking.Networking;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Timers;
@@ -16,6 +17,7 @@ namespace SimplExClient.Service
 {
     public class Client
     {
+        string disconnectReason;
         private static readonly JsonSerializerSettings settings = new JsonSerializerSettings()
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
@@ -23,10 +25,12 @@ namespace SimplExClient.Service
             TypeNameHandling = TypeNameHandling.Objects,
             Formatting = Formatting.Indented
         };
+        private ClientStatus lastStatus;
+
         private string IPAdress;
         private int currentQuestionNumber;
         private System.Timers.Timer reconnectionTimer;
-        private ClientStatus clientStatus;
+        private ClientStatus clientStatus = ClientStatus.Disconnected;
         private readonly NetworkClient networkClient;
         private readonly List<ViolationData> violationsList = new List<ViolationData>();
         private readonly List<ChatMessageData> chatMessagesList = new List<ChatMessageData>();
@@ -71,7 +75,7 @@ namespace SimplExClient.Service
         public double ReconnectionTime { get; private set; }
         public double ServerTimeOffset { get; private set; }
 
-        public double Poins { get; private set; }
+        public double Points { get; private set; }
         public double Mark { get; private set; }
 
         public DateTime? BeginingTime { get; private set; }
@@ -111,7 +115,14 @@ namespace SimplExClient.Service
             TicketNumber = data.TicketNumber;
         }
 
-        public void Connect() => networkClient.Connect(IPAdress, 34034);
+        public void Connect()
+        {
+            string fullPath = Path.GetFullPath("ipadress.txt");
+            if (!File.Exists(fullPath))
+                throw new Exception("В корневой папке приложения отсутвсвует файл настройки ipadress.txt.");
+            IPAdress = File.ReadAllText(fullPath);
+            networkClient.Connect(IPAdress, 34034);
+        }
 
         public void UpdateClientConnectionData(ClientConnectionData data)
         {
@@ -139,9 +150,9 @@ namespace SimplExClient.Service
             {
                 networkClient.SendMessage(0, GetMessage(new Package(PackageType.ClientConnectionData, data)));
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " UPDATE CONNECTION DATA ERROR: " + ex.Message + Environment.NewLine);
             }
         }
         public void UpdateStatus()
@@ -154,9 +165,9 @@ namespace SimplExClient.Service
             {
                 networkClient.SendMessage(0, GetMessage(new Package(PackageType.ClientStatus, new ClientStatusData(CurrentQuestionNumber, Answers.Count, (DateTime.Now - BeginingTime).Value.TotalSeconds))));
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " UPDATE STATUS ERROR: " + ex.Message + Environment.NewLine);
             }
         }
         public void SendChatMessage(string message)
@@ -171,16 +182,16 @@ namespace SimplExClient.Service
                 networkClient.SendMessage(0, GetMessage(new Package(PackageType.Chat, chatMessageData)));
                 chatMessagesList.Add(chatMessageData);
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " SEND CHAT ERROR: " + ex.Message + Environment.NewLine);
             }
         }
         public void AddViolation(string content)
         {
             if (ClientStatus != ClientStatus.Executing)
                 throw new Exception();
-            if (ViolationsLimit <= 0)
+            if (ViolationsLimit < 0)
                 throw new Exception();
             try
             {
@@ -189,9 +200,9 @@ namespace SimplExClient.Service
                 networkClient.SendMessage(0, GetMessage(new Package(PackageType.Violation, violationData)));
                 Violation?.Invoke(this, EventArgs.Empty);
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " ADD VIOLATION ERROR: " + ex.Message + Environment.NewLine);
             }
         }
         public void AddAnswer(Answer answer)
@@ -209,7 +220,7 @@ namespace SimplExClient.Service
             if (ClientStatus != ClientStatus.Executing)
                 throw new Exception();
             bool result = answers.Remove(answer);
-            if (TrackStatus)
+            if (TrackStatus && result)
                 UpdateStatus();
             return result;
         }
@@ -222,12 +233,12 @@ namespace SimplExClient.Service
                 List<AnswerData> answerDatas = new List<AnswerData>();
                 for (int i = 0; i < answers.Count; i++)
                     answerDatas.Add(new AnswerData(answers[i]));
-                networkClient.SendMessage(0, GetMessage(new Package(PackageType.ClientResult, new ClientResultData(answerDatas.ToArray()))));
+                networkClient.SendMessage(0, GetMessage(new Package(PackageType.ClientResult, new ClientResultData(answerDatas))));
                 ClientStatus = ClientStatus.Executed;
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " HAND OVER ERROR: " + ex.Message + Environment.NewLine);
             }
         }
         public void Disconnect()
@@ -247,9 +258,9 @@ namespace SimplExClient.Service
                     Thread.Sleep(networkClient.ServerUpdateDelay);
                     networkClient.Disconnect();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw;
+                    File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " DISCONNECT ERROR: " + ex.Message + Environment.NewLine);
                 }
             }
             else if (ClientStatus == ClientStatus.Reconnecting)
@@ -258,10 +269,26 @@ namespace SimplExClient.Service
                 ClientStatus = ClientStatus.Disconnected;
             }
         }
+        public void Abort()
+        {
+            try
+            {
+                networkClient.Disconnect();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " ABORT ERROR: " + ex.Message + Environment.NewLine);
+            }
+            chatMessagesList.Clear();
+            answers.Clear();
+            violationsList.Clear();
+            ClientStatus = ClientStatus.Disconnected;
+        }
         private void NetworkClientOnDisconnectedFromServer(object sender, ReasonEventArgs e)
         {
             if (ClientStatus == ClientStatus.Connected || ClientStatus == ClientStatus.Executing)
             {
+                lastStatus = ClientStatus;
                 Thread thread = new Thread(Reconnect);
                 thread.IsBackground = true;
                 thread.Start();
@@ -279,8 +306,6 @@ namespace SimplExClient.Service
             {
                 FailedToConnect?.Invoke(this, EventArgs.Empty);
             }
-            else if (ClientStatus == ClientStatus.Executed)
-                throw new Exception();
         }
 
         private void StopReconnectionTime()
@@ -356,7 +381,7 @@ namespace SimplExClient.Service
                     StopReconnectionTime();
                     if (ClientStatus == ClientStatus.Reconnecting)
                     {
-                        ClientStatus = ClientStatus.Connected;
+                        ClientStatus = lastStatus;
                         Reconnected?.Invoke(this, EventArgs.Empty);
                     }
                     break;
@@ -369,7 +394,7 @@ namespace SimplExClient.Service
                 case PackageType.ServerResponse:
                     ServerResponseData serverResponseData = message.Message as ServerResponseData;
 
-                    Poins = serverResponseData.Points;
+                    Points = serverResponseData.Points;
                     Mark = serverResponseData.Mark;
 
                     ResultRecieved?.Invoke(this, EventArgs.Empty);
@@ -382,18 +407,21 @@ namespace SimplExClient.Service
                         if (networkClient.ClientState == ClientState.Connected)
                             networkClient.Disconnect();
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        throw;
+                        File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " RESPONDE HANDLE ERROR: " + ex.Message + Environment.NewLine);
                     }
-                    Disconnected?.Invoke(this, new DisconnectedEventArgs("Выполнение окончено."));
+                    Disconnected?.Invoke(this, new DisconnectedEventArgs(disconnectReason ?? "Выполнение окончено."));
                     break;
                 case PackageType.Disconnect:
+                    DisconnectData disconnectData = message.Message as DisconnectData;
                     if (ClientStatus == ClientStatus.Executing)
+                    {
                         HandOver();
+                        disconnectReason = disconnectData.Reason;
+                    }
                     else
                     {
-                        DisconnectData disconnectData = message.Message as DisconnectData;
                         ClientStatus = ClientStatus.Disconnected;
                         Disconnected?.Invoke(this, new DisconnectedEventArgs(disconnectData.Reason));
                     }
@@ -409,7 +437,6 @@ namespace SimplExClient.Service
             }
             try
             {
-
                 networkClient.OnConnectedToServer += ReconnnectionDataSender;
                 while (ClientStatus == ClientStatus.Reconnecting)
                 {
@@ -420,10 +447,10 @@ namespace SimplExClient.Service
                 if (networkClient.ClientState == ClientState.Connected && (ClientStatus == ClientStatus.Disconnected || ClientStatus == ClientStatus.Executed))
                     networkClient.Disconnect();
             }
-            catch
+            catch (Exception ex)
             {
                 networkClient.OnConnectedToServer -= ReconnnectionDataSender;
-                throw;
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " RECONNECTION ERROR: " + ex.Message + Environment.NewLine);
             }
         }
         private void NetworkClientOnFailedToConnect(object sender, ReasonEventArgs e)
@@ -439,9 +466,9 @@ namespace SimplExClient.Service
                 NetworkId = networkClient.ClientId;
                 networkClient.OnConnectedToServer -= NetworkClientOnConnectedToServer;
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                File.AppendAllText("log.txt", "[" + DateTime.Now.ToString() + "]" + " CONNECTIO ERROR: " + ex.Message + Environment.NewLine);
             }
         }
         private void ReconnectionTimerElapsed(object sender, ElapsedEventArgs e)

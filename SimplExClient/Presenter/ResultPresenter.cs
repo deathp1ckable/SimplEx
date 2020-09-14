@@ -1,4 +1,5 @@
 ﻿using SimplExClient.Common;
+using SimplExClient.Service;
 using SimplExClient.View;
 
 namespace SimplExClient.Presenter
@@ -8,6 +9,11 @@ namespace SimplExClient.Presenter
         public ResultPresenter(IResultView view, IApplicationController applicationController) : base(view, applicationController)
         {
             view.Continued += ViewContinued;
+            view.Exited += ViewExited;
+        }
+        private void ViewExited(IResultView sender)
+        {
+            sender.Exit();
         }
         public override void Run(ResultArgument argument)
         {

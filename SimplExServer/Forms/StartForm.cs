@@ -55,7 +55,7 @@ namespace SimplExServer
                 descriptionText.Text = $"{exam.Description}";
                 creationText.Text = $"Дата создания: {exam.CreationDate}";
                 lastChangeText.Text = $"Дата изменнения: {exam.LastChangeDate}";
-                firstNumberText.Text = $"Номер первого вопроса: {exam.FirstNumber}";
+                firstNumberText.Text = $"Номер первого вопроса: {exam.FirstQuestionNumber}";
                 if (exam.Time > 0)
                 {
                     DateTime dateTime = new DateTime();
@@ -97,12 +97,13 @@ namespace SimplExServer
         }
         public bool IsListLoading { get => loaderListPanel.Visible; set => loaderListPanel.Visible = value; }
         public string DbInfoText { get => dbInfoLabel.Text; set => dbInfoLabel.Text = value; }
+        public bool SetRightAnswer { get => setRightAnswerCheck.Checked; set => setRightAnswerCheck.Checked = value; }
 
         public event ViewActionHandler<IStartView, OpenExamEventArgs> FileOpened;
-        public event ViewActionHandler<IStartView> PrintResult;
+        public event ViewActionHandler<IStartView> WatchResult;
         public event ViewActionHandler<IStartView> DeleteResult;
-        public event ViewActionHandler<IStartView> PrintTask;
-        public event ViewActionHandler<IStartView> PrintBlank;
+        public event ViewActionHandler<IStartView> WatchTask;
+        public event ViewActionHandler<IStartView> WatchBlank;
         public event ViewActionHandler<IStartView> SessionStarted;
         public event ViewActionHandler<IStartView> ExamEdited;
         public event ViewActionHandler<IStartView> ExamDeleted;
@@ -178,23 +179,26 @@ namespace SimplExServer
         private void PrintBlankButtonClick(object sender, EventArgs e)
         {
             if (ticketsBox.Items.Count > 0)
-                PrintBlank?.Invoke(this);
+                WatchBlank?.Invoke(this);
         }
         private void PrintTaskButtonClick(object sender, EventArgs e)
         {
             if (ticketsBox.Items.Count > 0)
-                PrintTask?.Invoke(this);
+                WatchTask?.Invoke(this);
         }
         private void DeleteResultButtonClick(object sender, EventArgs e)
         {
             if (resultsList.Items.Count > 0)
-                PrintResult?.Invoke(this);
-            hider.Visible = true;
+            {
+                DialogResult dialogResult = MessageBox.Show("Удалить результат выполнения?", "Удаление результата выполнения", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                    DeleteResult?.Invoke(this);
+            }
         }
         private void PrintResultClick(object sender, EventArgs e)
         {
             if (resultsList.Items.Count > 0)
-                DeleteResult?.Invoke(this);
+                WatchResult?.Invoke(this);
         }
         private void OpenFileButtonClick(object sender, EventArgs e) => openFileDialog.ShowDialog();
         private void OpenFileDialogFileOk(object sender, System.ComponentModel.CancelEventArgs e)
@@ -212,6 +216,7 @@ namespace SimplExServer
 
         public void RefreshTickets()
         {
+            ticketsBox.Items.Clear();
             for (int i = 0; i < exam.Tickets.Count; i++)
                 ticketsBox.Items.Add($"Билет '{exam.Tickets[i].TicketName}'");
 
@@ -231,8 +236,9 @@ namespace SimplExServer
         }
         public void RefreshResults()
         {
+            resultsList.Items.Clear();
             for (int i = 0; i < exam.ExecutionResults.Count; i++)
-                ticketsBox.Items.Add($"Резльтат выполнения.{exam.ExecutionResults[i].ExecutorSurname} {exam.ExecutionResults[i].ExecutorName} {exam.ExecutionResults[i].ExecutorPatronymic}.");
+                resultsList.Items.Add($"Резльтат выполнения ({exam.ExecutionResults[i].ExecutorSurname} {exam.ExecutionResults[i].ExecutorName} {exam.ExecutionResults[i].ExecutorPatronymic} [{exam.ExecutionResults[i].ExecutionDate.Value:yyyy MMMM dd h:mm:ss}])");
             if (exam.ExecutionResults.Count == 0)
             {
                 deleteResultButton.Enabled = false;

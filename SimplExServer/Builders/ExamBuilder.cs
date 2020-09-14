@@ -131,7 +131,7 @@ namespace SimplExServer.Builders
             Discipline = Instance.Discipline;
             Description = Instance.Description;
             Password = Instance.Password;
-            FirstNumber = Instance.FirstNumber;
+            FirstNumber = Instance.FirstQuestionNumber;
             ExaminationTime = Instance.Time;
 
             CreationDate = Instance.CreationDate;
@@ -177,7 +177,7 @@ namespace SimplExServer.Builders
             Instance.Discipline = Discipline;
             Instance.Description = Description;
             Instance.Password = Password;
-            Instance.FirstNumber = FirstNumber;
+            Instance.FirstQuestionNumber = FirstNumber;
             Instance.Time = ExaminationTime;
 
             Instance.ExecutionResults.Clear();

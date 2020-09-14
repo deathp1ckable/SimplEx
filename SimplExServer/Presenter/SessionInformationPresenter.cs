@@ -19,7 +19,7 @@ namespace SimplExServer.Presenter
             View.CreatorSurname = Argument.Exam.CreatorSurname;
             View.CreatorPatronymic = Argument.Exam.CreatorPatronymic;
             View.ExaminationTime = Argument.Exam.Time;
-            View.FirstQuestionNumber = Argument.Exam.FirstNumber;
+            View.FirstQuestionNumber = Argument.Exam.FirstQuestionNumber;
             View.MarkSystemType = Argument.Exam.MarkSystem.GetType();
             View.MarkSystemDescription = Argument.Exam.Description;
             View.TeacherName = Argument.TeacherName;

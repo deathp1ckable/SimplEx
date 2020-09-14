@@ -52,8 +52,9 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Word.15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.Unity.dll</HintPath>
@@ -65,18 +66,20 @@
       <HintPath>..\packages\protobuf-net.2.4.4\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Xceed.Document.NET, Version=1.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocX.1.6.0\lib\net40\Xceed.Document.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Words.NET, Version=1.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocX.1.6.0\lib\net40\Xceed.Words.NET.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\IBuilder.cs" />
@@ -243,6 +246,7 @@
     <Compile Include="Presenter\EditThemesPresenter.cs" />
     <Compile Include="Presenter\EditTicketPresenter.cs" />
     <Compile Include="Presenter\EditTicketsPresenter.cs" />
+    <Compile Include="Service\BidirectionalDictionary.cs" />
     <Compile Include="Service\DatabaseHandling\ExamDatabaseWorker.cs" />
     <Compile Include="Service\DatabaseHandling\Maps\AnswerMap.cs" />
     <Compile Include="Service\DatabaseHandling\Maps\ExamMap.cs" />
@@ -256,6 +260,8 @@
     <Compile Include="Service\DatabaseHandling\Maps\TicketMap.cs" />
     <Compile Include="Service\DatabaseService.cs" />
     <Compile Include="Service\DeepCloner.cs" />
+    <Compile Include="Service\DocXService.cs" />
+    <Compile Include="Service\PlotkinaExamDocXWorker.cs" />
     <Compile Include="Service\EncryptionService.cs" />
     <Compile Include="Common\IApplicationController.cs" />
     <Compile Include="Presenter\EditFiveStepMarkSystemPresenter.cs" />
@@ -268,10 +274,12 @@
     <Compile Include="Service\ExamFileService.cs" />
     <Compile Include="Service\ExamsListService.cs" />
     <Compile Include="Service\FileExamSaver.cs" />
+    <Compile Include="Service\IExamDocXWorker.cs" />
     <Compile Include="Service\IExamSaver.cs" />
     <Compile Include="Service\SessionClient.cs" />
     <Compile Include="Service\Session.cs" />
     <Compile Include="Service\SessionClientEventArg.cs" />
+    <Compile Include="Service\SessionService.cs" />
     <Compile Include="View\DetachedEventArgs.cs" />
     <Compile Include="View\IChatView.cs" />
     <Compile Include="View\IConnectionStatusView.cs" />

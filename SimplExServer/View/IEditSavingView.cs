@@ -18,7 +18,6 @@ namespace SimplExServer.View
         event ViewActionHandler<IEditSavingView> WatchKey;
         event ViewActionHandler<IEditSavingView> WatchTask;
         event ViewActionHandler<IEditSavingView> WatchBlank;
-        event ViewActionHandler<IEditSavingView> WatchClientView;
         event ViewActionHandler<IEditSavingView, SaveExamEventArgs> SavedAs;
 
         void ShowError(string message);

@@ -1,15 +1,17 @@
 ﻿using SimplExDb.Database;
 using SimplExModel.Model;
+using SimplExModel.Model.Data;
+
 namespace SimplExServer.Service.DatabaseHandling.Maps
 {
     class ExecutorAnswerMap : ClassMap<ExecutorAnswer>
     {
         protected override void MapClass()
         {
-            MapId("ExecutionAnswerID");
+            MapId("ExecutorAnswerID");
             Map("Content", () => Instance.Content, (a) => Instance.Content = a);
             Foreign<ExecutionResult>("ExecutionResultID");
-            Foreign<Question>("QuestionID");
+            Foreign<QuestionData>("QuestionID");
             Table("executoranswers");
         }
     }

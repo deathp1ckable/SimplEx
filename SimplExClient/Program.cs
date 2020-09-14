@@ -27,6 +27,8 @@ namespace SimplExClient
                 .RegisterView<ISessionInformationView, SessionInformationControl>()
                 .RegisterView<IResultView, ResultForm>()
                 .RegisterView<IChatView, ChatControl>()
+                .RegisterView<IQuestionView, QuestionControl>()
+                .RegisterView<IOneAnswerQuestionView, OneAnswerQuestionControl>()
                 .RegisterIntstance(context);
             controller.Run<LoadingPresenter, object>(null);
             Application.Run(context);

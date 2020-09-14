@@ -45,7 +45,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.additionButton = new System.Windows.Forms.Button();
             this.sesionInfoButton = new System.Windows.Forms.Button();
-            this.connectionControlButton = new System.Windows.Forms.Button();
+            this.executionButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.groupLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -224,7 +224,7 @@
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.additionButton);
             this.panel3.Controls.Add(this.sesionInfoButton);
-            this.panel3.Controls.Add(this.connectionControlButton);
+            this.panel3.Controls.Add(this.executionButton);
             this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(607, 42);
@@ -262,22 +262,22 @@
             this.sesionInfoButton.UseVisualStyleBackColor = false;
             this.sesionInfoButton.Click += new System.EventHandler(this.TabStopClick);
             // 
-            // connectionControlButton
+            // executionButton
             // 
-            this.connectionControlButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.executionButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.connectionControlButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(31)))), ((int)(((byte)(47)))));
-            this.connectionControlButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.connectionControlButton.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.connectionControlButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.connectionControlButton.Location = new System.Drawing.Point(244, 3);
-            this.connectionControlButton.Name = "connectionControlButton";
-            this.connectionControlButton.Size = new System.Drawing.Size(117, 34);
-            this.connectionControlButton.TabIndex = 6;
-            this.connectionControlButton.Tag = "1";
-            this.connectionControlButton.Text = "Выполнение";
-            this.connectionControlButton.UseVisualStyleBackColor = false;
-            this.connectionControlButton.Click += new System.EventHandler(this.TabStopClick);
+            this.executionButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(31)))), ((int)(((byte)(47)))));
+            this.executionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.executionButton.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.executionButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.executionButton.Location = new System.Drawing.Point(244, 3);
+            this.executionButton.Name = "executionButton";
+            this.executionButton.Size = new System.Drawing.Size(117, 34);
+            this.executionButton.TabIndex = 6;
+            this.executionButton.Tag = "1";
+            this.executionButton.Text = "Выполнение";
+            this.executionButton.UseVisualStyleBackColor = false;
+            this.executionButton.Click += new System.EventHandler(this.TabStopClick);
             // 
             // label2
             // 
@@ -376,6 +376,7 @@
             this.MinimumSize = new System.Drawing.Size(1024, 705);
             this.Name = "MainForm";
             this.Text = "Выполнение экзамена";
+            this.Deactivate += new System.EventHandler(this.MainFormDeactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormFormClosing);
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel1.PerformLayout();
@@ -418,7 +419,7 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button additionButton;
         private System.Windows.Forms.Button sesionInfoButton;
-        private System.Windows.Forms.Button connectionControlButton;
+        private System.Windows.Forms.Button executionButton;
         private System.Windows.Forms.ToolTip chatToolTip;
         private System.Windows.Forms.Timer timer;
     }

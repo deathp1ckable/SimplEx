@@ -9,6 +9,7 @@ namespace SimplExServer.View
     {
         bool IsExamLoading { get; set; }
         bool IsListLoading { get; set; }
+        bool SetRightAnswer { get; set; }
         string DbInfoText { get; set; }
         IExamSaver CurrentExamSaver { get; set; }
         Exam CurrentExam { get; set; }
@@ -25,11 +26,11 @@ namespace SimplExServer.View
         event ViewActionHandler<IStartView> ExamCreated;
         event ViewActionHandler<IStartView, OpenExamEventArgs> FileOpened;
 
-        event ViewActionHandler<IStartView> PrintResult;
+        event ViewActionHandler<IStartView> WatchResult;
         event ViewActionHandler<IStartView> DeleteResult;
 
-        event ViewActionHandler<IStartView> PrintTask;
-        event ViewActionHandler<IStartView> PrintBlank;
+        event ViewActionHandler<IStartView> WatchTask;
+        event ViewActionHandler<IStartView> WatchBlank;
 
         event ViewActionHandler<IStartView> SessionStarted;
         event ViewActionHandler<IStartView> ExamEdited;

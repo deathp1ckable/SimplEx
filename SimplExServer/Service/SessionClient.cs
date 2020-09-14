@@ -20,7 +20,6 @@ namespace SimplExServer.Service
         public string Surname { get; private set; }
         public string Patronymic { get; private set; }
         public int TicketNumber { get; private set; }
-
         public ClientStatus ClientStatus { get; set; }
 
         public double Points { get; set; }

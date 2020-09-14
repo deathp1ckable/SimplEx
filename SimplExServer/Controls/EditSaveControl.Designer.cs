@@ -39,7 +39,6 @@
             this.setRightAnswerCheck = new System.Windows.Forms.CheckBox();
             this.ticketsList = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.watchClientViewButton = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.warningsList = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -155,7 +154,6 @@
             // setRightAnswerCheck
             // 
             this.setRightAnswerCheck.AutoSize = true;
-            this.setRightAnswerCheck.Enabled = false;
             this.setRightAnswerCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.setRightAnswerCheck.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.setRightAnswerCheck.Location = new System.Drawing.Point(7, 224);
@@ -189,21 +187,6 @@
             this.label4.Text = "Билет:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // watchClientViewButton
-            // 
-            this.watchClientViewButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.watchClientViewButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.watchClientViewButton.Enabled = false;
-            this.watchClientViewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.watchClientViewButton.Location = new System.Drawing.Point(7, 282);
-            this.watchClientViewButton.Name = "watchClientViewButton";
-            this.watchClientViewButton.Size = new System.Drawing.Size(711, 23);
-            this.watchClientViewButton.TabIndex = 96;
-            this.watchClientViewButton.Text = "Просмотреть клиентский вид";
-            this.watchClientViewButton.UseVisualStyleBackColor = false;
-            this.watchClientViewButton.Click += new System.EventHandler(this.WatchClientViewButtonClick);
-            // 
             // saveFileDialog
             // 
             this.saveFileDialog.DefaultExt = "*.smpx";
@@ -220,10 +203,12 @@
             this.warningsList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.warningsList.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.warningsList.FormattingEnabled = true;
+            this.warningsList.HorizontalScrollbar = true;
+            this.warningsList.IntegralHeight = false;
             this.warningsList.ItemHeight = 23;
             this.warningsList.Location = new System.Drawing.Point(7, 334);
             this.warningsList.Name = "warningsList";
-            this.warningsList.Size = new System.Drawing.Size(711, 92);
+            this.warningsList.Size = new System.Drawing.Size(711, 110);
             this.warningsList.TabIndex = 97;
             // 
             // label2
@@ -243,7 +228,6 @@
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.label2);
             this.Controls.Add(this.warningsList);
-            this.Controls.Add(this.watchClientViewButton);
             this.Controls.Add(this.ticketsList);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.setRightAnswerCheck);
@@ -275,7 +259,6 @@
         private System.Windows.Forms.CheckBox setRightAnswerCheck;
         private System.Windows.Forms.ComboBox ticketsList;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button watchClientViewButton;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.ListBox warningsList;
         private System.Windows.Forms.Label label2;

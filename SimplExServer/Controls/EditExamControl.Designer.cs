@@ -156,7 +156,7 @@
             this.repeatBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.repeatBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.repeatBox.Location = new System.Drawing.Point(154, 389);
-            this.repeatBox.MaxLength = 20;
+            this.repeatBox.MaxLength = 30;
             this.repeatBox.Name = "repeatBox";
             this.repeatBox.PasswordChar = '•';
             this.repeatBox.ShortcutsEnabled = false;
@@ -182,7 +182,7 @@
             this.passwordBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.passwordBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.passwordBox.Location = new System.Drawing.Point(154, 362);
-            this.passwordBox.MaxLength = 20;
+            this.passwordBox.MaxLength = 30;
             this.passwordBox.Name = "passwordBox";
             this.passwordBox.PasswordChar = '•';
             this.passwordBox.ShortcutsEnabled = false;
@@ -337,6 +337,7 @@
             this.creatorPatronymicBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.creatorPatronymicBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.creatorPatronymicBox.Location = new System.Drawing.Point(154, 198);
+            this.creatorPatronymicBox.MaxLength = 100;
             this.creatorPatronymicBox.Name = "creatorPatronymicBox";
             this.creatorPatronymicBox.Size = new System.Drawing.Size(566, 21);
             this.creatorPatronymicBox.TabIndex = 41;
@@ -360,6 +361,7 @@
             this.creatorSurnameBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.creatorSurnameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.creatorSurnameBox.Location = new System.Drawing.Point(154, 171);
+            this.creatorSurnameBox.MaxLength = 100;
             this.creatorSurnameBox.Name = "creatorSurnameBox";
             this.creatorSurnameBox.Size = new System.Drawing.Size(566, 21);
             this.creatorSurnameBox.TabIndex = 39;
@@ -383,6 +385,7 @@
             this.creatorNameBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.creatorNameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.creatorNameBox.Location = new System.Drawing.Point(154, 144);
+            this.creatorNameBox.MaxLength = 100;
             this.creatorNameBox.Name = "creatorNameBox";
             this.creatorNameBox.Size = new System.Drawing.Size(566, 21);
             this.creatorNameBox.TabIndex = 37;
@@ -406,6 +409,7 @@
             this.disciplineBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.disciplineBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.disciplineBox.Location = new System.Drawing.Point(154, 55);
+            this.disciplineBox.MaxLength = 100;
             this.disciplineBox.Name = "disciplineBox";
             this.disciplineBox.Size = new System.Drawing.Size(566, 21);
             this.disciplineBox.TabIndex = 35;
@@ -429,6 +433,7 @@
             this.nameBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.nameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameBox.Location = new System.Drawing.Point(154, 28);
+            this.nameBox.MaxLength = 100;
             this.nameBox.Name = "nameBox";
             this.nameBox.Size = new System.Drawing.Size(566, 21);
             this.nameBox.TabIndex = 33;

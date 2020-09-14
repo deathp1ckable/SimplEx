@@ -119,7 +119,7 @@ namespace SimplExServer.Controls
 
         public void SelectObject(object obj)
         {
-            if (ReferenceEquals(tree.SelectedNode.Tag, obj))
+            if (ReferenceEquals(tree.SelectedNode?.Tag, obj))
                 return;
             if (obj == null)
                 tree.SelectedNode = tree.Nodes["Themes"];
@@ -299,7 +299,7 @@ namespace SimplExServer.Controls
 
         private void SearchBoxSelectedTextChanged(object sender, EventArgs e)
         {
-            if (searchBox.Text.Length > 0)
+            if (!string.IsNullOrEmpty(searchBox.Text.Trim()))
                 searchButton.Enabled = true;
             else
                 searchButton.Enabled = false;

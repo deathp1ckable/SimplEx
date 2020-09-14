@@ -18,14 +18,23 @@ namespace SimplExServer.Presenter
         private void ViewStarted(IStartSessionView sender)
         {
             SessionService sessionService = SessionService.GetInstance();
-            Session session = new Session(new ServerConnectionData(Argument.Exam, View.GroupName, View.TeacherName, View.TeacherSurname, View.TeacherPatronymic, View.EnableChat, View.TrackStatusCheck, View.Mixing, View.ViolationsLimit, View.ReconnectionTime), View.SaveResults ? Argument.ExamSaver : null);
+            Session session = new Session(new ServerConnectionData(Argument.Exam, View.GroupName.Trim(), 
+                View.TeacherName.Trim(), 
+                View.TeacherSurname.Trim(), 
+                View.TeacherPatronymic.Trim(), 
+                View.EnableChat, 
+                View.TrackStatusCheck, 
+                View.Mixing, 
+                View.ViolationsLimit, 
+                View.ReconnectionTime),
+                View.SaveResults ? Argument.ExamSaver : null);
             sessionService.Session = session;
             session.SessionInitialized += SessionSessionInitialized;
             session.InitializationFailed += SessionInitializationFailed;
             ApplicationController.Run<LoadingContextPresenter<object>, Task<object>>(Task.Run(() =>
             {
                 session.Initialize();
-                return new object();
+                return LoadingContextPresenter<object>.EmptyObject;
             }));
         }
 

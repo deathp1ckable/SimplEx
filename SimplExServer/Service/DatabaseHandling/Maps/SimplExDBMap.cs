@@ -27,6 +27,8 @@ namespace SimplExServer.Service.DatabaseHandling.Maps
             Relation<Exam, ExecutionResult>(Rule.Cascade, Rule.Cascade);
 
             Relation<ExecutionResult, ExecutorAnswer>(Rule.Cascade, Rule.Cascade);
+            Relation<Ticket, ExecutionResult>(Rule.Cascade, Rule.Cascade);
+            Relation<QuestionData, ExecutorAnswer>(Rule.Cascade, Rule.Cascade);
 
             Relation<Ticket, QuestionGroup>(Rule.Cascade, Rule.Cascade);
             Relation<QuestionGroup, QuestionGroup>(Rule.Cascade, Rule.Cascade);

@@ -90,6 +90,7 @@
             this.ticketBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ticketBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ticketBox.Location = new System.Drawing.Point(140, 31);
+            this.ticketBox.MaxLength = 100;
             this.ticketBox.Name = "ticketBox";
             this.ticketBox.Size = new System.Drawing.Size(576, 21);
             this.ticketBox.TabIndex = 75;

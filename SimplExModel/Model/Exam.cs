@@ -16,7 +16,7 @@ namespace SimplExModel.Model
         public DateTime? CreationDate { get; set; }
         public DateTime? LastChangeDate { get; set; }
         public double Time { get; set; }
-        public int FirstNumber { get; set; } = 1;
+        public int FirstQuestionNumber { get; set; } = 1;
         public string Description { get; set; } = string.Empty;
         public List<Theme> Themes { get; set; } = new List<Theme>();
         public List<Ticket> Tickets { get; set; } = new List<Ticket>();

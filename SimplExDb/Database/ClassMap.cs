@@ -1,5 +1,4 @@
-﻿using MySql.Data.MySqlClient;
-using SimplExDb.Internal;
+﻿using SimplExDb.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +43,7 @@ namespace SimplExDb.Database
         protected void Table(string tableName) => TableName = tableName;
         protected abstract void MapClass();
     }
+
     internal class ForeignColumn
     {
         public string ColumnName { get; private set; }

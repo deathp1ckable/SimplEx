@@ -3,6 +3,7 @@ using SimplExDb.Internal;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 namespace SimplExDb.Database
 {
@@ -261,6 +262,7 @@ namespace SimplExDb.Database
                             colStr += $"{row.Table.Columns[i].ColumnName}, ";
                             if (ReferenceEquals(row.Table.Columns[i], row.Table.PrimaryKey[0]) || row.IsNull(i)) valStr += $"null, ";
                             else if (row.Table.Columns[i].DataType == typeof(DateTime)) valStr += $"'{(DateTime)row[i]:yyyy:MM:dd HH:mm:ss}', ";
+                            else if (row.Table.Columns[i].DataType == typeof(double) || row.Table.Columns[i].DataType == typeof(float) || row.Table.Columns[i].DataType == typeof(decimal)) valStr += $"'{((double)row[i]).ToString("0.000000000000", CultureInfo.InvariantCulture)}', ";
                             else valStr += $"'{row[i]}', ";
                         }
 
@@ -279,6 +281,7 @@ namespace SimplExDb.Database
                         for (i = 0; i < row.Table.Columns.Count; i++)
                             if (row.IsNull(i)) setStr += $"{row.Table.Columns[i].ColumnName} = null, ";
                             else if (row.Table.Columns[i].DataType == typeof(DateTime)) setStr += $"{row.Table.Columns[i].ColumnName} = '{(DateTime)row[i]:yyyy:MM:dd HH:mm:ss}', ";
+                            else if (row.Table.Columns[i].DataType == typeof(double) || row.Table.Columns[i].DataType == typeof(float)) setStr += $"{row.Table.Columns[i].ColumnName} = '{((double)row[i]).ToString("0.000000000000", CultureInfo.InvariantCulture)}', ";
                             else setStr += $"{row.Table.Columns[i].ColumnName} = '{row[i]}', ";
                         setStr = setStr.Remove(setStr.Length - 2, 2);
 
@@ -307,6 +310,7 @@ namespace SimplExDb.Database
                         for (i = 0; i < row.Table.Columns.Count; i++)
                             if (row.IsNull(i)) setStr += $"{row.Table.Columns[i].ColumnName} = null, ";
                             else if (row.Table.Columns[i].DataType == typeof(DateTime)) setStr += $"{row.Table.Columns[i].ColumnName} = '{(DateTime)row[i]:yyyy:MM:dd HH:mm:ss}', ";
+                            else if (row.Table.Columns[i].DataType == typeof(double) || row.Table.Columns[i].DataType == typeof(float) || row.Table.Columns[i].DataType == typeof(decimal)) setStr += $"{row.Table.Columns[i].ColumnName} = '{((double)row[i]).ToString("0.000000000000", CultureInfo.InvariantCulture)}', ";
                             else setStr += $"{row.Table.Columns[i].ColumnName} = '{row[i]}', ";
                         setStr = setStr.Remove(setStr.Length - 2, 2);
 
@@ -389,6 +393,7 @@ namespace SimplExDb.Database
         }
         public void Unload()
         {
+            id = 0;
             Schema.SchemaDataSet.Clear();
             updateRowQueue.Clear();
             loadedRows.Clear();

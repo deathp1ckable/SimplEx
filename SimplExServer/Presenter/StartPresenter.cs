@@ -21,11 +21,70 @@ namespace SimplExServer.Presenter
             view.DeleteResult += ViewDeleteResult;
             view.ExamEdited += ViewExamEdited;
             view.ExamCreated += ViewExamCreated;
+            view.WatchTask += ViewWatchTask;
+            view.WatchResult += ViewWatchResult;
+            view.WatchBlank += ViewWatchBlank;
             ExamsListService examsList = ExamsListService.GetInstance();
             examsList.ListRefreshed += ExamsListListRefreshed;
             DatabaseService databaseService = DatabaseService.GetInstance();
             databaseService.ConnctionEstablished += DatabaseServiceConnctionEstablished;
             databaseService.ConnctionLosted += DatabaseServiceConnctionLosted;
+        }
+
+        private async void ViewWatchBlank(IStartView sender)
+        {
+            try
+            {
+                Exam exam = sender.CurrentExam;
+                Ticket ticket = sender.CurrentTicket;
+                bool setRightAnswer = sender.SetRightAnswer;
+                await ApplicationController.Run<LoadingContextPresenter<object>, Task<object>>(Task.Run(() =>
+                {
+                    DocXService.GetInstance().ExamDocXWorker.OpenBlank(exam, ticket, setRightAnswer);
+                    return LoadingContextPresenter<object>.EmptyObject;
+                })).GetTask();
+            }
+            catch (Exception ex)
+            {
+                View.ShowError(ex.Message);
+            }
+        }
+
+        private async void ViewWatchResult(IStartView sender)
+        {
+            try
+            {
+                Exam exam = sender.CurrentExam;
+                ExecutionResult result = sender.CurrentExecutionResult;
+                await ApplicationController.Run<LoadingContextPresenter<object>, Task<object>>(Task.Run(() =>
+                {
+                    DocXService.GetInstance().ExamDocXWorker.OpenResult(exam, result);
+                    return LoadingContextPresenter<object>.EmptyObject;
+                })).GetTask();
+            }
+            catch (Exception ex)
+            {
+                View.ShowError(ex.Message);
+            }
+        }
+
+        private async void ViewWatchTask(IStartView sender)
+        {
+            try
+            {
+                Exam exam = sender.CurrentExam;
+                Ticket ticket = sender.CurrentTicket;
+                bool setRightAnswer = sender.SetRightAnswer;
+                await ApplicationController.Run<LoadingContextPresenter<object>, Task<object>>(Task.Run(() =>
+                {
+                    DocXService.GetInstance().ExamDocXWorker.OpenTask(exam, ticket, setRightAnswer);
+                    return LoadingContextPresenter<object>.EmptyObject;
+                })).GetTask();
+            }
+            catch (Exception ex)
+            {
+                View.ShowError(ex.Message);
+            }
         }
 
         private void ViewSessionStarted(IStartView sender)
@@ -71,14 +130,13 @@ namespace SimplExServer.Presenter
 
         private void ViewDeleteResult(IStartView sender)
         {
-            sender.CurrentExam.ExecutionResults.Remove(sender.CurrentExecutionResult);
             sender.RefreshResults();
-            if (!currentExamSaver.Save(sender.CurrentExam))
+            if (!currentExamSaver.DeleteResult(sender.CurrentExecutionResult))
             {
-                ExamsListService examsList = ExamsListService.GetInstance();
-                examsList.Remove(currentExamSaver);
-                sender.CurrentExam = null;
+                sender.ShowError($"Не удалось удалить результат экзамен. Он был удален из списка. {currentExamSaver.LastExceptionMessage}");
             }
+            sender.CurrentExam.ExecutionResults.Remove(sender.CurrentExecutionResult);
+            sender.CurrentExam = sender.CurrentExam;
         }
 
         private async void ViewOpened(IStartView sender, OpenExamEventArgs e)
@@ -110,7 +168,7 @@ namespace SimplExServer.Presenter
             }
             else
             {
-                sender.ShowError("Не удалось открыть экзамен.");
+                sender.ShowError($"Не удалось открыть экзамен. {loaded.LastExceptionMessage}");
             }
         }
         public override void Run(object argument)
@@ -138,10 +196,10 @@ namespace SimplExServer.Presenter
                 sender.IsExamLoading = true;
                 ExamsListService examsList = ExamsListService.GetInstance();
                 IExamSaver saver = sender.CurrentExamSaver;
-                Exam exam = await Task.Run(() => saver.GetExam());
+                Exam exam = await ApplicationController.Run<LoadingContextPresenter<Exam>, Task<Exam>>(Task.Run(() => saver.GetExam())).GetTask();
                 if (exam == null)
                 {
-                    sender.ShowError("Не удалось загрузить экзамен.\nОн был удален из списка.");
+                    sender.ShowError($"Не удалось загрузить экзамен.\nОн был удален из списка.{saver.LastExceptionMessage}");
                     try
                     {
                         examsList.Remove(sender.CurrentExamSaver);

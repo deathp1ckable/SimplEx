@@ -40,6 +40,7 @@ namespace SimplExServer.Controls
                 answersDataGrid.Rows.Clear();
                 for (int i = 0; i < value.Count; i++)
                     answersDataGrid.Rows.Add(false, "А", value[i]);
+                saveButton.Enabled = false;
             }
         }
         public int RightAnswerIndex
@@ -71,7 +72,7 @@ namespace SimplExServer.Controls
         }
         public new void Show()
         {
-            base.Show();
+            base.Show(); 
             Shown?.Invoke(this);
         }
         public new void Hide()
@@ -81,7 +82,6 @@ namespace SimplExServer.Controls
         }
         public void AskForSaving()
         {
-            saveButton.Enabled = false;
             if (answersDataGrid.Rows.Count == 0)
                 AddAnswerButtonClick(null, null);
             DialogResult dialogResult = MessageBox.Show("Сохранить вопроc?", "Изменения не сохранены", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -201,18 +201,22 @@ namespace SimplExServer.Controls
                 }
             }
         }
-
         private void AnswersDataGridResize(object sender, EventArgs e)
         {
             answersDataGrid.Columns["Answer"].Width = answersDataGrid.Width - 170;
         }
-
         private void AnswersDataGridCellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
                 if (e.ColumnIndex == 1)
                     if (answersDataGrid.Rows[e.RowIndex].Cells[1].Value == null || answersDataGrid.Rows[e.RowIndex].Cells[1].Value.ToString().Length == 0)
                         answersDataGrid.Rows[e.RowIndex].Cells[1].Value = "A";
+        }
+
+        private void AnswersDataGridCellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            saveButton.Enabled = true; 
+            Changed?.Invoke(this);
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using SimplExNetworking.EventArguments;
+﻿using Microsoft.Office.Interop.Word;
+using SimplExNetworking.EventArguments;
 using SimplExNetworking.Networking;
 using System;
 using System.Text;
-using System.IO;
+using Xceed.Words.NET;
 namespace SimplExTesting
 {
     static class Program
@@ -30,8 +31,8 @@ namespace SimplExTesting
                 val.OnClientConnected += Server_OnClientConnected;
                 val.OnServerInitialized += Server_OnServerInitialized;
                 val.OnMessageRecieved += Client_OnMessageRecieved;
-            //    Console.WriteLine("Введите порт:");
-             //   int port = int.Parse(Console.ReadLine());
+                //    Console.WriteLine("Введите порт:");
+                //   int port = int.Parse(Console.ReadLine());
                 val.InitializeServer(1234, 1000, 1, 1000);
                 do
                 {
@@ -49,7 +50,7 @@ namespace SimplExTesting
                 val2.OnFailedToConnect += Client_OnFailedToConnect1;
                 val2.OnDisconnectedFromServer += Client_OnDisconnectedFromServer;
                 val2.OnMessageRecieved += Client_OnMessageRecieved;
-              /*  Console.WriteLine("Введите ip адресс:");
+            /*    Console.WriteLine("Введите ip адресс:");
                 string ip = Console.ReadLine();
                 Console.WriteLine("Введите порт:");
                 int port = int.Parse(Console.ReadLine());*/
@@ -58,7 +59,6 @@ namespace SimplExTesting
                 {
                     Console.WriteLine("Введите сообщение для рассылке всем клиентам: ");
                     val2.BroadcastMessage(BroadcastMode.All, Encoding.Unicode.GetBytes(Console.ReadLine()));
-                    val2.Disconnect();
                     Console.WriteLine("Нажммите Y чтобы прекратить рассылку:");
                 }
                 while (Console.ReadKey().Key != ConsoleKey.Y);

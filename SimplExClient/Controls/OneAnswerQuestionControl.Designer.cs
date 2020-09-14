@@ -39,7 +39,8 @@
             this.answersDataGrid = new System.Windows.Forms.DataGridView();
             this.IsRight = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Letter = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Answer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AnswerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.answerButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -67,8 +68,9 @@
             this.textBox.Location = new System.Drawing.Point(3, 41);
             this.textBox.Multiline = true;
             this.textBox.Name = "textBox";
+            this.textBox.ReadOnly = true;
             this.textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox.Size = new System.Drawing.Size(713, 154);
+            this.textBox.Size = new System.Drawing.Size(713, 169);
             this.textBox.TabIndex = 72;
             // 
             // splitContainer
@@ -93,9 +95,9 @@
             this.splitContainer.Panel2.AutoScrollMargin = new System.Drawing.Size(5, 5);
             this.splitContainer.Panel2.Controls.Add(this.label5);
             this.splitContainer.Panel2.Controls.Add(this.answersDataGrid);
-            this.splitContainer.Size = new System.Drawing.Size(722, 340);
-            this.splitContainer.SplitterDistance = 200;
-            this.splitContainer.SplitterWidth = 5;
+            this.splitContainer.Size = new System.Drawing.Size(722, 408);
+            this.splitContainer.SplitterDistance = 215;
+            this.splitContainer.SplitterWidth = 3;
             this.splitContainer.TabIndex = 102;
             // 
             // label3
@@ -139,7 +141,7 @@
             this.answersDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.IsRight,
             this.Letter,
-            this.Answer});
+            this.AnswerColumn});
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -154,8 +156,10 @@
             this.answersDataGrid.RowHeadersVisible = false;
             this.answersDataGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.answersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.answersDataGrid.Size = new System.Drawing.Size(714, 107);
+            this.answersDataGrid.Size = new System.Drawing.Size(713, 163);
             this.answersDataGrid.TabIndex = 0;
+            this.answersDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.AnswersDataGridCellContentClick);
+            this.answersDataGrid.Resize += new System.EventHandler(this.AnswersDataGridResize);
             // 
             // IsRight
             // 
@@ -169,33 +173,48 @@
             // 
             this.Letter.Frozen = true;
             this.Letter.HeaderText = "Буква";
-            this.Letter.MaxInputLength = 1;
+            this.Letter.MaxInputLength = 327670;
             this.Letter.Name = "Letter";
             this.Letter.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Letter.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // Answer
+            // AnswerColumn
             // 
-            this.Answer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.AnswerColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopLeft;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Answer.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Answer.Frozen = true;
-            this.Answer.HeaderText = "Ответ";
-            this.Answer.MaxInputLength = 327670;
-            this.Answer.Name = "Answer";
-            this.Answer.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Answer.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Answer.Width = 59;
+            this.AnswerColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            this.AnswerColumn.Frozen = true;
+            this.AnswerColumn.HeaderText = "Ответ";
+            this.AnswerColumn.MaxInputLength = 327670;
+            this.AnswerColumn.Name = "AnswerColumn";
+            this.AnswerColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.AnswerColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.AnswerColumn.Width = 59;
+            // 
+            // answerButton
+            // 
+            this.answerButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.answerButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.answerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.answerButton.Location = new System.Drawing.Point(3, 415);
+            this.answerButton.Name = "answerButton";
+            this.answerButton.Size = new System.Drawing.Size(722, 23);
+            this.answerButton.TabIndex = 103;
+            this.answerButton.Text = "Ответить";
+            this.answerButton.UseVisualStyleBackColor = false;
+            this.answerButton.Click += new System.EventHandler(this.AnswerButtonClick);
             // 
             // OneAnswerQuestionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AutoScroll = true;
+            this.Controls.Add(this.answerButton);
             this.Controls.Add(this.splitContainer);
             this.Name = "OneAnswerQuestionControl";
-            this.Size = new System.Drawing.Size(728, 346);
+            this.Size = new System.Drawing.Size(730, 445);
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel1.PerformLayout();
             this.splitContainer.Panel2.ResumeLayout(false);
@@ -215,8 +234,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView answersDataGrid;
+        private System.Windows.Forms.Button answerButton;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsRight;
         private System.Windows.Forms.DataGridViewTextBoxColumn Letter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Answer;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AnswerColumn;
     }
 }

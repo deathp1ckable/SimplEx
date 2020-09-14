@@ -63,6 +63,7 @@
             this.patronymicBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.patronymicBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.patronymicBox.Location = new System.Drawing.Point(98, 67);
+            this.patronymicBox.MaxLength = 100;
             this.patronymicBox.Name = "patronymicBox";
             this.patronymicBox.Size = new System.Drawing.Size(472, 26);
             this.patronymicBox.TabIndex = 115;
@@ -83,6 +84,7 @@
             this.surnameBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.surnameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.surnameBox.Location = new System.Drawing.Point(98, 35);
+            this.surnameBox.MaxLength = 100;
             this.surnameBox.Name = "surnameBox";
             this.surnameBox.Size = new System.Drawing.Size(472, 26);
             this.surnameBox.TabIndex = 113;
@@ -113,6 +115,7 @@
             this.nameBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.nameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameBox.Location = new System.Drawing.Point(98, 5);
+            this.nameBox.MaxLength = 100;
             this.nameBox.Name = "nameBox";
             this.nameBox.Size = new System.Drawing.Size(472, 26);
             this.nameBox.TabIndex = 109;

@@ -67,11 +67,12 @@
             this.printBlankButton = new System.Windows.Forms.Button();
             this.nameText = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.setRightAnswerCheck = new System.Windows.Forms.CheckBox();
             this.hider = new System.Windows.Forms.Panel();
+            this.panel6 = new System.Windows.Forms.Panel();
             this.loaderExamPanel = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
-            this.panel6 = new System.Windows.Forms.Panel();
             this.infoText = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
@@ -330,6 +331,7 @@
             this.resultsList.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.resultsList.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.resultsList.FormattingEnabled = true;
+            this.resultsList.HorizontalScrollbar = true;
             this.resultsList.ItemHeight = 15;
             this.resultsList.Location = new System.Drawing.Point(3, 26);
             this.resultsList.Name = "resultsList";
@@ -359,7 +361,7 @@
             this.printResultButton.Name = "printResultButton";
             this.printResultButton.Size = new System.Drawing.Size(496, 25);
             this.printResultButton.TabIndex = 27;
-            this.printResultButton.Text = "Распечатаь результат выполнения";
+            this.printResultButton.Text = "Просмотреть результат выполнения";
             this.printResultButton.UseVisualStyleBackColor = false;
             this.printResultButton.Click += new System.EventHandler(this.PrintResultClick);
             // 
@@ -400,9 +402,9 @@
             this.panel1.Controls.Add(this.creationText);
             this.panel1.Controls.Add(this.disciplineText);
             this.panel1.Controls.Add(this.creatorText);
-            this.panel1.Location = new System.Drawing.Point(3, 313);
+            this.panel1.Location = new System.Drawing.Point(3, 342);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(496, 192);
+            this.panel1.Size = new System.Drawing.Size(496, 163);
             this.panel1.TabIndex = 29;
             // 
             // panel2
@@ -414,7 +416,7 @@
             this.panel2.Controls.Add(this.descriptionText);
             this.panel2.Location = new System.Drawing.Point(3, 110);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(488, 77);
+            this.panel2.Size = new System.Drawing.Size(488, 48);
             this.panel2.TabIndex = 34;
             // 
             // descriptionText
@@ -493,7 +495,7 @@
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label13.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label13.Location = new System.Drawing.Point(3, 287);
+            this.label13.Location = new System.Drawing.Point(-1, 316);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(120, 23);
             this.label13.TabIndex = 30;
@@ -547,11 +549,11 @@
             this.printTaskButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.printTaskButton.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.printTaskButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.printTaskButton.Location = new System.Drawing.Point(3, 228);
+            this.printTaskButton.Location = new System.Drawing.Point(3, 257);
             this.printTaskButton.Name = "printTaskButton";
             this.printTaskButton.Size = new System.Drawing.Size(496, 25);
             this.printTaskButton.TabIndex = 33;
-            this.printTaskButton.Text = "Распечатать задания";
+            this.printTaskButton.Text = "Просмотреть задания";
             this.printTaskButton.UseVisualStyleBackColor = false;
             this.printTaskButton.Click += new System.EventHandler(this.PrintTaskButtonClick);
             // 
@@ -563,11 +565,11 @@
             this.printBlankButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.printBlankButton.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.printBlankButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.printBlankButton.Location = new System.Drawing.Point(3, 259);
+            this.printBlankButton.Location = new System.Drawing.Point(3, 288);
             this.printBlankButton.Name = "printBlankButton";
             this.printBlankButton.Size = new System.Drawing.Size(496, 25);
             this.printBlankButton.TabIndex = 34;
-            this.printBlankButton.Text = "Распечатать бланк";
+            this.printBlankButton.Text = "Просмотреть бланк";
             this.printBlankButton.UseVisualStyleBackColor = false;
             this.printBlankButton.Click += new System.EventHandler(this.PrintBlankButtonClick);
             // 
@@ -576,7 +578,7 @@
             this.nameText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nameText.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameText.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.nameText.Location = new System.Drawing.Point(185, 16);
+            this.nameText.Location = new System.Drawing.Point(181, 16);
             this.nameText.Name = "nameText";
             this.nameText.Size = new System.Drawing.Size(326, 26);
             this.nameText.TabIndex = 35;
@@ -589,6 +591,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.setRightAnswerCheck);
             this.panel3.Controls.Add(this.resultsList);
             this.panel3.Controls.Add(this.panel1);
             this.panel3.Controls.Add(this.label4);
@@ -607,17 +610,41 @@
             this.panel3.Size = new System.Drawing.Size(504, 628);
             this.panel3.TabIndex = 36;
             // 
+            // setRightAnswerCheck
+            // 
+            this.setRightAnswerCheck.AutoSize = true;
+            this.setRightAnswerCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.setRightAnswerCheck.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.setRightAnswerCheck.Location = new System.Drawing.Point(3, 228);
+            this.setRightAnswerCheck.Name = "setRightAnswerCheck";
+            this.setRightAnswerCheck.Size = new System.Drawing.Size(243, 23);
+            this.setRightAnswerCheck.TabIndex = 93;
+            this.setRightAnswerCheck.Text = "Проставить правильные ответы";
+            this.setRightAnswerCheck.UseVisualStyleBackColor = true;
+            // 
             // hider
             // 
             this.hider.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.hider.Controls.Add(this.loaderExamPanel);
             this.hider.Controls.Add(this.panel6);
+            this.hider.Controls.Add(this.loaderExamPanel);
             this.hider.Controls.Add(this.infoText);
             this.hider.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hider.Location = new System.Drawing.Point(0, 0);
             this.hider.Name = "hider";
             this.hider.Size = new System.Drawing.Size(510, 679);
             this.hider.TabIndex = 37;
+            // 
+            // panel6
+            // 
+            this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel6.BackColor = System.Drawing.SystemColors.HighlightText;
+            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel6.Location = new System.Drawing.Point(3, 3);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(504, 652);
+            this.panel6.TabIndex = 42;
             // 
             // loaderExamPanel
             // 
@@ -654,18 +681,6 @@
             this.label5.Size = new System.Drawing.Size(100, 23);
             this.label5.TabIndex = 23;
             this.label5.Text = "Загрузка....";
-            // 
-            // panel6
-            // 
-            this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel6.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel6.Location = new System.Drawing.Point(3, 3);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(504, 652);
-            this.panel6.TabIndex = 42;
             // 
             // infoText
             // 
@@ -795,5 +810,6 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.CheckBox setRightAnswerCheck;
     }
 }

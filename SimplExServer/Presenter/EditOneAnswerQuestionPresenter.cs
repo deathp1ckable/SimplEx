@@ -8,7 +8,7 @@ namespace SimplExServer.Presenter
     class EditOneAnswerQuestionPresenter : IntegrablePresenter<EditContentArgumnet, IEditOneAnswerQuestionView>
     {
         private OneAnswerQuestionBuilder currentOneAnswerQuestionBuilder;
-        private bool isSaved = true; 
+        private bool isSaved = true;
         private bool isHiding;
         public EditOneAnswerQuestionPresenter(IEditOneAnswerQuestionView view, IApplicationController applicationController) : base(view, applicationController)
         {

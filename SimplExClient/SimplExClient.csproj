@@ -122,13 +122,17 @@
     <Compile Include="Presenter\LoadingPresenter.cs" />
     <Compile Include="Presenter\LogInPresenter.cs" />
     <Compile Include="Presenter\MainPresenter.cs" />
+    <Compile Include="Presenter\OneAnswerQuestionPresenter.cs" />
     <Compile Include="Presenter\Presenter.cs" />
+    <Compile Include="Presenter\QuestionControlPresenter.cs" />
+    <Compile Include="Presenter\QuestionPresenter.cs" />
     <Compile Include="Presenter\ResultArgument.cs" />
     <Compile Include="Presenter\ResultPresenter.cs" />
     <Compile Include="Presenter\SessionInformationPresenter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Client.cs" />
+    <Compile Include="Service\ClientService.cs" />
     <Compile Include="Service\DisconnectedEventArgs.cs" />
     <Compile Include="View\IChatView.cs" />
     <Compile Include="View\IHideableView.cs" />
@@ -136,6 +140,9 @@
     <Compile Include="View\ILoadingView.cs" />
     <Compile Include="View\ILogInView.cs" />
     <Compile Include="View\IMainView.cs" />
+    <Compile Include="View\IOneAnswerQuestionView.cs" />
+    <Compile Include="View\IQuestionControlView.cs" />
+    <Compile Include="View\IQuestionView.cs" />
     <Compile Include="View\IResultView.cs" />
     <Compile Include="View\ISessionInformationView.cs" />
     <Compile Include="View\IView.cs" />

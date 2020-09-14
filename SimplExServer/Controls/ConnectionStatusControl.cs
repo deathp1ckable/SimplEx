@@ -8,7 +8,7 @@ namespace SimplExServer.Controls
     public partial class ConnectionStatusControl : UserControl, IConnectionStatusView
     {
         private ClientStatus clientStatus;
-        private int executedQuestions;
+        private int executedQuestions = -1;
         private bool trackViolations;
         private bool trackStatus;
 
@@ -23,14 +23,13 @@ namespace SimplExServer.Controls
             {
                 trackStatus = value;
                 CheckToggles(clientStatus);
-                currentQuestionBox.Text = trackStatus ? currentQuestionBox.Text : "-";
-                executedQuestionBox.Text = trackStatus ? executedQuestionBox.Text : "-";
+                currentQuestionBox.Text = trackStatus || clientStatus == ClientStatus.Connected ? currentQuestionBox.Text : "-";
+                executedQuestionBox.Text = trackStatus || clientStatus == ClientStatus.Connected ? executedQuestionBox.Text : "-";
             }
         }
 
         public ClientStatus ClientStatus
         {
-            get => clientStatus;
             set
             {
                 clientStatus = value;
@@ -57,7 +56,7 @@ namespace SimplExServer.Controls
         {
             set
             {
-                if (ClientStatus == ClientStatus.Executed)
+                if (clientStatus == ClientStatus.Executed)
                     pointsBox.Text = value.ToString("F2");
                 else pointsBox.Text = "-";
             }
@@ -66,7 +65,7 @@ namespace SimplExServer.Controls
         {
             set
             {
-                if (ClientStatus == ClientStatus.Executed)
+                if (clientStatus == ClientStatus.Executed)
                     markBox.Text = value.ToString("F2");
                 else markBox.Text = "-";
             }
@@ -74,7 +73,7 @@ namespace SimplExServer.Controls
 
         public event ViewActionHandler<IConnectionStatusView> ViolationAdded;
         public event ViewActionHandler<IConnectionStatusView> Disconnected;
-        public event ViewActionHandler<IConnectionStatusView> ResultOpened;
+        public event ViewActionHandler<IConnectionStatusView> WathcResult;
         public event ViewActionHandler<IConnectionStatusView> Shown;
         public event ViewActionHandler<IConnectionStatusView> Hiden;
 
@@ -92,6 +91,10 @@ namespace SimplExServer.Controls
             base.Hide();
             Hiden?.Invoke(this);
         }
+        public void ShowError(string message)
+        {
+            MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
         public void Invoke(Action action)
         {
             try
@@ -105,16 +108,17 @@ namespace SimplExServer.Controls
             if (!TrackViolations)
                 throw new Exception();
             violationsList.Items.Add(content);
-            executionChart.Series["violationsSeries"].Points.AddXY(offset, executedQuestions);
+            executionChart.Series["violationsSeries"].Points.AddXY(Math.Round(offset, 2), executedQuestions);
         }
         public void AddStatus(int currentQuestion, int executedQuestions, double offset)
         {
             if (!TrackStatus)
                 throw new Exception();
-            this.executedQuestions = executedQuestions;
             executedQuestionBox.Text = executedQuestions.ToString();
             currentQuestionBox.Text = $"№{currentQuestion}";
-            executionChart.Series["executionSeries"].Points.AddXY(offset, executedQuestions);
+            if (executedQuestions != this.executedQuestions)
+                executionChart.Series["executionSeries"].Points.AddXY(Math.Round(offset, 2), executedQuestions);
+            this.executedQuestions = executedQuestions;
         }
         public void ClearStatuses()
         {
@@ -122,6 +126,7 @@ namespace SimplExServer.Controls
         }
         public void ClearViolations()
         {
+            violationsList.Items.Clear();
             executionChart.Series["violationsSeries"].Points.Clear();
         }
         public void Close()
@@ -191,7 +196,7 @@ namespace SimplExServer.Controls
         }
         private void OpenResultButtonClick(object sender, EventArgs e)
         {
-            ResultOpened?.Invoke(this);
+            WathcResult?.Invoke(this);
         }
         private void DisconnectButtonClick(object sender, EventArgs e)
         {

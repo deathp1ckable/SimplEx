@@ -25,7 +25,7 @@ namespace SimplExServer.Presenter
             await ApplicationController.Run<LoadingContextPresenter<object>, Task<object>>(Task.Run(() =>
             {
                 databaseService.Connect(sender.Host, sender.Port, sender.Username, sender.Password);
-                return new object();
+                return LoadingContextPresenter<object>.EmptyObject;
             })).GetTask();
             if (databaseService.ExamDatabaseWorker != null)
                 View.Close();

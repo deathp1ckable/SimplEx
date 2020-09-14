@@ -6,10 +6,10 @@
         public int ExecutedQuestions { get; private set; }
         public double TimeOffset { get; private set; }
 
-        public ClientStatusData(int currentQuestionNumber, int executedQuestion, double timeOffset)
+        public ClientStatusData(int currentQuestionNumber, int executedQuestions, double timeOffset)
         {
             CurrentQuestionNumber = currentQuestionNumber;
-            ExecutedQuestions = executedQuestion;
+            ExecutedQuestions = executedQuestions;
             TimeOffset = timeOffset;
         }
     }

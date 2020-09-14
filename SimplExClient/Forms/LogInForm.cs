@@ -11,11 +11,14 @@ namespace SimplExClient.Forms
         public string Patronymic { get => patronymicBox.Text; set => patronymicBox.Text = value; }
         public bool AllowConnect { get => connectButton.Enabled; set => connectButton.Enabled = value; }
         public event ViewActionHandler<ILogInView> Connected;
+        public event ViewActionHandler<ILogInView> ViewShown;
+
         public LogInForm(ApplicationContext context)
         {
             InitializeComponent();
             this.context = context;
         }
+
         public void Message(string message)
         {
             MessageBox.Show(message);
@@ -25,6 +28,7 @@ namespace SimplExClient.Forms
         {
             context.MainForm = this;
             base.Show();
+            ViewShown?.Invoke(this);
         }
         public void ShowError(string message)
         {

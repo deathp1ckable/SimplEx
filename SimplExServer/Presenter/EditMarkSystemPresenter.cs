@@ -37,12 +37,13 @@ namespace SimplExServer.Presenter
         private void ViewSaveChanges(IEditMarkSystemPropertiesView sender)
         {
             Argument.MarkSystemBuilder = GetMarkSystemPresenter(sender.MarkSystemType).MarkSystemBuilder;
-            Argument.MarkSystemBuilder.Description = sender.Description;
+            Argument.MarkSystemBuilder.Description = sender.Description.Trim();
+            sender.Description = Argument.MarkSystemBuilder.Description;
         }
         private void MarkSystemTypeChanged(IEditMarkSystemPropertiesView sender)
         {
             IEditMarkSystemPresenter presenter = GetMarkSystemPresenter(sender.MarkSystemType);
-            sender.EditMarkSystemView  = presenter.View;
+            sender.EditMarkSystemView = presenter.View;
             Argument.MarkSystemBuilder = presenter.MarkSystemBuilder;
         }
         private IEditMarkSystemPresenter GetMarkSystemPresenter(Type markSystemType) => presenters.Single(a => a.MarkSystemBuilder.GetType() == markSystemType);

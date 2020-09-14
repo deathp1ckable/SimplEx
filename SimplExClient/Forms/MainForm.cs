@@ -21,11 +21,13 @@ namespace SimplExClient.Forms
         private Ticket ticket;
         private ISessionInformationView sessionInformationView;
         private IChatView chatView;
+        private IQuestionView questionView;
 
         public event ViewActionHandler<IMainView> Disconnected;
+        public event ViewActionHandler<IMainView> ViewLeaved;
         public event ViewActionHandler<IMainView> QuestionChanged;
-        public event ViewActionHandler<IMainView> GoToExecution;
 
+        public int FirstQuestionNumber { private get; set; }
         public double Time { get => timeSpan.TotalSeconds; set => timeSpan = TimeSpan.FromSeconds(value); }
         public IList<Theme> Themes
         {
@@ -88,7 +90,18 @@ namespace SimplExClient.Forms
                 control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             }
         }
-
+        public IQuestionView QuestionView
+        {
+            get => questionView; set
+            {
+                questionView = value;
+                UserControl control = (UserControl)questionView;
+                control.Parent = propertiesPanel;
+                control.Size = propertiesPanel.Size;
+                control.Location = new Point(0, 0);
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+        }
         public IChatView ChatView
         {
             get => chatView; set
@@ -131,6 +144,8 @@ namespace SimplExClient.Forms
         }
         public bool SelectNextQuestion()
         {
+            if (CurrentQuestion == null)
+                return false;
             int index = questionNodes.IndexOfKey(CurrentQuestion);
             if (index < 0)
                 return false;
@@ -149,6 +164,8 @@ namespace SimplExClient.Forms
 
         public bool SelectPrevQuestion()
         {
+            if (CurrentQuestion == null)
+                return false;
             int index = questionNodes.IndexOfKey(CurrentQuestion);
             if (index < 0)
                 return false;
@@ -191,6 +208,7 @@ namespace SimplExClient.Forms
                     break;
                 case 1:
                     HideAllProperties();
+                    QuestionView?.Show();
                     break;
                 case 2:
                     HideAllProperties();
@@ -230,7 +248,8 @@ namespace SimplExClient.Forms
         private void HideAllProperties()
         {
             SessionInformationView?.Hide();
-            ChatView.Hide();
+            ChatView?.Hide();
+            QuestionView?.Hide();
         }
         private TreeNode LoadTheme(Theme theme)
         {
@@ -260,7 +279,7 @@ namespace SimplExClient.Forms
         }
         private TreeNode LoadQuestion(Question question)
         {
-            TreeNode result = new TreeNode($"Вопрос №{1 + question.QuestionNumber}");
+            TreeNode result = new TreeNode($"Вопрос №{FirstQuestionNumber + question.QuestionNumber}");
             result.Tag = question;
             questionNodes.Add(question, result);
             return result;
@@ -291,8 +310,10 @@ namespace SimplExClient.Forms
 
         private void TreeMouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (tree.SelectedNode?.Tag is Question)
-                GoToExecution(this);
+            if (tree.SelectedNode?.Tag is Question && disabledButton != executionButton)
+            {
+                TabStopClick(executionButton, EventArgs.Empty);
+            }
         }
 
         private void TreeAfterSelect(object sender, TreeViewEventArgs e)
@@ -311,6 +332,11 @@ namespace SimplExClient.Forms
                 else
                     return 0;
             }
+        }
+
+        private void MainFormDeactivate(object sender, EventArgs e)
+        {
+            ViewLeaved?.Invoke(this);
         }
     }
 }

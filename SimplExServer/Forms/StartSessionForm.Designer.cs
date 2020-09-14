@@ -94,8 +94,9 @@
             this.groupNameBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.groupNameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupNameBox.Location = new System.Drawing.Point(105, 145);
+            this.groupNameBox.MaxLength = 100;
             this.groupNameBox.Name = "groupNameBox";
-            this.groupNameBox.Size = new System.Drawing.Size(556, 26);
+            this.groupNameBox.Size = new System.Drawing.Size(612, 26);
             this.groupNameBox.TabIndex = 99;
             this.groupNameBox.TextChanged += new System.EventHandler(this.NameTextChanged);
             // 
@@ -105,7 +106,7 @@
             this.trackViolationsCheck.AutoSize = true;
             this.trackViolationsCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.trackViolationsCheck.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.trackViolationsCheck.Location = new System.Drawing.Point(358, 3);
+            this.trackViolationsCheck.Location = new System.Drawing.Point(414, 3);
             this.trackViolationsCheck.Name = "trackViolationsCheck";
             this.trackViolationsCheck.Size = new System.Drawing.Size(224, 27);
             this.trackViolationsCheck.TabIndex = 102;
@@ -132,7 +133,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 148);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(664, 423);
+            this.panel1.Size = new System.Drawing.Size(720, 423);
             this.panel1.TabIndex = 103;
             // 
             // label8
@@ -163,7 +164,7 @@
             this.patronymicBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.patronymicBox.Location = new System.Drawing.Point(105, 90);
             this.patronymicBox.Name = "patronymicBox";
-            this.patronymicBox.Size = new System.Drawing.Size(556, 26);
+            this.patronymicBox.Size = new System.Drawing.Size(612, 26);
             this.patronymicBox.TabIndex = 123;
             this.patronymicBox.TextChanged += new System.EventHandler(this.NameTextChanged);
             // 
@@ -185,7 +186,7 @@
             this.surnameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.surnameBox.Location = new System.Drawing.Point(105, 58);
             this.surnameBox.Name = "surnameBox";
-            this.surnameBox.Size = new System.Drawing.Size(556, 26);
+            this.surnameBox.Size = new System.Drawing.Size(612, 26);
             this.surnameBox.TabIndex = 121;
             this.surnameBox.TextChanged += new System.EventHandler(this.NameTextChanged);
             // 
@@ -207,7 +208,7 @@
             this.nameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameBox.Location = new System.Drawing.Point(105, 26);
             this.nameBox.Name = "nameBox";
-            this.nameBox.Size = new System.Drawing.Size(556, 26);
+            this.nameBox.Size = new System.Drawing.Size(612, 26);
             this.nameBox.TabIndex = 119;
             this.nameBox.TextChanged += new System.EventHandler(this.NameTextChanged);
             // 
@@ -231,7 +232,7 @@
             this.cancelButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.cancelButton.Location = new System.Drawing.Point(3, 392);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(658, 26);
+            this.cancelButton.Size = new System.Drawing.Size(714, 26);
             this.cancelButton.TabIndex = 112;
             this.cancelButton.Text = "Отмена";
             this.cancelButton.UseVisualStyleBackColor = false;
@@ -249,7 +250,7 @@
             this.startSessionButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.startSessionButton.Location = new System.Drawing.Point(3, 356);
             this.startSessionButton.Name = "startSessionButton";
-            this.startSessionButton.Size = new System.Drawing.Size(658, 30);
+            this.startSessionButton.Size = new System.Drawing.Size(714, 30);
             this.startSessionButton.TabIndex = 104;
             this.startSessionButton.Text = "Начать сессию";
             this.startSessionButton.UseVisualStyleBackColor = false;
@@ -267,7 +268,7 @@
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Location = new System.Drawing.Point(3, 177);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(658, 173);
+            this.panel2.Size = new System.Drawing.Size(714, 173);
             this.panel2.TabIndex = 118;
             // 
             // limitLabel
@@ -295,7 +296,7 @@
             0,
             0});
             this.violationsLimitBox.Name = "violationsLimitBox";
-            this.violationsLimitBox.Size = new System.Drawing.Size(332, 26);
+            this.violationsLimitBox.Size = new System.Drawing.Size(388, 26);
             this.violationsLimitBox.TabIndex = 114;
             // 
             // reconnectTimeBox
@@ -312,7 +313,7 @@
             0,
             0});
             this.reconnectTimeBox.Name = "reconnectTimeBox";
-            this.reconnectTimeBox.Size = new System.Drawing.Size(332, 26);
+            this.reconnectTimeBox.Size = new System.Drawing.Size(388, 26);
             this.reconnectTimeBox.TabIndex = 108;
             // 
             // reconnectionLabel
@@ -340,7 +341,7 @@
             this.panel3.Controls.Add(this.chatCheck);
             this.panel3.Location = new System.Drawing.Point(3, 64);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(650, 104);
+            this.panel3.Size = new System.Drawing.Size(706, 104);
             this.panel3.TabIndex = 117;
             // 
             // trackStatusCheck
@@ -385,7 +386,7 @@
             this.waitReconnectionCheck.AutoSize = true;
             this.waitReconnectionCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.waitReconnectionCheck.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.waitReconnectionCheck.Location = new System.Drawing.Point(358, 36);
+            this.waitReconnectionCheck.Location = new System.Drawing.Point(414, 36);
             this.waitReconnectionCheck.Name = "waitReconnectionCheck";
             this.waitReconnectionCheck.Size = new System.Drawing.Size(251, 27);
             this.waitReconnectionCheck.TabIndex = 115;
@@ -399,7 +400,7 @@
             this.chatCheck.AutoSize = true;
             this.chatCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chatCheck.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.chatCheck.Location = new System.Drawing.Point(358, 69);
+            this.chatCheck.Location = new System.Drawing.Point(414, 69);
             this.chatCheck.Name = "chatCheck";
             this.chatCheck.Size = new System.Drawing.Size(283, 27);
             this.chatCheck.TabIndex = 105;
@@ -446,7 +447,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(31)))), ((int)(((byte)(47)))));
-            this.ClientSize = new System.Drawing.Size(664, 571);
+            this.ClientSize = new System.Drawing.Size(720, 571);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.header);

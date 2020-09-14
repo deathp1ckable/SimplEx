@@ -34,32 +34,32 @@ namespace SimplExServer.Presenter
         }
         private void SaveProperties(IEditPropertiesView sender)
         {
-            if (!string.IsNullOrEmpty(sender.ExamName.Trim()))
+            if (string.IsNullOrEmpty(sender.ExamName.Trim()))
             {
                 sender.MessageWrongExamName("Введите название теста.");
                 return;
             }
-            if (!string.IsNullOrEmpty(sender.Discipline.Trim()))
+            if (string.IsNullOrEmpty(sender.Discipline.Trim()))
             {
                 sender.MessageWrongDiscipline("Введите дисциплину.");
                 return;
             }
-            if (!string.IsNullOrEmpty(sender.CreatorName.Trim()))
+            if (string.IsNullOrEmpty(sender.CreatorName.Trim()))
             {
                 sender.MessageWrongCreatorName("Введите имя автора.");
                 return;
             }
-            if (!string.IsNullOrEmpty(sender.CreatorSurname.Trim()))
+            if (string.IsNullOrEmpty(sender.CreatorSurname.Trim()))
             {
                 sender.MessageWrongCreatorSurname("Введите фамилию автора.");
                 return;
             }
-            if (!string.IsNullOrEmpty(sender.CreatorPatronymic.Trim()))
+            if (string.IsNullOrEmpty(sender.CreatorPatronymic.Trim()))
             {
                 sender.MessageWrongCreatorPatronymic("Введите отчество автора.");
                 return;
             }
-            if (!string.IsNullOrEmpty(sender.Password.Trim()))
+            if (sender.Password != null && string.IsNullOrEmpty(sender.Password.Trim()))
             {
                 if (!passwordRegex.IsMatch(sender.Password))
                 {
@@ -72,51 +72,44 @@ namespace SimplExServer.Presenter
                     return;
                 }
             }
-            Argument.ExamName = sender.ExamName;
-            Argument.Discipline = sender.Discipline;
-            Argument.Password = sender.Password;
-            Argument.CreatorName = sender.CreatorName;
-            Argument.CreatorSurname = sender.CreatorSurname;
-            Argument.CreatorPatronymic = sender.CreatorPatronymic;
+            Argument.ExamName = sender.ExamName.Trim();
+            Argument.Discipline = sender.Discipline.Trim();
+            Argument.Password = sender.Password.Trim();
+            Argument.CreatorName = sender.CreatorName.Trim();
+            Argument.CreatorSurname = sender.CreatorSurname.Trim();
+            Argument.CreatorPatronymic = sender.CreatorPatronymic.Trim();
             Argument.ExaminationTime = sender.ExaminationTime;
             Argument.FirstNumber = sender.FirstNumber;
-            Argument.Description = sender.Description;
+            Argument.Description = sender.Description.Trim();
+
+            RefreshView(sender);
 
             View.IsSaved = true;
         }
         private void CancelProperties(IEditPropertiesView sender)
         {
-
-            sender.ExamName = Argument.ExamName;
-            sender.Description = Argument.Discipline;
-            sender.Password = Argument.Password;
-            sender.CreatorName = Argument.CreatorName;
-            sender.CreatorSurname = Argument.CreatorSurname;
-            sender.CreatorPatronymic = Argument.CreatorPatronymic;
-            sender.ExaminationTime = Argument.ExaminationTime;
-            sender.FirstNumber = Argument.FirstNumber;
-            sender.Description = Argument.Description;
-            if (!string.IsNullOrEmpty(sender.ExamName.Trim()))
+            RefreshView(sender);
+            if (string.IsNullOrEmpty(sender.ExamName.Trim()))
             {
                 sender.MessageWrongExamName("Введите название теста.");
                 return;
             }
-            if (!string.IsNullOrEmpty(sender.Discipline.Trim()))
+            if (string.IsNullOrEmpty(sender.Discipline.Trim()))
             {
                 sender.MessageWrongDiscipline("Введите дисциплину.");
                 return;
             }
-            if (!string.IsNullOrEmpty(sender.CreatorName.Trim()))
+            if (string.IsNullOrEmpty(sender.CreatorName.Trim()))
             {
                 sender.MessageWrongCreatorName("Введите имя автора.");
                 return;
             }
-            if (!string.IsNullOrEmpty(sender.CreatorSurname.Trim()))
+            if (string.IsNullOrEmpty(sender.CreatorSurname.Trim()))
             {
                 sender.MessageWrongCreatorSurname("Введите фамилию автора.");
                 return;
             }
-            if (!string.IsNullOrEmpty(sender.CreatorPatronymic.Trim()))
+            if (string.IsNullOrEmpty(sender.CreatorPatronymic.Trim()))
             {
                 sender.MessageWrongCreatorPatronymic("Введите отчество автора.");
                 return;
@@ -135,6 +128,19 @@ namespace SimplExServer.Presenter
                 }
             }
             sender.IsSaved = true;
+        }
+
+        private void RefreshView(IEditPropertiesView sender)
+        {
+            sender.ExamName = Argument.ExamName;
+            sender.Description = Argument.Discipline;
+            sender.Password = Argument.Password;
+            sender.CreatorName = Argument.CreatorName;
+            sender.CreatorSurname = Argument.CreatorSurname;
+            sender.CreatorPatronymic = Argument.CreatorPatronymic;
+            sender.ExaminationTime = Argument.ExaminationTime;
+            sender.FirstNumber = Argument.FirstNumber;
+            sender.Description = Argument.Description;
         }
     }
 }

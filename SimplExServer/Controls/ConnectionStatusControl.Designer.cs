@@ -190,6 +190,7 @@
             this.currentQuestionBox.ReadOnly = true;
             this.currentQuestionBox.Size = new System.Drawing.Size(549, 21);
             this.currentQuestionBox.TabIndex = 87;
+            this.currentQuestionBox.Text = "-";
             // 
             // currentQuestionLabel
             // 
@@ -227,6 +228,7 @@
             this.executedQuestionBox.ReadOnly = true;
             this.executedQuestionBox.Size = new System.Drawing.Size(549, 21);
             this.executedQuestionBox.TabIndex = 89;
+            this.executedQuestionBox.Text = "-";
             // 
             // label5
             // 
@@ -369,7 +371,9 @@
             this.executionChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            chartArea1.AxisX.LineWidth = 2;
             chartArea1.AxisX.Title = "Хронология";
+            chartArea1.AxisY.LineWidth = 2;
             chartArea1.AxisY.Title = "Количество выполненных вопросов";
             chartArea1.Name = "chartArea";
             this.executionChart.ChartAreas.Add(chartArea1);

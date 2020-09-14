@@ -15,20 +15,6 @@ namespace SimplExClient.Presenter
             view.ClientDataChanged += ViewClientDataChanged;
         }
 
-        private void ViewClientDataChanged(ISessionInformationView sender)
-        {
-            Argument.Client.UpdateClientConnectionData(new ClientConnectionData(sender.ConnectionName, sender.ConnectionSurname, sender.ConnectionPatronymic, sender.CurrentTicket.TicketNumber));
-            Argument.MainView.Ticket = sender.CurrentTicket;
-        }
-
-        private void ViewShown(ISessionInformationView sender)
-        {
-            View.ExecutedQuestions = Argument.Client.Answers.Count;
-            View.CurrentQuestionNumber = Argument.Client.CurrentQuestionNumber;
-
-            RefreshViolations();
-        }
-
         public override void Run(ClientArgument argument)
         {
             Argument = argument;
@@ -42,7 +28,7 @@ namespace SimplExClient.Presenter
             View.CreatorSurname = Argument.Client.Exam.CreatorSurname;
             View.CreatorPatronymic = Argument.Client.Exam.CreatorPatronymic;
             View.ExaminationTime = Argument.Client.Exam.Time;
-            View.FirstQuestionNumber = Argument.Client.Exam.FirstNumber;
+            View.FirstQuestionNumber = Argument.Client.Exam.FirstQuestionNumber;
             View.MarkSystemType = Argument.Client.Exam.MarkSystem.GetType();
             View.MarkSystemDescription = Argument.Client.Exam.Description;
             View.TeacherName = Argument.Client.TeacherName;
@@ -60,11 +46,33 @@ namespace SimplExClient.Presenter
             View.ConnectionPatronymic = Argument.Client.Patronymic;
             View.CurrentTicket = Argument.Client.Ticket;
 
+            View.MinMark = Argument.Client.Exam.MarkSystem.MinMark();
+            View.MaxMark = Argument.Client.Exam.MarkSystem.MaxMark();
+
+            View.MaxPoints = Argument.Client.Ticket.MaxPoints;
+            View.MinPoints = 0;
+
             View.ExecutedQuestions = Argument.Client.Answers.Count;
-            View.CurrentQuestionNumber = Argument.Client.CurrentQuestionNumber;
+            View.CurrentQuestionNumber = Argument.Client.Exam.FirstQuestionNumber + Argument.Client.CurrentQuestionNumber;
 
             Argument.Client.StatusChanged += ArgumentStatusChanged;
             Argument.Client.Violation += ArgumentViolation;
+        }
+
+        private void ViewClientDataChanged(ISessionInformationView sender)
+        {
+            Argument.Client.UpdateClientConnectionData(new ClientConnectionData(sender.ConnectionName, sender.ConnectionSurname, sender.ConnectionPatronymic, sender.CurrentTicket.TicketNumber));
+            Argument.MainView.Ticket = sender.CurrentTicket;
+            View.MaxPoints = sender.CurrentTicket.MaxPoints;
+            View.MinPoints = 0;
+        }
+
+        private void ViewShown(ISessionInformationView sender)
+        {
+            View.ExecutedQuestions = Argument.Client.Answers.Count;
+            View.CurrentQuestionNumber = Argument.Client.Exam.FirstQuestionNumber + Argument.Client.CurrentQuestionNumber;
+
+            RefreshViolations();
         }
 
         private void ArgumentViolation(object sender, EventArgs e)
@@ -86,7 +94,7 @@ namespace SimplExClient.Presenter
         {
             violations.Clear();
             for (int i = 0; i < Argument.Client.Violations.Count; i++)
-                violations.Add($"[{Argument.Client.BeginingTime.Value.AddSeconds(Argument.Client.Violations[i].TimeOffset)}] " +
+                violations.Add($"№{i + 1} [{Argument.Client.BeginingTime.Value.AddSeconds(Argument.Client.Violations[i].TimeOffset)}] " +
                     $"{Argument.Client.Violations[i].Content}");
             View.Violations = violations;
         }

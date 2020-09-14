@@ -55,14 +55,12 @@ namespace SimplExServer.Controls
                 watchTaskButton.Enabled = true;
                 setRightAnswerCheck.Enabled = true;
                 watchBlankButton.Enabled = true;
-                watchClientViewButton.Enabled = true;
                 if (ticketBuiders.Count == 0)
                 {
                     watchKeyButton.Enabled = false;
                     watchTaskButton.Enabled = false;
                     setRightAnswerCheck.Enabled = false;
                     watchBlankButton.Enabled = false;
-                    watchClientViewButton.Enabled = false;
                 }
             }
         }
@@ -86,7 +84,6 @@ namespace SimplExServer.Controls
         public event ViewActionHandler<IEditSavingView> WatchKey;
         public event ViewActionHandler<IEditSavingView> WatchTask;
         public event ViewActionHandler<IEditSavingView> WatchBlank;
-        public event ViewActionHandler<IEditSavingView> WatchClientView;
         public event ViewActionHandler<IEditSavingView> Shown;
         public event ViewActionHandler<IEditSavingView> Hiden;
         public event ViewActionHandler<IEditSavingView, SaveExamEventArgs> SavedAs;
@@ -113,7 +110,6 @@ namespace SimplExServer.Controls
         private void WatchKeyButtonClick(object sender, EventArgs e) => WatchKey?.Invoke(this);
         private void WatchTaskButtonClick(object sender, EventArgs e) => WatchTask?.Invoke(this);
         private void WatchBlankButtonClick(object sender, EventArgs e) => WatchBlank?.Invoke(this);
-        private void WatchClientViewButtonClick(object sender, EventArgs e) => WatchClientView?.Invoke(this);
         private void SaveFileDialogFileOk(object sender, CancelEventArgs e) => SavedAs?.Invoke(this, new SaveExamEventArgs(Path.GetFullPath(saveFileDialog.FileName)));
         public void ShowError(string message) => MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }

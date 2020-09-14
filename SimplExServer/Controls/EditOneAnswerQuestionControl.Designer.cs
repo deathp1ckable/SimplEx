@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.answersDataGrid = new System.Windows.Forms.DataGridView();
             this.IsRight = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Letter = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -65,36 +65,37 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.answersDataGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.answersDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.answersDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.answersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.answersDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.IsRight,
             this.Letter,
             this.Answer});
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.answersDataGrid.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.answersDataGrid.DefaultCellStyle = dataGridViewCellStyle3;
             this.answersDataGrid.EnableHeadersVisualStyles = false;
             this.answersDataGrid.Location = new System.Drawing.Point(3, 30);
             this.answersDataGrid.Name = "answersDataGrid";
             this.answersDataGrid.RowHeadersVisible = false;
             this.answersDataGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.answersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.answersDataGrid.Size = new System.Drawing.Size(708, 185);
+            this.answersDataGrid.Size = new System.Drawing.Size(708, 183);
             this.answersDataGrid.TabIndex = 0;
             this.answersDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.AnswersDataGridCellContentClick);
+            this.answersDataGrid.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.AnswersDataGridCellLeave);
             this.answersDataGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.AnswersDataGridCellValueChanged);
             this.answersDataGrid.SelectionChanged += new System.EventHandler(this.AnswersDataGridSelectionChanged);
             this.answersDataGrid.Resize += new System.EventHandler(this.AnswersDataGridResize);
@@ -119,9 +120,9 @@
             // Answer
             // 
             this.Answer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopLeft;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Answer.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopLeft;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Answer.DefaultCellStyle = dataGridViewCellStyle2;
             this.Answer.Frozen = true;
             this.Answer.HeaderText = "Ответ";
             this.Answer.MaxInputLength = 327670;
@@ -135,7 +136,7 @@
             this.addAnswerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.addAnswerButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.addAnswerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addAnswerButton.Location = new System.Drawing.Point(3, 221);
+            this.addAnswerButton.Location = new System.Drawing.Point(3, 219);
             this.addAnswerButton.Name = "addAnswerButton";
             this.addAnswerButton.Size = new System.Drawing.Size(142, 23);
             this.addAnswerButton.TabIndex = 66;
@@ -149,7 +150,7 @@
             this.deleteAnswerButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.deleteAnswerButton.Enabled = false;
             this.deleteAnswerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.deleteAnswerButton.Location = new System.Drawing.Point(151, 221);
+            this.deleteAnswerButton.Location = new System.Drawing.Point(151, 219);
             this.deleteAnswerButton.Name = "deleteAnswerButton";
             this.deleteAnswerButton.Size = new System.Drawing.Size(142, 23);
             this.deleteAnswerButton.TabIndex = 67;
@@ -164,7 +165,7 @@
             this.downButton.Enabled = false;
             this.downButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.downButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.downButton.Location = new System.Drawing.Point(641, 221);
+            this.downButton.Location = new System.Drawing.Point(641, 219);
             this.downButton.Name = "downButton";
             this.downButton.Size = new System.Drawing.Size(70, 23);
             this.downButton.TabIndex = 69;
@@ -179,7 +180,7 @@
             this.upButton.Enabled = false;
             this.upButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.upButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.upButton.Location = new System.Drawing.Point(565, 221);
+            this.upButton.Location = new System.Drawing.Point(565, 219);
             this.upButton.Name = "upButton";
             this.upButton.Size = new System.Drawing.Size(70, 23);
             this.upButton.TabIndex = 68;
@@ -276,11 +277,6 @@
             0,
             0,
             0});
-            this.pointsUpDown.Minimum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            -2147483648});
             this.pointsUpDown.Name = "pointsUpDown";
             this.pointsUpDown.Size = new System.Drawing.Size(580, 21);
             this.pointsUpDown.TabIndex = 98;

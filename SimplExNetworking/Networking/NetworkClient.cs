@@ -263,30 +263,33 @@ namespace SimplExNetworking.Networking
                     break;
             }
         }
-        private readonly List<byte> bufferList = new List<byte>();
+        private object locker = new object();
         private void SendPackage(Package package)
         {
-            if (ClientState != ClientState.Disconnected)
+            lock (locker)
             {
-                try
+                if (ClientState != ClientState.Disconnected)
                 {
-                    byte[] data = SerializationHelper.ProtoSerialize(package);
-                    byte[] length = BitConverter.GetBytes(data.Length);
-                    byte[] result = new byte[data.Length + length.Length];
-                    Array.Copy(length, result, length.Length);
-                    Array.Copy(data, 0, result, length.Length, data.Length);
-                    client.GetStream().Write(result, 0, result.Length);
+                    try
+                    {
+                        byte[] data = SerializationHelper.ProtoSerialize(package);
+                        byte[] length = BitConverter.GetBytes(data.Length);
+                        byte[] result = new byte[data.Length + length.Length];
+                        Array.Copy(length, result, length.Length);
+                        Array.Copy(data, 0, result, length.Length, data.Length);
+                        client.GetStream().Write(result, 0, result.Length);
+                    }
+                    catch (SocketException ex)
+                    {
+                        Disconnect(false, "Connection lost: " + ex.Message);
+                    }
+                    catch
+                    {
+                        return;
+                    }
                 }
-                catch (SocketException ex)
-                {
-                    Disconnect(false, "Connection lost: " + ex.Message);
-                }
-                catch
-                {
-                    return;
-                }
+                else throw new InvalidOperationException("Attempting to send message with unconnected NetworkClient");
             }
-            else throw new InvalidOperationException("Attempting to send message with unconnected NetworkClient");
         }
         private void Disconnect(bool sendReason, string reason = "Client disconnected by himself.")
         {

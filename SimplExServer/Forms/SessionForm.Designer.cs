@@ -200,7 +200,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.propertiesPanel.Location = new System.Drawing.Point(3, 74);
             this.propertiesPanel.Name = "propertiesPanel";
-            this.propertiesPanel.Size = new System.Drawing.Size(610, 563);
+            this.propertiesPanel.Size = new System.Drawing.Size(607, 563);
             this.propertiesPanel.TabIndex = 2;
             // 
             // panel3
@@ -214,7 +214,7 @@
             this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.MinimumSize = new System.Drawing.Size(607, 42);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(610, 42);
+            this.panel3.Size = new System.Drawing.Size(607, 42);
             this.panel3.TabIndex = 0;
             // 
             // additionButton
@@ -224,7 +224,7 @@
             this.additionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.additionButton.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.additionButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.additionButton.Location = new System.Drawing.Point(370, 3);
+            this.additionButton.Location = new System.Drawing.Point(367, 3);
             this.additionButton.Name = "additionButton";
             this.additionButton.Size = new System.Drawing.Size(235, 34);
             this.additionButton.TabIndex = 7;
@@ -259,7 +259,7 @@
             this.connectionControlButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.connectionControlButton.Location = new System.Drawing.Point(244, 3);
             this.connectionControlButton.Name = "connectionControlButton";
-            this.connectionControlButton.Size = new System.Drawing.Size(120, 34);
+            this.connectionControlButton.Size = new System.Drawing.Size(117, 34);
             this.connectionControlButton.TabIndex = 6;
             this.connectionControlButton.Tag = "1";
             this.connectionControlButton.Text = "Подключение";

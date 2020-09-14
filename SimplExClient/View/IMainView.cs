@@ -6,6 +6,7 @@ namespace SimplExClient.View
 {
     public interface IMainView : IHideableView
     {
+        int FirstQuestionNumber { set; }
         double Time { get; set; }
         string GroupName { get; set; }
         Ticket Ticket { get; set; }
@@ -15,11 +16,13 @@ namespace SimplExClient.View
         Question CurrentQuestion { get; }
 
         int ExexutedQuestions { set; }
+
         ISessionInformationView SessionInformationView { get; set; }
+        IQuestionView QuestionView { get; set; }
         IChatView ChatView { get; set; }
 
-        event ViewActionHandler<IMainView> GoToExecution;
         event ViewActionHandler<IMainView> QuestionChanged;
+        event ViewActionHandler<IMainView> ViewLeaved;
         event ViewActionHandler<IMainView> Disconnected;
 
         void ShowChatToolTip();

@@ -30,8 +30,11 @@ namespace SimplExServer.View
 
         event ViewActionHandler<IConnectionStatusView> ViolationAdded;
         event ViewActionHandler<IConnectionStatusView> Disconnected;
-        event ViewActionHandler<IConnectionStatusView> ResultOpened;
+        event ViewActionHandler<IConnectionStatusView> WathcResult;
         event ViewActionHandler<IConnectionStatusView> Shown;
+
+        void ShowError(string message);
+
         event ViewActionHandler<IConnectionStatusView> Hiden;
 
     }

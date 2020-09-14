@@ -1,4 +1,5 @@
-﻿using SimplExServer.Service;
+﻿using SimplExModel.NetworkData;
+using SimplExServer.Service;
 using SimplExServer.View;
 using System;
 using System.Collections.Generic;
@@ -36,9 +37,14 @@ namespace SimplExServer
                         break;
                     case SessionStatus.ExecutionInProgress:
                         sessionStatusLabel.Text = "Статус: Выполнение";
+                        startStopSessionButton.Text = "Остановить сессию";
                         break;
                     case SessionStatus.Finished:
                         sessionStatusLabel.Text = "Статус: Сессия окончена";
+                        timer.Stop();
+                        Time = 0;
+                        timeLabel.Text = $"Осталось времени: --:--:--";
+                        startStopSessionButton.Enabled = false;
                         break;
                 }
             }
@@ -51,7 +57,7 @@ namespace SimplExServer
                 sessionClients = value;
                 clientsList.Items.Clear();
                 for (int i = 0; i < sessionClients.Count; i++)
-                    clientsList.Items.Add($"{sessionClients[i].Surname} {sessionClients[i].Name} {sessionClients[i].Patronymic}");
+                    clientsList.Items.Add($"{sessionClients[i].Surname} {sessionClients[i].Name} {sessionClients[i].Patronymic} [{GetSatatusString(sessionClients[i].ClientStatus)}]");
                 if (sessionClients.Count == 0)
                 {
                     clientsList.Items.Add("Нет подключений");
@@ -136,6 +142,10 @@ namespace SimplExServer
         {
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+        public void ShowError(string message)
+        {
+            MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
         public void Invoke(Action action)
         {
             try
@@ -183,10 +193,10 @@ namespace SimplExServer
 
         private void ClientsListMouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (sessionClients.Count != 0)
+            if (sessionClients.Count > 0 && clientsList.SelectedIndex >= 0 && clientsList.SelectedIndex < sessionClients.Count)
             {
                 ClientChanged?.Invoke(this);
-
+                TabStopClick(connectionControlButton, EventArgs.Empty);
             }
         }
 
@@ -245,7 +255,7 @@ namespace SimplExServer
             }
             else
             {
-                SessionStarted?.Invoke(this);
+                SessionStoped?.Invoke(this);
                 Time = 1;
                 timer.Stop();
                 Time = 0;
@@ -263,6 +273,21 @@ namespace SimplExServer
             }
             else
                 timeLabel.Text = $"Осталось времени: 00:00:00";
+        }
+        private string GetSatatusString(ClientStatus value)
+        {
+            switch (value)
+            {
+                case ClientStatus.Connected:
+                    return "Ожидание начала сессии";
+                case ClientStatus.Executing:
+                    return "Выполнение";
+                case ClientStatus.Reconnecting:
+                    return "Переподключение";
+                case ClientStatus.Executed:
+                    return "Выполнено";
+            }
+            return "Не опрделено";
         }
     }
 }
